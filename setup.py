@@ -1,47 +1,43 @@
 #!/usr/bin/env python
-
 from distutils.core import setup
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
+try:
+    from pip import main as pipmain
+except:
+    from pip._internal import main as pipmain
 
+VERSION = '0.1.1'
 
-VERSION = "0.1.0"
+pipmain(['install', 'Cython>=0.28.4'])
 
+from Cython.Build import build_ext
 
-ext_modules = [
-    Extension("sparsebitfield",
-              ["cimpl/field.pyx"],
-              depends=["cimpl/field.h", "cimpl/field.c"]
-              )
-]
+setup(
+    name='sparsebitfield',
+    version=VERSION,
+    license='BSD',
 
-if __name__ == "__main__":
-    setup(
-        name="sparsebitfield",
-        version=VERSION,
-        license="BSD",
+    description='A Cython fast compressed number set',
+    author='Steve Stagg, Lars Fenneberg',
+    author_email='stestagg@gmail.com, lf@elemental.net',
 
-        description="A Cython fast compressed number set",
-        author="Steve Stagg, Lars Fenneberg",
-        author_email="stestagg@gmail.com, lf@elemental.net",
+    url='http://github.com/elemental-lf/sparsebitfield',
 
-        url="http://github.com/elemental-lf/sparsebitfield",
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+    ],
 
-        classifiers=[
-            'Development Status :: 4 - Beta',
-            'Intended Audience :: Developers',
-            'License :: OSI Approved :: BSD License',
-            'Operating System :: OS Independent',
-            'Programming Language :: Python',
-            'Programming Language :: Python :: 3',
-        ],
-
-        package_data={"Cython": ["cimpl/*.pyx"]},
-
-        cmdclass={"build_ext": build_ext},
-        ext_modules=ext_modules,
-        
-        install_requires=[
+    install_requires=[
         'sortedcontainers>=2.0.4',
-        ],        
-    )
+    ],        
+
+    extentions = [
+          Extension('sparsebitfield', ['cimpl/field.pyx'], depends=['cimpl/field.h', 'cimpl/field.c', 'popcount.h'])
+    ],
+    cmdclass={'build_ext': build_ext},
+)
