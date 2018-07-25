@@ -1,5 +1,5 @@
-bitfield
-========
+sparsebitfield
+==============
 
 This is a fork of https://github.com/stestagg/bitfield which has been
 adapted to be efficient with sparse bitfields and large numbers. The
@@ -15,7 +15,7 @@ Installation
 ------------
 
 ```
-$ sudo pip3 install --upgrade git+https://github.com/elemental-lf/bitfield
+$ sudo pip3 install --upgrade git+https://github.com/elemental-lf/sparsebitfield
 ```
 
 Usage
