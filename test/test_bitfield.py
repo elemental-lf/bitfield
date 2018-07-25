@@ -1,33 +1,17 @@
 #!/usr/bin/python
 
-from __future__ import with_statement
-
 # For coverage script
-import bitfield
+import sparsebitfield
 
-try:
-    import cPickle
-except ImportError:
-    # For python 3
-    import pickle as cPickle # NOQA
+import pickle as cPickle
 import pickle
-
-try:
-    # Python 2.6 support
-    import unittest2 as unittest
-except ImportError:
-    import unittest # NOQA
-
-try:
-    xrange(1)
-except NameError:
-    xrange = range  # python3
-
+import random
+import unittest
 
 class BitfieldTest(unittest.TestCase):
 
     def test_repr_eval(self):
-        b = bitfield.Bitfield()
+        b = sparsebitfield.SparseBitfield()
         b.add(100)
         c = eval(repr(b))
         self.assertEqual(b, c)
@@ -37,7 +21,7 @@ class BitfieldTest(unittest.TestCase):
         self.assertEqual(b, c)
 
     def test_count(self):
-        b = bitfield.Bitfield()
+        b = sparsebitfield.SparseBitfield()
         self.assertEqual(b.count, 0)
         b.add(0)
         self.assertEqual(b.count, 1)
@@ -46,7 +30,7 @@ class BitfieldTest(unittest.TestCase):
         self.assertEqual(len(b), 2)
 
     def test_mutating_while_iterating(self):
-        b = bitfield.Bitfield([[0, 1000]])
+        b = sparsebitfield.SparseBitfield([[0, 1000]])
         count = len(b)
         for num in b:
             self.assertIn(num, b)
@@ -57,7 +41,7 @@ class BitfieldTest(unittest.TestCase):
         self.assertEqual(count, 0)
 
     def test_membership(self):
-        b = bitfield.Bitfield()
+        b = sparsebitfield.SparseBitfield()
         b.add(0)
         b.add(1)
         b.add(2)
@@ -66,16 +50,16 @@ class BitfieldTest(unittest.TestCase):
         self.assertEqual(list(b), [0, 1, 2])
 
     def test_add_remove(self):
-        b = bitfield.Bitfield()
+        b = sparsebitfield.SparseBitfield()
         self.assertEqual(list(b), [])
-        for i in xrange(0, 1000000, 881):
+        for i in range(0, 1000000, 881):
             b.add(i)
             self.assertEqual(list(b), [i])
             b.remove(i)
 
     def test_merging(self):
-        a = bitfield.Bitfield()
-        b = bitfield.Bitfield()
+        a = sparsebitfield.SparseBitfield()
+        b = sparsebitfield.SparseBitfield()
         a.add(0)
         b.add(0)
         a.update(b)
@@ -86,7 +70,7 @@ class BitfieldTest(unittest.TestCase):
         self.assertEqual(list(b), [0, 1000, 1000000])
 
     def test_in(self):
-        a = bitfield.Bitfield()
+        a = sparsebitfield.SparseBitfield()
         for i in range(0, 100, 13):
             a.add(i)
         self.assertIn(13, a)
@@ -99,7 +83,7 @@ class BitfieldTest(unittest.TestCase):
         self.assertIn(1000000, a)
 
     def test_clone(self):
-        a = bitfield.Bitfield()
+        a = sparsebitfield.SparseBitfield()
         a.add(1)
         a.add(10)
         a.add(5000000)
@@ -109,7 +93,7 @@ class BitfieldTest(unittest.TestCase):
         self.assertNotEqual(a, b)
 
     def test_symmetric_difference(self):
-        field = bitfield.Bitfield
+        field = sparsebitfield.SparseBitfield
         a = field()
         b = field()
         a.add(1)
@@ -136,22 +120,38 @@ class BitfieldTest(unittest.TestCase):
         one_million = 1000000
         size = one_million * 1000
 
-        field1 = bitfield.Bitfield([[0, size]])
-        field2 = bitfield.Bitfield([[size, size * 2]])
+        field1 = sparsebitfield.SparseBitfield([[0, size]])
+        field2 = sparsebitfield.SparseBitfield([[size, size * 2]])
         self.assertEqual(len(field1), size)
         self.assertEqual(len(field2), size)
         self.assertEqual(len(field1 | field2), size * 2)
 
     def test_init_with_small_ranges(self):
-        a = bitfield.Bitfield(((0, 1), (3, 10),),)
+        a = sparsebitfield.SparseBitfield(((0, 1), (3, 10),),)
         self.assertSequenceEqual(list(a), [0, 3, 4, 5, 6, 7, 8, 9])
 
     def test_init_with_large_ranges(self):
-        a = bitfield.Bitfield(((0, 20000), (30000, 100000)))
+        a = sparsebitfield.SparseBitfield(((0, 20000), (30000, 100000)))
         self.assertEqual(len(a), 90000)
         self.assertEqual(max(a), 99999)
         self.assertEqual(min(a), 0)
 
+    def test_large_numbers(self):
+        size = 79
+        field1 = sparsebitfield.SparseBitfield()
+        field2 = sparsebitfield.SparseBitfield()
+        for p in range(1, size + 1):
+            field1.add(2**p)
+            self.assertIn(2**p, field1)
+            field2.add(2**p - 1)
+            self.assertIn(2**p - 1, field2)
+        self.assertEqual(len(field1), size)
+        self.assertEqual(len(field2), size)
+        self.assertEqual(len(field1 | field2), size * 2)
+        field1 = sparsebitfield.SparseBitfield([[2**70, 2**70 + 3000000]])
+        for num in range(2**70, 2**70 + 3000000):
+            self.assertIn(num, field1)
+        self.assertEqual(len(field1), 3000000)
 
 class SetEqualityTest(unittest.TestCase):
 
@@ -194,28 +194,28 @@ class SetEqualityTest(unittest.TestCase):
         self.assertEqual(b_pure, b)
 
     def test_empty(self):
-        self._test_methods(bitfield.Bitfield(), bitfield.Bitfield())
+        self._test_methods(sparsebitfield.SparseBitfield(), sparsebitfield.SparseBitfield())
 
     def test_simple(self):
-        self._test_methods(bitfield.Bitfield([1, 2, 3]), bitfield.Bitfield([1, 2, 3]))
-        self._test_methods(bitfield.Bitfield([1, 2, 3]), bitfield.Bitfield([1, 2]))
-        self._test_methods(bitfield.Bitfield([1, 2, 3]), bitfield.Bitfield([3, 4, 5]))
-        self._test_methods(bitfield.Bitfield([1]), bitfield.Bitfield([1, 3, 4, 5]))
+        self._test_methods(sparsebitfield.SparseBitfield([1, 2, 3]), sparsebitfield.SparseBitfield([1, 2, 3]))
+        self._test_methods(sparsebitfield.SparseBitfield([1, 2, 3]), sparsebitfield.SparseBitfield([1, 2]))
+        self._test_methods(sparsebitfield.SparseBitfield([1, 2, 3]), sparsebitfield.SparseBitfield([3, 4, 5]))
+        self._test_methods(sparsebitfield.SparseBitfield([1]), sparsebitfield.SparseBitfield([1, 3, 4, 5]))
 
     def test_multi_page(self):
         def nums(*numbers):
             return list([page_numbers[n] for n in numbers])
-        page_max = bitfield.get_all_sizes()["PAGE_MAX"]
+        page_max = sparsebitfield.get_all_sizes()["PAGE_MAX"]
         page_numbers = [5 + (page_max * i) for i in range(10)]
-        a = bitfield.Bitfield(nums(0, 2))
-        b = bitfield.Bitfield(nums(1, 3))
+        a = sparsebitfield.SparseBitfield(nums(0, 2))
+        b = sparsebitfield.SparseBitfield(nums(1, 3))
         self._test_methods(a, b)
         self._test_methods(b, a)
 
     def test_empty_full(self):
-        page_max = bitfield.get_all_sizes()["PAGE_MAX"]
-        a = bitfield.Bitfield([[0, page_max]])
-        b = bitfield.Bitfield()
+        page_max = sparsebitfield.get_all_sizes()["PAGE_MAX"]
+        a = sparsebitfield.SparseBitfield([[0, page_max]])
+        b = sparsebitfield.SparseBitfield()
         self._test_methods(a, b)
         self._test_methods(b, a)
 

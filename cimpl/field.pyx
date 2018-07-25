@@ -3,7 +3,7 @@
 import cython
 import zlib
 import sys
-
+from sortedcontainers import SortedDict
 
 cimport cpython.buffer as pybuf
 from cython cimport view
@@ -11,40 +11,19 @@ from cython cimport view
 ctypedef Py_ssize_t size_t
 
 cdef extern from "string.h":
-    void * memset(void *, int, size_t)
     void * memcpy(void*, void*, size_t)
-    int memcmp(void*, void*, size_t)
 
     
 IF UNAME_SYSNAME == "Windows":
-
-    cdef extern from "Windows.h":
-        ctypedef int DWORD
-        ctypedef void * LPSYSTEM_INFO
-        ctypedef struct SYSTEM_INFO:
-            DWORD dwPageSize
-        void GetSystemInfo(LPSYSTEM_INFO data)
-
     cdef extern from "popcount.h":
         int __builtin_popcountl(unsigned int)
-
-    cdef getpagesize():
-        cdef SYSTEM_INFO system_info
-        GetSystemInfo(cython.address(system_info))
-        return system_info.dwPageSize
-ELSE    :
-
+ELSE:
     cdef extern:
         int __builtin_popcountl(size_t)
-
-    cdef extern from "unistd.h":
-        int getpagesize()
 
 
 cdef extern from "stdlib.h":
     void *malloc(size_t)
-    void *calloc(size_t, size_t)
-    void *realloc(void *, size_t)
     void free(void*)
 
 
@@ -81,96 +60,6 @@ def get_all_sizes():
         PAGE_BYTES=PAGE_BYTES,
         PAGE_MAX=PAGE_FULL_COUNT
     )
-
-
-cdef class PageIter:
-    cdef usize_t chunk
-    cdef usize_t bit_index
-    cdef usize_t number
-    cdef IdsPage page
-
-    def __cinit__(self, IdsPage page):
-        self.page = page
-        self.chunk = 0
-        self.bit_index = 0
-        self.number = 0
-
-    cdef usize_t _advance(self):
-        cdef usize_t number = self.number
-        self.number += 1
-        self.bit_index += 1
-        if self.bit_index >= CHUNK_FULL_COUNT:
-            self.bit_index = 0
-            self.chunk += 1
-            if self.page.page_state == PAGE_PARTIAL:
-                while self.chunk < PAGE_CHUNKS and self.page.data[self.chunk] == 0:
-                    self.chunk += 1
-                    self.number += CHUNK_FULL_COUNT
-        return number
-
-    cdef _next(self):
-        if self.chunk >= PAGE_CHUNKS:
-            raise StopIteration()
-        if self.page.page_state == PAGE_EMPTY:
-            raise StopIteration()
-        elif self.page.page_state == PAGE_FULL:
-            return self._advance()
-        while 1:
-            if self.chunk >= PAGE_CHUNKS:
-                raise StopIteration()
-            test = (self.page.data[self.chunk] & ((<usize_t>1) << self.bit_index))
-            if test:
-                return self._advance()
-            self._advance()
-
-    def __next__(self):
-        return self._next()
-
-
-cdef class BitfieldIterator:
-    """
-    Performs correctly when bitfields are mutating during iteration.
-    """
-
-    cdef Bitfield bitfield
-    cdef PageIter current_iter
-    cdef usize_t current_page
-    cdef usize_t offset
-
-    def __cinit__(self, Bitfield bitfield):
-        self.bitfield = bitfield
-        self.current_page = 0
-        self.current_iter = None
-        self.offset = 0
-
-    cdef inline _next_iter(self):
-        cdef IdsPage next_page
-        while True:
-            if self.current_page >= len(self.bitfield.pages):
-                raise StopIteration()
-            next_page = self.bitfield.pages[self.current_page]
-            self.current_iter = next_page._iter()
-            if self.current_iter is not None:
-                return
-            self.current_page += 1
-            self.offset += PAGE_FULL_COUNT
-
-    def __next__(self):
-        cdef usize_t offset
-        cdef usize_t next_item
-        cdef PageIter the_iterator
-        if self.current_iter is None:
-            self._next_iter()
-        while True:
-            try:
-                the_iterator = self.current_iter
-                next_item = the_iterator._next()
-                offset = self.offset
-                return next_item + offset
-            except StopIteration:
-                self.current_page += 1
-                self.offset += PAGE_FULL_COUNT
-                self._next_iter()
 
 
 cdef class IdsPage:
@@ -216,16 +105,33 @@ cdef class IdsPage:
             free(self.data)
             self.data = NULL
 
-    cdef _iter(self):
-        if self.page_state == PAGE_EMPTY:
-            return None
-        return PageIter(self)
-
     def __iter__(self):
-        cdef PageIter iterator = self._iter()
-        if iterator is None:
-            return iter(set())
-        return iterator
+        cdef usize_t chunk = 0
+        cdef usize_t bit_index = 0
+        cdef usize_t number = 0
+
+        if self.page_state == PAGE_EMPTY:
+            return
+        elif self.page_state == PAGE_FULL:
+            for number in range(0, PAGE_FULL_COUNT):
+                yield number
+        else:
+            while chunk < PAGE_CHUNKS:
+                # If the page is changing under our feet
+                if self.page_state == PAGE_EMPTY:
+                    return  
+                elif (self.data[chunk] & ((<usize_t>1) << bit_index)) != 0:
+                    yield number
+
+                number += 1
+                bit_index += 1
+                if bit_index >= CHUNK_FULL_COUNT:
+                    bit_index = 0
+                    chunk += 1
+                    # Skip empty chunks
+                    while chunk < PAGE_CHUNKS and self.data[chunk] == 0:
+                        chunk += 1
+                        number += CHUNK_FULL_COUNT
 
     cdef void calc_length(self):
         cdef CHUNK *chunk
@@ -257,7 +163,6 @@ cdef class IdsPage:
         if self.page_state == PAGE_EMPTY:
             return False
         return self.data[chunk_index] & chunk_bit != 0
-
 
     cdef void add(self, usize_t number):
         cdef usize_t chunk_index = number >> CHUNK_SHIFT
@@ -432,47 +337,38 @@ cdef bytes PICKLE_MARKER = <char *>"BF:"
 cdef bytes PICKLE_MARKER_zlib = <char *>"BZ:"
 
 
-cdef class Bitfield:
+cdef class SparseBitfield:
     """Efficient storage, and set-like operations on groups of positive integers
-    Currently, all integers must be in the range 0 >= x >= bitfield.get_all_sizes()["BITFIELD_MAX"].
-    Note this does not take into consideration memory limits, which may become a factor in extreme cases.
+    Currently, all integers must be in the range 0 >= x <= x**79 when usize_t is 64bit
+    long."""
 
-    The bitfield is designed to handle sets of numbers incrementing from 0.  Adding arbitrary, large numbers
-    to the set will not be efficient."""
-
-    cdef list pages
+    cdef object pages
     __slots__ = ()
 
     def __cinit__(self, _data=None):
-        self.pages = list()
+        self.pages = SortedDict({})
         if _data is not None:
             self.load(_data)
 
     cdef _ensure_page_exists(self, usize_t page):
-        cdef list pages = self.pages
-        while page >= len(pages):
-            new_page = IdsPage()
-            pages.append(new_page)
+        if page not in self.pages:
+          self.pages[page] = IdsPage()
 
-    cdef _cleanup(self):
-        while len(self.pages) > 0 and self.pages[-1].count == 0:
-            self.pages.pop()
-
-    cpdef add(self, usize_t number):
+    cpdef add(self, object number):
         """Add a positive integer to the bitfield"""
-        cdef usize_t page = number / PAGE_FULL_COUNT
+        cdef usize_t page_no = number / PAGE_FULL_COUNT
         cdef usize_t page_index = number % PAGE_FULL_COUNT
-        self._ensure_page_exists(page)
-        cdef IdsPage the_page = self.pages[page]
-        the_page.add(page_index)
+        self._ensure_page_exists(page_no)
+        cdef IdsPage page = self.pages[page_no]
+        page.add(page_index)
 
-    cpdef remove(Bitfield self, usize_t number):
+    cpdef remove(SparseBitfield self, object number):
         """Remove a positive integer from the bitfield
         If the integer does not exist in the field, raise a KeyError"""
         cdef usize_t page_no = number / PAGE_FULL_COUNT
-        cdef usize_t page_index = number % PAGE_FULL_COUNT
-        if page_no >= len(self.pages):
+        if page_no not in self.pages:
             raise KeyError()
+        cdef usize_t page_index = number % PAGE_FULL_COUNT
         cdef IdsPage page = self.pages[page_no]
         cdef size_t before_count = page.count
         page.remove(page_index)
@@ -480,21 +376,21 @@ cdef class Bitfield:
         if before_count == after_count:
             raise KeyError()
 
-    cpdef discard(Bitfield self, usize_t number):
+    cpdef discard(SparseBitfield self, object number):
         """Remove a positive integer from the bitfield if it is a member.
         If the element is not a member, do nothing."""
-        cdef usize_t page = number / PAGE_FULL_COUNT
-        if page >= len(self.pages):
+        cdef usize_t page_no = number / PAGE_FULL_COUNT
+        if page_no not in self.pages:
             return
         cdef usize_t page_index = number % PAGE_FULL_COUNT
-        cdef IdsPage the_page = self.pages[page]
-        the_page.remove(page_index)
+        cdef IdsPage page = self.pages[page_no]
+        page.remove(page_index)
 
     property count:
         """The number of integers in the field"""
         def __get__(self):
-            cdef usize_t num = 0
-            for page in self.pages:
+            cdef object num = 0
+            for page in self.pages.values():
                 num += page.count
             return num
 
@@ -504,29 +400,35 @@ cdef class Bitfield:
 
     def __contains__(self, number):
         """Returns true if number is present in the field"""
-        cdef usize_t page = number / PAGE_FULL_COUNT
-        cdef usize_t page_index = number % PAGE_FULL_COUNT
-        if page >= len(self.pages):
+        cdef usize_t page_no = number / PAGE_FULL_COUNT
+        if page_no not in self.pages:
             return False
-        return page_index in self.pages[page]
+        cdef usize_t page_index = number % PAGE_FULL_COUNT
+        return page_index in self.pages[page_no]
 
     def __iter__(self):
         """Iterate over all integers in the field"""
-        return BitfieldIterator(self)
+        cdef usize_t page_no
+        cdef IdsPage page
+        cdef usize_t next_item
 
-    def __richcmp__(Bitfield a,Bitfield b, operator):
-        cdef usize_t current
+        for page_no, page in self.pages.items():
+             for next_item in page:
+                 yield <object>next_item + (<object>page_no * <object>PAGE_FULL_COUNT)
+
+    def __richcmp__(SparseBitfield a,SparseBitfield b, operator):
+        cdef usize_t page_no
         if operator == 0:
             return (b != a) and (a.issubset(b))
         if operator == 1:
             return a.issubset(b)
         if operator == 2:
-            a._cleanup()
-            b._cleanup()
             if len(a.pages) != len(b.pages):
                 return False
-            for current in range(len(a.pages)):
-                if a.pages[current] != b.pages[current]:
+            for page_no in a.pages.keys():
+                if page_no not in b.pages:
+                    return False
+                if a.pages[page_no] != b.pages[page_no]:
                     return False
             return True
         if operator == 3:
@@ -537,124 +439,120 @@ cdef class Bitfield:
             return b.issubset(a)
         raise NotImplementedError()
 
-    def __or__(Bitfield x, Bitfield y):
+    def __or__(SparseBitfield x, SparseBitfield y):
         """Return a new object that is the union of two bitfields"""
-        cdef Bitfield new
+        cdef SparseBitfield new
         new = x.clone()
         new.update(y)
         return new
 
-    def __ior__(Bitfield x, Bitfield y):
+    def __ior__(SparseBitfield x, SparseBitfield y):
         return x.update(y)
 
-    def union(Bitfield self, Bitfield other):
+    def union(SparseBitfield self, SparseBitfield other):
         return self | other
 
-    def __add__(Bitfield x, usize_t y):
+    def __add__(SparseBitfield x, usize_t y):
         """Return a new field with the integer added"""
-        cdef Bitfield new
+        cdef SparseBitfield new
         new = x.clone()
         new.add(y)
         return new
 
-    def __iadd__(Bitfield x, usize_t y):
+    def __iadd__(SparseBitfield x, usize_t y):
         """Add a positive integer to the field"""
         x.add(y)
         return x
 
-    def __sub__(Bitfield x, Bitfield y):
-        cdef Bitfield new
+    def __sub__(SparseBitfield x, SparseBitfield y):
+        cdef SparseBitfield new
         new = x.clone()
         new.difference_update(y)
         return new
 
-    def __isub__(Bitfield x, Bitfield y):
+    def __isub__(SparseBitfield x, SparseBitfield y):
         return x.difference_update(y)
 
-    def __isub__(Bitfield x, Bitfield y):
-        return x.difference_update(y)
-
-    def __xor__(Bitfield self, Bitfield other):
+    def __xor__(SparseBitfield self, SparseBitfield other):
         return self.symmetric_difference(other)
 
-    def __ixor__(Bitfield self, Bitfield other):
+    def __ixor__(SparseBitfield self, SparseBitfield other):
         return self.symmetric_difference_update(other)
 
-    def __and__(Bitfield self, Bitfield other):
+    def __and__(SparseBitfield self, SparseBitfield other):
         return self.intersection(other)
 
-    def __iand__(Bitfield self, Bitfield other):
+    def __iand__(SparseBitfield self, SparseBitfield other):
         return self.intersection_update(other)
 
-    cpdef update(self, Bitfield other):
+    cpdef update(self, SparseBitfield other):
         """Add all integers in 'other' to this bitfield"""
-        cdef usize_t current_page
-        cdef IdsPage the_page
-        self._ensure_page_exists(len(other.pages))
-        for current_page in range(len(other.pages)):
-            the_page = self.pages[current_page]
-            the_page.update(other.pages[current_page])
+        cdef usize_t other_page_no
+        cdef IdsPage other_page, page
 
-    cpdef difference_update(self, Bitfield other):
+        for other_page_no, other_page in other.pages.items():
+            if other_page.page_state == PAGE_EMPTY:
+                continue
+            self._ensure_page_exists(other_page_no)
+            page = self.pages[other_page_no]
+            page.update(other_page)
+
+    cpdef difference_update(self, SparseBitfield other):
         """Remove all integers in 'other' from this bitfield"""
-        cdef usize_t current_page
-        cdef usize_t affected_pages = min(len(self.pages), len(other.pages))
-        cdef IdsPage the_page
-        for current_page in range(affected_pages):
-            the_page = self.pages[current_page]
-            the_page.difference_update(other.pages[current_page])        
+        cdef usize_t other_page_no
+        cdef IdsPage other_page, page
 
-    cpdef symmetric_difference_update(self, Bitfield other):
+        for other_page_no, other_page in other.pages.items():
+            if other_page.page_state == PAGE_EMPTY:
+                continue
+            self._ensure_page_exists(other_page_no)
+            page = self.pages[other_page_no]
+            page.difference_update(other_page)
+
+    cpdef symmetric_difference_update(self, SparseBitfield other):
         """Update this bitfield to only contain items present in self or other, but not both    """
-        cdef usize_t current_page
-        cdef usize_t other_pages = 0
-        cdef usize_t affected_pages = min(len(self.pages), len(other.pages))
-        cdef IdsPage the_page
+        cdef usize_t page_no
+        cdef IdsPage page
 
-        if affected_pages < len(other.pages):
-            other_pages = len(other.pages) - affected_pages
+        for page_no, page in self.pages.items():
+            if page_no in other.pages:
+                page.symmetric_difference_update(other.pages[page_no])
 
-        for current_page in range(affected_pages):
-            the_page = self.pages[current_page]
-            the_page.symmetric_difference_update(other.pages[current_page])
-        if affected_pages < len(other.pages):
-            for current_page in range(affected_pages, len(other.pages)):
-                the_page = other.pages[current_page]
-                self.pages.append(the_page.clone())
+        for page_no, page in other.pages.items():
+            if page_no not in self.pages:
+                self.pages[page_no] = page.clone()
 
-    cpdef symmetric_difference(self, Bitfield other):
-        cdef Bitfield new = self.clone()
+    cpdef symmetric_difference(self, SparseBitfield other):
+        cdef SparseBitfield new = self.clone()
         new.symmetric_difference_update(other)
         return new
 
-    cpdef intersection_update(self, Bitfield other):
+    cpdef intersection_update(self, SparseBitfield other):
         """Update the bitfield, keeping only integers found in it and 'other'."""
+        cdef usize_t page_no
         cdef IdsPage page
-        cdef usize_t current_page
-        cdef usize_t affected_pages = min(len(self.pages), len(other.pages))
-        for current_page in range(affected_pages):
-            page = self.pages[current_page]
-            page.intersection_update(other.pages[current_page])
-        if len(self.pages) > affected_pages:
-            for current_page in range(affected_pages, len(self.pages)):
-                page = self.pages[current_page]
+
+        for page_no, page in self.pages.items():
+            if page_no in other.pages:
+                page.intersection_update(other.pages[page_no])
+            else:
                 page.set_empty()
 
-    cpdef intersection(Bitfield self, Bitfield other):
+    cpdef intersection(SparseBitfield self, SparseBitfield other):
         """Return a new bitfield with integers common to both this field, and 'other'."""
-        cdef Bitfield new = self.clone()
+        cdef SparseBitfield new = self.clone()
         new.intersection_update(other)
         return new
 
-    cpdef isdisjoint(Bitfield self, Bitfield other):
+    cpdef isdisjoint(SparseBitfield self, SparseBitfield other):
         """Return True if the bitfield has no integers in common with other. 
-        Bitfields are disjoint if and only if their intersection is the empty set."""
+        SparseBitfields are disjoint if and only if their intersection is the empty set."""
         return len(self.intersection(other)) == 0
 
-    cpdef issubset(Bitfield self, Bitfield other):
+    cpdef issubset(SparseBitfield self, SparseBitfield other):
         return len(self - other) == 0
 
-    cpdef issuperset(Bitfield self, Bitfield other):
+    cpdef issuperset(SparseBitfield self, SparseBitfield other):
         return other.issubset(self)
 
     cpdef copy(self):
@@ -663,10 +561,15 @@ cdef class Bitfield:
 
     cpdef clone(self):
         """Create a copy of the bitfield"""
-        new = Bitfield()
+        new = SparseBitfield()
+        cdef usize_t page_no
         cdef IdsPage page
-        for page in self.pages:
-            new.pages.append(page.clone())
+
+        for page_no, page in self.pages.items():
+            if page.page_state == PAGE_EMPTY:
+                continue
+            new.pages[page_no] = page.clone()
+
         return new
 
     def __getbuffer__(self, Py_buffer *view, int flags):
@@ -674,25 +577,31 @@ cdef class Bitfield:
         cdef size_t partial_page_count = 0
         cdef size_t buffer_len
         cdef char * pointer
+        cdef usize_t page_no = 0
 
         if flags & pybuf.PyBUF_WRITABLE:
-            raise ValueError("bitfields do not provide writable buffers")
+            raise ValueError("sparsebitfields do not provide writable buffers")
 
         if flags & pybuf.PyBUF_FORMAT:
             view.format = "B"
         
         view.readonly = True
-        for page in self.pages:
+        for page in self.pages.values():
             if page.data:
                 partial_page_count += 1
         
-        buffer_len = len(self.pages) + (PAGE_BYTES * partial_page_count)
+        buffer_len = len(self.pages) + (PAGE_BYTES * partial_page_count) + \
+                        len(self.pages) * sizeof(page_no)
         view.len = buffer_len
         view.buf = malloc(buffer_len)
         view.itemsize = 1
         view.suboffsets = NULL
         pointer = <char *> view.buf
-        for page in self.pages:
+        for page_no, page in self.pages.items():
+            if page.page_state == PAGE_EMPTY:
+                continue
+            memcpy(<void *> pointer, <void *>&page_no, sizeof(page_no))
+            pointer += sizeof(page_no)
             pointer[0] = <unsigned char>page.page_state
             pointer += 1
             if page.data != NULL:
@@ -720,15 +629,15 @@ cdef class Bitfield:
 
     @classmethod
     def unpickle(cls, bytes data):
-        """Read a bitfield object from a string created by Bitfield.piclke"""
-        cdef Bitfield new = Bitfield()
+        """Read a bitfield object from a string created by SparseBitfield.piclke"""
+        cdef SparseBitfield new = SparseBitfield()
         new.load_from_bytes(data)
         return new
 
     def __reduce__(self):
-        return (unpickle_bitfield, (self.pickle(), ))
+        return (unpickle_sparsebitfield, (self.pickle(), ))
 
-    cdef load(Bitfield self, data):
+    cdef load(SparseBitfield self, data):
         if isinstance(data, bytes):
             return self.load_from_bytes(data)
         for item in data:
@@ -751,71 +660,88 @@ cdef class Bitfield:
         cdef IdsPage page
         cdef usize_t position = 0
         cdef char page_state
-        cdef char * write_position
+        cdef char *write_position
+        cdef usize_t page_no
         while position < length:
+            memcpy(<void *>&page_no, <void *>buf + position, sizeof(page_no))
+            position += sizeof(page_no)
             page_state = buf[position]
             position += 1
             page = IdsPage()
             if page_state == PAGE_FULL:
                 page.set_full()
-            elif page_state == PAGE_EMPTY:
-                pass
             elif page_state == PAGE_PARTIAL:
                 write_position = page.set_bits(buf + position, buf + position + PAGE_BYTES)
                 assert write_position == buf + (position + PAGE_BYTES)
                 position += PAGE_BYTES
             else:
                 raise ValueError("Could not unpickle data. Invalid page state: %s" % page_state)
-            self.pages.append(page)
+            self.pages[page_no] = page
 
-    cdef fill_range(self, usize_t low, usize_t high):
+    cdef fill_range(self, object low, object high):
         """Add all numbers in range(low, high) to the bitfield, optimising the case where large
         ranges are supplied"""
         cdef IdsPage page = None
-        cdef usize_t lower_page_boundary = (low // PAGE_FULL_COUNT)
-        cdef usize_t upper_page_boundary = high // PAGE_FULL_COUNT
-        cdef usize_t offset = lower_page_boundary * PAGE_FULL_COUNT
-        # start by allocating all the pages we need
-        assert high > 0
-        self.add(high - 1)
-        # Find if there are any whole pages that can be allocated in one go
-        if lower_page_boundary * PAGE_FULL_COUNT != low:
-            lower_page_boundary += 1
-        if upper_page_boundary < lower_page_boundary:
-            page = self.pages[upper_page_boundary]
-            for num in range(low - offset, high - offset):
+
+        assert low < high
+        # Adjust high so that it represents the last bit to set
+        high -= 1
+        cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
+        cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
+        cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
+        cdef usize_t upper_page_index = high % PAGE_FULL_COUNT
+        cdef usize_t num, page_no
+
+        # All bits are within one page
+        if lower_page_boundary == upper_page_boundary:
+            self._ensure_page_exists(lower_page_boundary)
+            page = self.pages[lower_page_boundary]
+            for num in range(lower_page_index, upper_page_index + 1):
                 page.add(num)
             return
-        for page_num in range(lower_page_boundary, upper_page_boundary):
-            page = self.pages[page_num]
-            page.set_full()
-        if lower_page_boundary > 0:
-            offset = (lower_page_boundary - 1) * PAGE_FULL_COUNT
-            page = self.pages[lower_page_boundary - 1]
-            for num in range(low - offset, (lower_page_boundary * PAGE_FULL_COUNT) - offset):
+
+        # Fill the lower partial page (if any)
+        if lower_page_index != 0:
+            self._ensure_page_exists(lower_page_boundary)
+            page = self.pages[lower_page_boundary]
+            for num in range(lower_page_index, PAGE_FULL_COUNT):
                 page.add(num)
-        for num in range(upper_page_boundary * PAGE_FULL_COUNT, high):
-            self.add(num)
+            lower_page_boundary += 1
+
+        # Fill the upper partial page (if any)
+        if upper_page_index != 0:           
+            self._ensure_page_exists(upper_page_boundary)
+            page = self.pages[upper_page_boundary]
+            for num in range(0, upper_page_index + 1):
+                page.add(num)
+            upper_page_boundary -= 1
+
+        # Fill whole pages inbetween (if any)
+        if lower_page_boundary <= upper_page_boundary:
+            for page_no in range(lower_page_boundary, upper_page_boundary + 1):
+                self._ensure_page_exists(page_no)
+                page = self.pages[page_no]
+                page.set_full()
 
     @classmethod
     def from_intervals(type cls, list):
         """Given a list of ranges in the form:  [[low1, high1], [low2, high2], ...]
         Construct a bitfield in which every integer in each range is present"""
-        cdef Bitfield new = Bitfield()
+        cdef SparseBitfield new = SparseBitfield()
         for (low, high) in list:
             new.fill_range(low, high)
         return new
 
     def __str__(self):
-        return "Bitfield(len=%i, range=0 > ~%i)" % (len(self), len(self.pages) * PAGE_FULL_COUNT)
+        return "SparseBitfield(len=%i)" % (len(self))
 
     def __repr__(self):
         cls = type(self)
         return "%s.%s(%r)" % (cls.__module__, cls.__name__, self.pickle())
 
     def clear(self):
-        self.pages = []
+        self.pages = SortedDict({})
 
 
-cpdef unpickle_bitfield(bytes data):
-    return Bitfield.unpickle(data)
+cpdef unpickle_sparsebitfield(bytes data):
+    return SparseBitfield.unpickle(data)
