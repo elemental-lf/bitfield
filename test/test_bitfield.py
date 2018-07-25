@@ -8,6 +8,7 @@ import pickle
 import random
 import unittest
 
+
 class BitfieldTest(unittest.TestCase):
 
     def test_repr_eval(self):
@@ -127,7 +128,10 @@ class BitfieldTest(unittest.TestCase):
         self.assertEqual(len(field1 | field2), size * 2)
 
     def test_init_with_small_ranges(self):
-        a = sparsebitfield.SparseBitfield(((0, 1), (3, 10),),)
+        a = sparsebitfield.SparseBitfield((
+            (0, 1),
+            (3, 10),
+        ),)
         self.assertSequenceEqual(list(a), [0, 3, 4, 5, 6, 7, 8, 9])
 
     def test_init_with_large_ranges(self):
@@ -152,6 +156,7 @@ class BitfieldTest(unittest.TestCase):
         for num in range(2**70, 2**70 + 3000000):
             self.assertIn(num, field1)
         self.assertEqual(len(field1), 3000000)
+
 
 class SetEqualityTest(unittest.TestCase):
 
@@ -203,8 +208,10 @@ class SetEqualityTest(unittest.TestCase):
         self._test_methods(sparsebitfield.SparseBitfield([1]), sparsebitfield.SparseBitfield([1, 3, 4, 5]))
 
     def test_multi_page(self):
+
         def nums(*numbers):
             return list([page_numbers[n] for n in numbers])
+
         page_max = sparsebitfield.get_all_sizes()["PAGE_MAX"]
         page_numbers = [5 + (page_max * i) for i in range(10)]
         a = sparsebitfield.SparseBitfield(nums(0, 2))

@@ -16,13 +16,10 @@ setup(
     name='sparsebitfield',
     version=VERSION,
     license='BSD',
-
     description='A Cython fast compressed number set',
     author='Steve Stagg, Lars Fenneberg',
     author_email='stestagg@gmail.com, lf@elemental.net',
-
     url='http://github.com/elemental-lf/sparsebitfield',
-
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -31,13 +28,11 @@ setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
     ],
-
     install_requires=[
         'sortedcontainers>=2.0.4',
-    ],        
-
-    extentions = [
-          Extension('sparsebitfield', ['cimpl/field.pyx'], depends=['cimpl/field.h', 'cimpl/field.c', 'popcount.h'])
+    ],
+    extentions=[
+        Extension('sparsebitfield', ['cimpl/field.pyx'], depends=['cimpl/field.h', 'cimpl/field.c', 'popcount.h'])
     ],
     cmdclass={'build_ext': build_ext},
 )
