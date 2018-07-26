@@ -19,7 +19,7 @@ extentions = [Extension('sparsebitfield', ['cimpl/field' + ext], depends=['cimpl
 
 if USE_CYTHON:
     from Cython.Build import cythonize
-    extentions = cythonize(extentions)
+    extentions = cythonize(extentions, language_level=3)
 
 setup(
     name='sparsebitfield',
