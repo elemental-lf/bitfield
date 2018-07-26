@@ -1,22 +1,31 @@
 #!/usr/bin/env python
-from distutils.core import setup
-from distutils.extension import Extension
+import sys
+
+version = '0.1.1'
+
 try:
-    from pip import main as pipmain
-except:
-    from pip._internal import main as pipmain
+    from setuptools import setup, Extension
+except ImportError:
+    from distutils.core import setup, Extentsion
 
-VERSION = '0.1.1'
+if '--use-cython' in sys.argv:
+    USE_CYTHON = True
+    sys.argv.remove('--use-cython')
+else:
+    USE_CYTHON = False
 
-pipmain(['install', 'Cython>=0.28.4'])
+ext = '.pyx' if USE_CYTHON else '.c'
+extentions = [Extension('sparsebitfield', ['cimpl/field' + ext], depends=['cimpl/field.h', 'cimpl/popcount.h'])]
 
-from Cython.Build import build_ext
+if USE_CYTHON:
+    from Cython.Build import cythonize
+    extentions = cythonize(extentions)
 
 setup(
     name='sparsebitfield',
-    version=VERSION,
+    version=version,
     license='BSD',
-    description='A Cython fast compressed number set',
+    description='A Cython fast number set based on bitfields',
     author='Steve Stagg, Lars Fenneberg',
     author_email='stestagg@gmail.com, lf@elemental.net',
     url='http://github.com/elemental-lf/sparsebitfield',
@@ -31,8 +40,5 @@ setup(
     install_requires=[
         'sortedcontainers>=2.0.4',
     ],
-    extentions=[
-        Extension('sparsebitfield', ['cimpl/field.pyx'], depends=['cimpl/field.h', 'cimpl/field.c', 'popcount.h'])
-    ],
-    cmdclass={'build_ext': build_ext},
+    ext_modules=extentions,
 )
