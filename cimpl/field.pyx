@@ -1,19 +1,14 @@
-# cython: profile=False
-# Imports and boilerplate
-import cython
 import zlib
-import sys
 from sortedcontainers import SortedDict
 
 cimport cpython.buffer as pybuf
-from cython cimport view
 
 ctypedef Py_ssize_t size_t
 
 cdef extern from "string.h":
-    void * memcpy(void*, void*, size_t)
+    void *memcpy(void*, void*, size_t)
 
-    
+
 IF UNAME_SYSNAME == "Windows":
     cdef extern from "popcount.h":
         int __builtin_popcountl(unsigned int)
@@ -156,7 +151,7 @@ cdef class IdsPage:
     def __contains__(self, usize_t number):
         cdef usize_t chunk_index = number >> CHUNK_SHIFT
         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
-        if (chunk_index >= PAGE_CHUNKS or chunk_index < 0):
+        if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
             raise AssertionError("Cannot test for %i in a page (overflow)" % number)
         if self.page_state == PAGE_FULL:
             return True
@@ -168,7 +163,7 @@ cdef class IdsPage:
         cdef usize_t chunk_index = number >> CHUNK_SHIFT
         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
 
-        if (chunk_index >= PAGE_CHUNKS or chunk_index < 0):
+        if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
             raise AssertionError("Cannot add %i to a page (overflow)" % number)
 
         if self.page_state == PAGE_FULL:
@@ -189,7 +184,7 @@ cdef class IdsPage:
         cdef usize_t chunk_index = number >> CHUNK_SHIFT
         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
 
-        if (chunk_index >= PAGE_CHUNKS or chunk_index < 0):
+        if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
             raise AssertionError("Cannot remove %i from a page (overflow)" % number)
 
         if self.page_state == PAGE_EMPTY:
@@ -255,15 +250,6 @@ cdef class IdsPage:
         for chunk_index in range(PAGE_CHUNKS):
             self.data[chunk_index] &= ~other.data[chunk_index]
         self.calc_length()
-
-    cdef inline const char* _state(self):
-        if self.page_state == PAGE_EMPTY:
-            return "EMPTY"
-        if self.page_state == PAGE_FULL:
-            return "FULL"
-        if self.page_state == PAGE_PARTIAL:
-            return "PARTIAL"
-        return "ERROR"
 
     cdef symmetric_difference_update(self, IdsPage other):
         cdef usize_t chunk_index
@@ -724,11 +710,11 @@ cdef class SparseBitfield:
                 page.set_full()
 
     @classmethod
-    def from_intervals(type cls, list):
+    def from_intervals(type cls, interval_list):
         """Given a list of ranges in the form:  [[low1, high1], [low2, high2], ...]
         Construct a bitfield in which every integer in each range is present"""
         cdef SparseBitfield new = SparseBitfield()
-        for (low, high) in list:
+        for (low, high) in interval_list:
             new.fill_range(low, high)
         return new
 
