@@ -27,7 +27,7 @@ END: Cython Metadata */
     #error Cython requires Python 2.6+ or Python 3.3+.
 #else
 #define CYTHON_ABI "0_28_4"
-#define CYTHON_FUTURE_DIVISION 0
+#define CYTHON_FUTURE_DIVISION 1
 #include <stddef.h>
 #ifndef offsetof
   #define offsetof(type, member) ( (size_t) & ((type*)0) -> member )
@@ -582,7 +582,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE_API__sparsebitfield
 /* Early includes */
 #include "string.h"
-#include "stdlib.h"
 #include "field.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -791,8 +790,8 @@ static const char *__pyx_f[] = {
   "stringsource",
 };
 
-/* "cimpl/field.pyx":6
- * cimport cpython.buffer as pybuf
+/* "cimpl/field.pyx":8
+ * from cpython.mem cimport PyMem_Malloc, PyMem_Free
  * 
  * ctypedef Py_ssize_t size_t             # <<<<<<<<<<<<<<
  * 
@@ -807,7 +806,7 @@ struct __pyx_obj_14sparsebitfield___pyx_scope_struct____iter__;
 struct __pyx_obj_14sparsebitfield___pyx_scope_struct_1___iter__;
 struct __pyx_opt_args_14sparsebitfield_7IdsPage__alloc;
 
-/* "cimpl/field.pyx":84
+/* "cimpl/field.pyx":81
  *         self._dealloc(PAGE_EMPTY)
  * 
  *     cdef void _alloc(self, int fill=0):             # <<<<<<<<<<<<<<
@@ -819,7 +818,7 @@ struct __pyx_opt_args_14sparsebitfield_7IdsPage__alloc {
   int fill;
 };
 
-/* "cimpl/field.pyx":60
+/* "cimpl/field.pyx":57
  * 
  * 
  * cdef class IdsPage:             # <<<<<<<<<<<<<<
@@ -835,7 +834,7 @@ struct __pyx_obj_14sparsebitfield_IdsPage {
 };
 
 
-/* "cimpl/field.pyx":326
+/* "cimpl/field.pyx":323
  * 
  * 
  * cdef class SparseBitfield:             # <<<<<<<<<<<<<<
@@ -849,7 +848,7 @@ struct __pyx_obj_14sparsebitfield_SparseBitfield {
 };
 
 
-/* "cimpl/field.pyx":103
+/* "cimpl/field.pyx":100
  *             self.data = NULL
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -868,7 +867,7 @@ struct __pyx_obj_14sparsebitfield___pyx_scope_struct____iter__ {
 };
 
 
-/* "cimpl/field.pyx":395
+/* "cimpl/field.pyx":392
  *         return page_index in self.pages[page_no]
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -882,16 +881,17 @@ struct __pyx_obj_14sparsebitfield___pyx_scope_struct_1___iter__ {
   usize_t __pyx_v_page_no;
   struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_self;
   PyObject *__pyx_t_0;
-  PyObject *__pyx_t_1;
+  Py_ssize_t __pyx_t_1;
   Py_ssize_t __pyx_t_2;
-  PyObject *(*__pyx_t_3)(PyObject *);
-  Py_ssize_t __pyx_t_4;
-  PyObject *(*__pyx_t_5)(PyObject *);
+  int __pyx_t_3;
+  PyObject *__pyx_t_4;
+  Py_ssize_t __pyx_t_5;
+  PyObject *(*__pyx_t_6)(PyObject *);
 };
 
 
 
-/* "cimpl/field.pyx":60
+/* "cimpl/field.pyx":57
  * 
  * 
  * cdef class IdsPage:             # <<<<<<<<<<<<<<
@@ -918,7 +918,7 @@ struct __pyx_vtabstruct_14sparsebitfield_IdsPage {
 static struct __pyx_vtabstruct_14sparsebitfield_IdsPage *__pyx_vtabptr_14sparsebitfield_IdsPage;
 
 
-/* "cimpl/field.pyx":326
+/* "cimpl/field.pyx":323
  * 
  * 
  * cdef class SparseBitfield:             # <<<<<<<<<<<<<<
@@ -1179,17 +1179,44 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
 /* ExtTypeTest.proto */
 static CYTHON_INLINE int __Pyx_TypeTest(PyObject *obj, PyTypeObject *type);
 
-/* RaiseTooManyValuesToUnpack.proto */
-static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
+/* IterFinish.proto */
+static CYTHON_INLINE int __Pyx_IterFinish(void);
+
+/* PyObjectCallMethod0.proto */
+static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name);
 
 /* RaiseNeedMoreValuesToUnpack.proto */
 static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index);
 
-/* IterFinish.proto */
-static CYTHON_INLINE int __Pyx_IterFinish(void);
+/* RaiseTooManyValuesToUnpack.proto */
+static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected);
 
 /* UnpackItemEndCheck.proto */
 static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected);
+
+/* RaiseNoneIterError.proto */
+static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void);
+
+/* UnpackTupleError.proto */
+static void __Pyx_UnpackTupleError(PyObject *, Py_ssize_t index);
+
+/* UnpackTuple2.proto */
+#define __Pyx_unpack_tuple2(tuple, value1, value2, is_tuple, has_known_size, decref_tuple)\
+    (likely(is_tuple || PyTuple_Check(tuple)) ?\
+        (likely(has_known_size || PyTuple_GET_SIZE(tuple) == 2) ?\
+            __Pyx_unpack_tuple2_exact(tuple, value1, value2, decref_tuple) :\
+            (__Pyx_UnpackTupleError(tuple, 2), -1)) :\
+        __Pyx_unpack_tuple2_generic(tuple, value1, value2, has_known_size, decref_tuple))
+static CYTHON_INLINE int __Pyx_unpack_tuple2_exact(
+    PyObject* tuple, PyObject** value1, PyObject** value2, int decref_tuple);
+static int __Pyx_unpack_tuple2_generic(
+    PyObject* tuple, PyObject** value1, PyObject** value2, int has_known_size, int decref_tuple);
+
+/* dict_iter.proto */
+static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* dict, int is_dict, PyObject* method_name,
+                                                   Py_ssize_t* p_orig_length, int* p_is_dict);
+static CYTHON_INLINE int __Pyx_dict_iter_next(PyObject* dict_or_iter, Py_ssize_t orig_length, Py_ssize_t* ppos,
+                                              PyObject** pkey, PyObject** pvalue, PyObject** pitem, int is_dict);
 
 /* IncludeStringH.proto */
 #include <string.h>
@@ -1204,6 +1231,14 @@ static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, long int
 #define __Pyx_PyInt_SubtractObjC(op1, op2, intval, inplace)\
     (inplace ? PyNumber_InPlaceSubtract(op1, op2) : PyNumber_Subtract(op1, op2))
 #endif
+
+/* PyObjectFormatAndDecref.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_FormatSimpleAndDecref(PyObject* s, PyObject* f);
+static CYTHON_INLINE PyObject* __Pyx_PyObject_FormatAndDecref(PyObject* s, PyObject* f);
+
+/* JoinPyUnicode.proto */
+static PyObject* __Pyx_PyUnicode_Join(PyObject* value_tuple, Py_ssize_t value_count, Py_ssize_t result_ulength,
+                                      Py_UCS4 max_char);
 
 /* PyObject_GenericGetAttrNoDict.proto */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
@@ -1438,6 +1473,8 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
 
 /* Module declarations from 'cpython.buffer' */
 
+/* Module declarations from 'cpython.mem' */
+
 /* Module declarations from 'sparsebitfield' */
 static PyTypeObject *__pyx_ptype_14sparsebitfield_IdsPage = 0;
 static PyTypeObject *__pyx_ptype_14sparsebitfield_SparseBitfield = 0;
@@ -1459,8 +1496,12 @@ static PyObject *__pyx_builtin_NotImplementedError;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_KeyError;
 static PyObject *__pyx_builtin_ValueError;
+static const char __pyx_k__7[] = ".";
+static const char __pyx_k__8[] = "(";
+static const char __pyx_k__9[] = ")";
 static const char __pyx_k_add[] = "add";
 static const char __pyx_k_bin[] = "bin";
+static const char __pyx_k_sys[] = "sys";
 static const char __pyx_k_args[] = "args";
 static const char __pyx_k_copy[] = "copy";
 static const char __pyx_k_data[] = "_data";
@@ -1476,7 +1517,6 @@ static const char __pyx_k_close[] = "close";
 static const char __pyx_k_count[] = "count";
 static const char __pyx_k_items[] = "items";
 static const char __pyx_k_range[] = "range";
-static const char __pyx_k_s_s_r[] = "%s.%s(%r)";
 static const char __pyx_k_slots[] = "__slots__";
 static const char __pyx_k_throw[] = "throw";
 static const char __pyx_k_import[] = "__import__";
@@ -1547,13 +1587,13 @@ static PyObject *__pyx_n_s_CHUNK_BYTES;
 static PyObject *__pyx_n_s_CHUNK_FULL_COUNT;
 static PyObject *__pyx_n_s_CHUNK_MASK;
 static PyObject *__pyx_n_s_CHUNK_SHIFT;
-static PyObject *__pyx_kp_s_Cannot_add_i_to_a_page_overflow;
-static PyObject *__pyx_kp_s_Cannot_remove_i_from_a_page_over;
-static PyObject *__pyx_kp_s_Cannot_test_for_i_in_a_page_over;
-static PyObject *__pyx_kp_s_Could_not_unpickle_data;
-static PyObject *__pyx_kp_s_Could_not_unpickle_data_Invalid;
+static PyObject *__pyx_kp_u_Cannot_add_i_to_a_page_overflow;
+static PyObject *__pyx_kp_u_Cannot_remove_i_from_a_page_over;
+static PyObject *__pyx_kp_u_Cannot_test_for_i_in_a_page_over;
+static PyObject *__pyx_kp_u_Could_not_unpickle_data;
+static PyObject *__pyx_kp_u_Could_not_unpickle_data_Invalid;
 static PyObject *__pyx_n_s_IdsPage___iter;
-static PyObject *__pyx_kp_s_Invalid_page_state;
+static PyObject *__pyx_kp_u_Invalid_page_state;
 static PyObject *__pyx_n_s_KeyError;
 static PyObject *__pyx_n_s_NotImplementedError;
 static PyObject *__pyx_n_s_PAGE_BYTES;
@@ -1562,9 +1602,12 @@ static PyObject *__pyx_n_s_PAGE_FULL_COUNT;
 static PyObject *__pyx_n_s_PAGE_MAX;
 static PyObject *__pyx_n_s_SortedDict;
 static PyObject *__pyx_n_s_SparseBitfield___iter;
-static PyObject *__pyx_kp_s_SparseBitfield_len_i;
+static PyObject *__pyx_kp_u_SparseBitfield_len_i;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_s_ValueError;
+static PyObject *__pyx_kp_u__7;
+static PyObject *__pyx_kp_u__8;
+static PyObject *__pyx_kp_u__9;
 static PyObject *__pyx_n_s_add;
 static PyObject *__pyx_n_s_args;
 static PyObject *__pyx_n_s_bin;
@@ -1603,16 +1646,16 @@ static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
 static PyObject *__pyx_n_s_remove;
-static PyObject *__pyx_kp_s_s_s_r;
 static PyObject *__pyx_n_s_send;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_s_slots;
 static PyObject *__pyx_n_s_sortedcontainers;
 static PyObject *__pyx_n_s_sparsebitfield;
-static PyObject *__pyx_kp_s_sparsebitfields_do_not_provide_w;
+static PyObject *__pyx_kp_u_sparsebitfields_do_not_provide_w;
 static PyObject *__pyx_n_s_symmetric_difference;
 static PyObject *__pyx_n_s_symmetric_difference_update;
+static PyObject *__pyx_n_s_sys;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_throw;
 static PyObject *__pyx_n_s_tobytes;
@@ -1687,10 +1730,10 @@ static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_tuple__6;
-static PyObject *__pyx_codeobj__7;
+static PyObject *__pyx_codeobj__10;
 /* Late includes */
 
-/* "cimpl/field.pyx":45
+/* "cimpl/field.pyx":42
  * 
  * 
  * def get_all_sizes():             # <<<<<<<<<<<<<<
@@ -1720,7 +1763,7 @@ static PyObject *__pyx_pf_14sparsebitfield_get_all_sizes(CYTHON_UNUSED PyObject 
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("get_all_sizes", 0);
 
-  /* "cimpl/field.pyx":46
+  /* "cimpl/field.pyx":43
  * 
  * def get_all_sizes():
  *     return dict(             # <<<<<<<<<<<<<<
@@ -1729,138 +1772,138 @@ static PyObject *__pyx_pf_14sparsebitfield_get_all_sizes(CYTHON_UNUSED PyObject 
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "cimpl/field.pyx":47
+  /* "cimpl/field.pyx":44
  * def get_all_sizes():
  *     return dict(
  *         CHUNK_BYTES=CHUNK_BYTES,             # <<<<<<<<<<<<<<
  *         CHUNK_SHIFT=CHUNK_SHIFT,
  *         CHUNK_MASK=bin(CHUNK_MASK),
  */
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(CHUNK_BYTES); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(CHUNK_BYTES); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_BYTES, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_BYTES, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":48
+  /* "cimpl/field.pyx":45
  *     return dict(
  *         CHUNK_BYTES=CHUNK_BYTES,
  *         CHUNK_SHIFT=CHUNK_SHIFT,             # <<<<<<<<<<<<<<
  *         CHUNK_MASK=bin(CHUNK_MASK),
  *         CHUNK_FULL_COUNT=CHUNK_FULL_COUNT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(CHUNK_SHIFT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(CHUNK_SHIFT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_SHIFT, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_SHIFT, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":49
+  /* "cimpl/field.pyx":46
  *         CHUNK_BYTES=CHUNK_BYTES,
  *         CHUNK_SHIFT=CHUNK_SHIFT,
  *         CHUNK_MASK=bin(CHUNK_MASK),             # <<<<<<<<<<<<<<
  *         CHUNK_FULL_COUNT=CHUNK_FULL_COUNT,
  *         CHUNK_BITS=bin(CHUNK_BITS),
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(CHUNK_MASK); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(CHUNK_MASK); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_bin, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_bin, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_MASK, __pyx_t_3) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_MASK, __pyx_t_3) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "cimpl/field.pyx":50
+  /* "cimpl/field.pyx":47
  *         CHUNK_SHIFT=CHUNK_SHIFT,
  *         CHUNK_MASK=bin(CHUNK_MASK),
  *         CHUNK_FULL_COUNT=CHUNK_FULL_COUNT,             # <<<<<<<<<<<<<<
  *         CHUNK_BITS=bin(CHUNK_BITS),
  *         BITFIELD_MAX=USIZE_MAX,
  */
-  __pyx_t_3 = __Pyx_PyInt_From_usize_t(CHUNK_FULL_COUNT); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_usize_t(CHUNK_FULL_COUNT); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_FULL_COUNT, __pyx_t_3) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_FULL_COUNT, __pyx_t_3) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "cimpl/field.pyx":51
+  /* "cimpl/field.pyx":48
  *         CHUNK_MASK=bin(CHUNK_MASK),
  *         CHUNK_FULL_COUNT=CHUNK_FULL_COUNT,
  *         CHUNK_BITS=bin(CHUNK_BITS),             # <<<<<<<<<<<<<<
  *         BITFIELD_MAX=USIZE_MAX,
  *         PAGE_CHUNKS=PAGE_CHUNKS,
  */
-  __pyx_t_3 = __Pyx_PyInt_From_usize_t(CHUNK_BITS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_usize_t(CHUNK_BITS); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_bin, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_bin, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_BITS, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_CHUNK_BITS, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":52
+  /* "cimpl/field.pyx":49
  *         CHUNK_FULL_COUNT=CHUNK_FULL_COUNT,
  *         CHUNK_BITS=bin(CHUNK_BITS),
  *         BITFIELD_MAX=USIZE_MAX,             # <<<<<<<<<<<<<<
  *         PAGE_CHUNKS=PAGE_CHUNKS,
  *         PAGE_FULL_COUNT=PAGE_FULL_COUNT,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(USIZE_MAX); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(USIZE_MAX); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_BITFIELD_MAX, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_BITFIELD_MAX, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":53
+  /* "cimpl/field.pyx":50
  *         CHUNK_BITS=bin(CHUNK_BITS),
  *         BITFIELD_MAX=USIZE_MAX,
  *         PAGE_CHUNKS=PAGE_CHUNKS,             # <<<<<<<<<<<<<<
  *         PAGE_FULL_COUNT=PAGE_FULL_COUNT,
  *         PAGE_BYTES=PAGE_BYTES,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_CHUNKS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_CHUNKS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_CHUNKS, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_CHUNKS, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":54
+  /* "cimpl/field.pyx":51
  *         BITFIELD_MAX=USIZE_MAX,
  *         PAGE_CHUNKS=PAGE_CHUNKS,
  *         PAGE_FULL_COUNT=PAGE_FULL_COUNT,             # <<<<<<<<<<<<<<
  *         PAGE_BYTES=PAGE_BYTES,
  *         PAGE_MAX=PAGE_FULL_COUNT
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_FULL_COUNT, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_FULL_COUNT, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":55
+  /* "cimpl/field.pyx":52
  *         PAGE_CHUNKS=PAGE_CHUNKS,
  *         PAGE_FULL_COUNT=PAGE_FULL_COUNT,
  *         PAGE_BYTES=PAGE_BYTES,             # <<<<<<<<<<<<<<
  *         PAGE_MAX=PAGE_FULL_COUNT
  *     )
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_BYTES); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_BYTES); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_BYTES, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_BYTES, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":56
+  /* "cimpl/field.pyx":53
  *         PAGE_FULL_COUNT=PAGE_FULL_COUNT,
  *         PAGE_BYTES=PAGE_BYTES,
  *         PAGE_MAX=PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *     )
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_MAX, __pyx_t_2) < 0) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_PAGE_MAX, __pyx_t_2) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":45
+  /* "cimpl/field.pyx":42
  * 
  * 
  * def get_all_sizes():             # <<<<<<<<<<<<<<
@@ -1881,7 +1924,7 @@ static PyObject *__pyx_pf_14sparsebitfield_get_all_sizes(CYTHON_UNUSED PyObject 
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":65
+/* "cimpl/field.pyx":62
  *     cdef CHUNK* data
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1910,7 +1953,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage___cinit__(struct __pyx_obj_14spars
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cimpl/field.pyx":66
+  /* "cimpl/field.pyx":63
  * 
  *     def __cinit__(self):
  *         self.page_state = PAGE_EMPTY             # <<<<<<<<<<<<<<
@@ -1919,7 +1962,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage___cinit__(struct __pyx_obj_14spars
  */
   __pyx_v_self->page_state = 3;
 
-  /* "cimpl/field.pyx":67
+  /* "cimpl/field.pyx":64
  *     def __cinit__(self):
  *         self.page_state = PAGE_EMPTY
  *         self._count = 0             # <<<<<<<<<<<<<<
@@ -1928,7 +1971,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage___cinit__(struct __pyx_obj_14spars
  */
   __pyx_v_self->_count = 0;
 
-  /* "cimpl/field.pyx":68
+  /* "cimpl/field.pyx":65
  *         self.page_state = PAGE_EMPTY
  *         self._count = 0
  *         self.data = NULL             # <<<<<<<<<<<<<<
@@ -1937,7 +1980,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage___cinit__(struct __pyx_obj_14spars
  */
   __pyx_v_self->data = NULL;
 
-  /* "cimpl/field.pyx":65
+  /* "cimpl/field.pyx":62
  *     cdef CHUNK* data
  * 
  *     def __cinit__(self):             # <<<<<<<<<<<<<<
@@ -1951,7 +1994,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage___cinit__(struct __pyx_obj_14spars
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":70
+/* "cimpl/field.pyx":67
  *         self.data = NULL
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1974,7 +2017,7 @@ static void __pyx_pf_14sparsebitfield_7IdsPage_2__dealloc__(struct __pyx_obj_14s
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "cimpl/field.pyx":71
+  /* "cimpl/field.pyx":68
  * 
  *     def __dealloc__(self):
  *         self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -1983,7 +2026,7 @@ static void __pyx_pf_14sparsebitfield_7IdsPage_2__dealloc__(struct __pyx_obj_14s
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-  /* "cimpl/field.pyx":70
+  /* "cimpl/field.pyx":67
  *         self.data = NULL
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1995,7 +2038,7 @@ static void __pyx_pf_14sparsebitfield_7IdsPage_2__dealloc__(struct __pyx_obj_14s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":73
+/* "cimpl/field.pyx":70
  *         self._dealloc(PAGE_EMPTY)
  * 
  *     cdef void _fill(self, CHUNK value):             # <<<<<<<<<<<<<<
@@ -2011,7 +2054,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__fill(struct __pyx_obj_14sparsebit
   usize_t __pyx_t_3;
   __Pyx_RefNannySetupContext("_fill", 0);
 
-  /* "cimpl/field.pyx":75
+  /* "cimpl/field.pyx":72
  *     cdef void _fill(self, CHUNK value):
  *         cdef usize_t current
  *         for current in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -2023,7 +2066,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__fill(struct __pyx_obj_14sparsebit
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_current = __pyx_t_3;
 
-    /* "cimpl/field.pyx":76
+    /* "cimpl/field.pyx":73
  *         cdef usize_t current
  *         for current in range(PAGE_CHUNKS):
  *             self.data[current] = value             # <<<<<<<<<<<<<<
@@ -2033,7 +2076,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__fill(struct __pyx_obj_14sparsebit
     (__pyx_v_self->data[__pyx_v_current]) = __pyx_v_value;
   }
 
-  /* "cimpl/field.pyx":73
+  /* "cimpl/field.pyx":70
  *         self._dealloc(PAGE_EMPTY)
  * 
  *     cdef void _fill(self, CHUNK value):             # <<<<<<<<<<<<<<
@@ -2045,7 +2088,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__fill(struct __pyx_obj_14sparsebit
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":78
+/* "cimpl/field.pyx":75
  *             self.data[current] = value
  * 
  *     cdef void set_full(self):             # <<<<<<<<<<<<<<
@@ -2057,7 +2100,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_full(struct __pyx_obj_14sparse
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("set_full", 0);
 
-  /* "cimpl/field.pyx":79
+  /* "cimpl/field.pyx":76
  * 
  *     cdef void set_full(self):
  *         self._dealloc(PAGE_FULL)             # <<<<<<<<<<<<<<
@@ -2066,7 +2109,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_full(struct __pyx_obj_14sparse
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 2);
 
-  /* "cimpl/field.pyx":78
+  /* "cimpl/field.pyx":75
  *             self.data[current] = value
  * 
  *     cdef void set_full(self):             # <<<<<<<<<<<<<<
@@ -2078,7 +2121,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_full(struct __pyx_obj_14sparse
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":81
+/* "cimpl/field.pyx":78
  *         self._dealloc(PAGE_FULL)
  * 
  *     cdef void set_empty(self):             # <<<<<<<<<<<<<<
@@ -2090,7 +2133,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_empty(struct __pyx_obj_14spars
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("set_empty", 0);
 
-  /* "cimpl/field.pyx":82
+  /* "cimpl/field.pyx":79
  * 
  *     cdef void set_empty(self):
  *         self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -2099,7 +2142,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_empty(struct __pyx_obj_14spars
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-  /* "cimpl/field.pyx":81
+  /* "cimpl/field.pyx":78
  *         self._dealloc(PAGE_FULL)
  * 
  *     cdef void set_empty(self):             # <<<<<<<<<<<<<<
@@ -2111,7 +2154,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_empty(struct __pyx_obj_14spars
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":84
+/* "cimpl/field.pyx":81
  *         self._dealloc(PAGE_EMPTY)
  * 
  *     cdef void _alloc(self, int fill=0):             # <<<<<<<<<<<<<<
@@ -2130,43 +2173,43 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
     }
   }
 
-  /* "cimpl/field.pyx":85
+  /* "cimpl/field.pyx":82
  * 
  *     cdef void _alloc(self, int fill=0):
  *         assert(self.data == NULL)             # <<<<<<<<<<<<<<
  *         self.page_state = PAGE_PARTIAL
- *         self.data = <CHUNK *>malloc(sizeof(CHUNK) * PAGE_CHUNKS)
+ *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!((__pyx_v_self->data == NULL) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 85, __pyx_L1_error)
+      __PYX_ERR(0, 82, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "cimpl/field.pyx":86
+  /* "cimpl/field.pyx":83
  *     cdef void _alloc(self, int fill=0):
  *         assert(self.data == NULL)
  *         self.page_state = PAGE_PARTIAL             # <<<<<<<<<<<<<<
- *         self.data = <CHUNK *>malloc(sizeof(CHUNK) * PAGE_CHUNKS)
+ *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
  *         if fill:
  */
   __pyx_v_self->page_state = 1;
 
-  /* "cimpl/field.pyx":87
+  /* "cimpl/field.pyx":84
  *         assert(self.data == NULL)
  *         self.page_state = PAGE_PARTIAL
- *         self.data = <CHUNK *>malloc(sizeof(CHUNK) * PAGE_CHUNKS)             # <<<<<<<<<<<<<<
+ *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)             # <<<<<<<<<<<<<<
  *         if fill:
  *             self._count = PAGE_FULL_COUNT
  */
-  __pyx_v_self->data = ((CHUNK *)malloc(((sizeof(CHUNK)) * PAGE_CHUNKS)));
+  __pyx_v_self->data = ((CHUNK *)PyMem_Malloc(((sizeof(CHUNK)) * PAGE_CHUNKS)));
 
-  /* "cimpl/field.pyx":88
+  /* "cimpl/field.pyx":85
  *         self.page_state = PAGE_PARTIAL
- *         self.data = <CHUNK *>malloc(sizeof(CHUNK) * PAGE_CHUNKS)
+ *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
  *         if fill:             # <<<<<<<<<<<<<<
  *             self._count = PAGE_FULL_COUNT
  *             self._fill(CHUNK_BITS)
@@ -2174,8 +2217,8 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
   __pyx_t_1 = (__pyx_v_fill != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":89
- *         self.data = <CHUNK *>malloc(sizeof(CHUNK) * PAGE_CHUNKS)
+    /* "cimpl/field.pyx":86
+ *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
  *         if fill:
  *             self._count = PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *             self._fill(CHUNK_BITS)
@@ -2183,7 +2226,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
  */
     __pyx_v_self->_count = PAGE_FULL_COUNT;
 
-    /* "cimpl/field.pyx":90
+    /* "cimpl/field.pyx":87
  *         if fill:
  *             self._count = PAGE_FULL_COUNT
  *             self._fill(CHUNK_BITS)             # <<<<<<<<<<<<<<
@@ -2192,9 +2235,9 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_fill(__pyx_v_self, CHUNK_BITS);
 
-    /* "cimpl/field.pyx":88
+    /* "cimpl/field.pyx":85
  *         self.page_state = PAGE_PARTIAL
- *         self.data = <CHUNK *>malloc(sizeof(CHUNK) * PAGE_CHUNKS)
+ *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
  *         if fill:             # <<<<<<<<<<<<<<
  *             self._count = PAGE_FULL_COUNT
  *             self._fill(CHUNK_BITS)
@@ -2202,7 +2245,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
     goto __pyx_L3;
   }
 
-  /* "cimpl/field.pyx":92
+  /* "cimpl/field.pyx":89
  *             self._fill(CHUNK_BITS)
  *         else:
  *             self._count = 0             # <<<<<<<<<<<<<<
@@ -2212,7 +2255,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
   /*else*/ {
     __pyx_v_self->_count = 0;
 
-    /* "cimpl/field.pyx":93
+    /* "cimpl/field.pyx":90
  *         else:
  *             self._count = 0
  *             self._fill(0)             # <<<<<<<<<<<<<<
@@ -2223,7 +2266,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
   }
   __pyx_L3:;
 
-  /* "cimpl/field.pyx":84
+  /* "cimpl/field.pyx":81
  *         self._dealloc(PAGE_EMPTY)
  * 
  *     cdef void _alloc(self, int fill=0):             # <<<<<<<<<<<<<<
@@ -2239,7 +2282,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":95
+/* "cimpl/field.pyx":92
  *             self._fill(0)
  * 
  *     cdef void _dealloc(self, int new_state):             # <<<<<<<<<<<<<<
@@ -2253,7 +2296,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__dealloc(struct __pyx_obj_14sparse
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("_dealloc", 0);
 
-  /* "cimpl/field.pyx":96
+  /* "cimpl/field.pyx":93
  * 
  *     cdef void _dealloc(self, int new_state):
  *         assert new_state != PAGE_PARTIAL             # <<<<<<<<<<<<<<
@@ -2264,12 +2307,12 @@ static void __pyx_f_14sparsebitfield_7IdsPage__dealloc(struct __pyx_obj_14sparse
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!((__pyx_v_new_state != 1) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 96, __pyx_L1_error)
+      __PYX_ERR(0, 93, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "cimpl/field.pyx":97
+  /* "cimpl/field.pyx":94
  *     cdef void _dealloc(self, int new_state):
  *         assert new_state != PAGE_PARTIAL
  *         self.page_state = new_state             # <<<<<<<<<<<<<<
@@ -2278,12 +2321,12 @@ static void __pyx_f_14sparsebitfield_7IdsPage__dealloc(struct __pyx_obj_14sparse
  */
   __pyx_v_self->page_state = __pyx_v_new_state;
 
-  /* "cimpl/field.pyx":98
+  /* "cimpl/field.pyx":95
  *         assert new_state != PAGE_PARTIAL
  *         self.page_state = new_state
  *         self._count = 0 if new_state == PAGE_EMPTY else PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         if self.data != NULL:
- *             free(self.data)
+ *             PyMem_Free(self.data)
  */
   if (((__pyx_v_new_state == 3) != 0)) {
     __pyx_t_1 = 0;
@@ -2292,44 +2335,44 @@ static void __pyx_f_14sparsebitfield_7IdsPage__dealloc(struct __pyx_obj_14sparse
   }
   __pyx_v_self->_count = __pyx_t_1;
 
-  /* "cimpl/field.pyx":99
+  /* "cimpl/field.pyx":96
  *         self.page_state = new_state
  *         self._count = 0 if new_state == PAGE_EMPTY else PAGE_FULL_COUNT
  *         if self.data != NULL:             # <<<<<<<<<<<<<<
- *             free(self.data)
+ *             PyMem_Free(self.data)
  *             self.data = NULL
  */
   __pyx_t_2 = ((__pyx_v_self->data != NULL) != 0);
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":100
+    /* "cimpl/field.pyx":97
  *         self._count = 0 if new_state == PAGE_EMPTY else PAGE_FULL_COUNT
  *         if self.data != NULL:
- *             free(self.data)             # <<<<<<<<<<<<<<
+ *             PyMem_Free(self.data)             # <<<<<<<<<<<<<<
  *             self.data = NULL
  * 
  */
-    free(__pyx_v_self->data);
+    PyMem_Free(__pyx_v_self->data);
 
-    /* "cimpl/field.pyx":101
+    /* "cimpl/field.pyx":98
  *         if self.data != NULL:
- *             free(self.data)
+ *             PyMem_Free(self.data)
  *             self.data = NULL             # <<<<<<<<<<<<<<
  * 
  *     def __iter__(self):
  */
     __pyx_v_self->data = NULL;
 
-    /* "cimpl/field.pyx":99
+    /* "cimpl/field.pyx":96
  *         self.page_state = new_state
  *         self._count = 0 if new_state == PAGE_EMPTY else PAGE_FULL_COUNT
  *         if self.data != NULL:             # <<<<<<<<<<<<<<
- *             free(self.data)
+ *             PyMem_Free(self.data)
  *             self.data = NULL
  */
   }
 
-  /* "cimpl/field.pyx":95
+  /* "cimpl/field.pyx":92
  *             self._fill(0)
  * 
  *     cdef void _dealloc(self, int new_state):             # <<<<<<<<<<<<<<
@@ -2346,7 +2389,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__dealloc(struct __pyx_obj_14sparse
 }
 static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "cimpl/field.pyx":103
+/* "cimpl/field.pyx":100
  *             self.data = NULL
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -2376,7 +2419,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_4__iter__(struct __pyx_obj_1
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_14sparsebitfield___pyx_scope_struct____iter__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 103, __pyx_L1_error)
+    __PYX_ERR(0, 100, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -2384,7 +2427,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_4__iter__(struct __pyx_obj_1
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_14sparsebitfield_7IdsPage_6generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iter, __pyx_n_s_IdsPage___iter, __pyx_n_s_sparsebitfield); if (unlikely(!gen)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_14sparsebitfield_7IdsPage_6generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iter, __pyx_n_s_IdsPage___iter, __pyx_n_s_sparsebitfield); if (unlikely(!gen)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -2421,9 +2464,9 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 100, __pyx_L1_error)
 
-  /* "cimpl/field.pyx":104
+  /* "cimpl/field.pyx":101
  * 
  *     def __iter__(self):
  *         cdef usize_t chunk = 0             # <<<<<<<<<<<<<<
@@ -2432,7 +2475,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
   __pyx_cur_scope->__pyx_v_chunk = 0;
 
-  /* "cimpl/field.pyx":105
+  /* "cimpl/field.pyx":102
  *     def __iter__(self):
  *         cdef usize_t chunk = 0
  *         cdef usize_t bit_index = 0             # <<<<<<<<<<<<<<
@@ -2441,7 +2484,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
   __pyx_cur_scope->__pyx_v_bit_index = 0;
 
-  /* "cimpl/field.pyx":106
+  /* "cimpl/field.pyx":103
  *         cdef usize_t chunk = 0
  *         cdef usize_t bit_index = 0
  *         cdef usize_t number = 0             # <<<<<<<<<<<<<<
@@ -2450,7 +2493,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
   __pyx_cur_scope->__pyx_v_number = 0;
 
-  /* "cimpl/field.pyx":108
+  /* "cimpl/field.pyx":105
  *         cdef usize_t number = 0
  * 
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -2460,7 +2503,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
   switch (__pyx_cur_scope->__pyx_v_self->page_state) {
     case 3:
 
-    /* "cimpl/field.pyx":109
+    /* "cimpl/field.pyx":106
  * 
  *         if self.page_state == PAGE_EMPTY:
  *             return             # <<<<<<<<<<<<<<
@@ -2471,7 +2514,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
     __pyx_r = NULL;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":108
+    /* "cimpl/field.pyx":105
  *         cdef usize_t number = 0
  * 
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -2480,7 +2523,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
     break;
 
-    /* "cimpl/field.pyx":110
+    /* "cimpl/field.pyx":107
  *         if self.page_state == PAGE_EMPTY:
  *             return
  *         elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -2489,7 +2532,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
     case 2:
 
-    /* "cimpl/field.pyx":111
+    /* "cimpl/field.pyx":108
  *             return
  *         elif self.page_state == PAGE_FULL:
  *             for number in range(0, PAGE_FULL_COUNT):             # <<<<<<<<<<<<<<
@@ -2501,14 +2544,14 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
     for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
       __pyx_cur_scope->__pyx_v_number = __pyx_t_3;
 
-      /* "cimpl/field.pyx":112
+      /* "cimpl/field.pyx":109
  *         elif self.page_state == PAGE_FULL:
  *             for number in range(0, PAGE_FULL_COUNT):
  *                 yield number             # <<<<<<<<<<<<<<
  *         else:
  *             while chunk < PAGE_CHUNKS:
  */
-      __pyx_t_4 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_number); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_number); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_r = __pyx_t_4;
       __pyx_t_4 = 0;
@@ -2525,10 +2568,10 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
       __pyx_t_1 = __pyx_cur_scope->__pyx_t_0;
       __pyx_t_2 = __pyx_cur_scope->__pyx_t_1;
       __pyx_t_3 = __pyx_cur_scope->__pyx_t_2;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 112, __pyx_L1_error)
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 109, __pyx_L1_error)
     }
 
-    /* "cimpl/field.pyx":110
+    /* "cimpl/field.pyx":107
  *         if self.page_state == PAGE_EMPTY:
  *             return
  *         elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -2538,7 +2581,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
     break;
     default:
 
-    /* "cimpl/field.pyx":114
+    /* "cimpl/field.pyx":111
  *                 yield number
  *         else:
  *             while chunk < PAGE_CHUNKS:             # <<<<<<<<<<<<<<
@@ -2549,7 +2592,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
       __pyx_t_5 = ((__pyx_cur_scope->__pyx_v_chunk < PAGE_CHUNKS) != 0);
       if (!__pyx_t_5) break;
 
-      /* "cimpl/field.pyx":116
+      /* "cimpl/field.pyx":113
  *             while chunk < PAGE_CHUNKS:
  *                 # If the page is changing under our feet
  *                 if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -2559,7 +2602,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
       __pyx_t_5 = ((__pyx_cur_scope->__pyx_v_self->page_state == 3) != 0);
       if (__pyx_t_5) {
 
-        /* "cimpl/field.pyx":117
+        /* "cimpl/field.pyx":114
  *                 # If the page is changing under our feet
  *                 if self.page_state == PAGE_EMPTY:
  *                     return             # <<<<<<<<<<<<<<
@@ -2570,7 +2613,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
         __pyx_r = NULL;
         goto __pyx_L0;
 
-        /* "cimpl/field.pyx":116
+        /* "cimpl/field.pyx":113
  *             while chunk < PAGE_CHUNKS:
  *                 # If the page is changing under our feet
  *                 if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -2579,7 +2622,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
       }
 
-      /* "cimpl/field.pyx":118
+      /* "cimpl/field.pyx":115
  *                 if self.page_state == PAGE_EMPTY:
  *                     return
  *                 elif (self.data[chunk] & ((<usize_t>1) << bit_index)) != 0:             # <<<<<<<<<<<<<<
@@ -2589,14 +2632,14 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
       __pyx_t_5 = ((((__pyx_cur_scope->__pyx_v_self->data[__pyx_cur_scope->__pyx_v_chunk]) & (((usize_t)1) << __pyx_cur_scope->__pyx_v_bit_index)) != 0) != 0);
       if (__pyx_t_5) {
 
-        /* "cimpl/field.pyx":119
+        /* "cimpl/field.pyx":116
  *                     return
  *                 elif (self.data[chunk] & ((<usize_t>1) << bit_index)) != 0:
  *                     yield number             # <<<<<<<<<<<<<<
  * 
  *                 number += 1
  */
-        __pyx_t_4 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_number); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_number); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __pyx_r = __pyx_t_4;
         __pyx_t_4 = 0;
@@ -2607,9 +2650,9 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
         __pyx_generator->resume_label = 2;
         return __pyx_r;
         __pyx_L10_resume_from_yield:;
-        if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 119, __pyx_L1_error)
+        if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 116, __pyx_L1_error)
 
-        /* "cimpl/field.pyx":118
+        /* "cimpl/field.pyx":115
  *                 if self.page_state == PAGE_EMPTY:
  *                     return
  *                 elif (self.data[chunk] & ((<usize_t>1) << bit_index)) != 0:             # <<<<<<<<<<<<<<
@@ -2618,7 +2661,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
       }
 
-      /* "cimpl/field.pyx":121
+      /* "cimpl/field.pyx":118
  *                     yield number
  * 
  *                 number += 1             # <<<<<<<<<<<<<<
@@ -2627,7 +2670,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
       __pyx_cur_scope->__pyx_v_number = (__pyx_cur_scope->__pyx_v_number + 1);
 
-      /* "cimpl/field.pyx":122
+      /* "cimpl/field.pyx":119
  * 
  *                 number += 1
  *                 bit_index += 1             # <<<<<<<<<<<<<<
@@ -2636,7 +2679,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
       __pyx_cur_scope->__pyx_v_bit_index = (__pyx_cur_scope->__pyx_v_bit_index + 1);
 
-      /* "cimpl/field.pyx":123
+      /* "cimpl/field.pyx":120
  *                 number += 1
  *                 bit_index += 1
  *                 if bit_index >= CHUNK_FULL_COUNT:             # <<<<<<<<<<<<<<
@@ -2646,7 +2689,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
       __pyx_t_5 = ((__pyx_cur_scope->__pyx_v_bit_index >= CHUNK_FULL_COUNT) != 0);
       if (__pyx_t_5) {
 
-        /* "cimpl/field.pyx":124
+        /* "cimpl/field.pyx":121
  *                 bit_index += 1
  *                 if bit_index >= CHUNK_FULL_COUNT:
  *                     bit_index = 0             # <<<<<<<<<<<<<<
@@ -2655,7 +2698,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
         __pyx_cur_scope->__pyx_v_bit_index = 0;
 
-        /* "cimpl/field.pyx":125
+        /* "cimpl/field.pyx":122
  *                 if bit_index >= CHUNK_FULL_COUNT:
  *                     bit_index = 0
  *                     chunk += 1             # <<<<<<<<<<<<<<
@@ -2664,7 +2707,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
         __pyx_cur_scope->__pyx_v_chunk = (__pyx_cur_scope->__pyx_v_chunk + 1);
 
-        /* "cimpl/field.pyx":127
+        /* "cimpl/field.pyx":124
  *                     chunk += 1
  *                     # Skip empty chunks
  *                     while chunk < PAGE_CHUNKS and self.data[chunk] == 0:             # <<<<<<<<<<<<<<
@@ -2683,7 +2726,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
           __pyx_L14_bool_binop_done:;
           if (!__pyx_t_5) break;
 
-          /* "cimpl/field.pyx":128
+          /* "cimpl/field.pyx":125
  *                     # Skip empty chunks
  *                     while chunk < PAGE_CHUNKS and self.data[chunk] == 0:
  *                         chunk += 1             # <<<<<<<<<<<<<<
@@ -2692,7 +2735,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
  */
           __pyx_cur_scope->__pyx_v_chunk = (__pyx_cur_scope->__pyx_v_chunk + 1);
 
-          /* "cimpl/field.pyx":129
+          /* "cimpl/field.pyx":126
  *                     while chunk < PAGE_CHUNKS and self.data[chunk] == 0:
  *                         chunk += 1
  *                         number += CHUNK_FULL_COUNT             # <<<<<<<<<<<<<<
@@ -2702,7 +2745,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
           __pyx_cur_scope->__pyx_v_number = (__pyx_cur_scope->__pyx_v_number + CHUNK_FULL_COUNT);
         }
 
-        /* "cimpl/field.pyx":123
+        /* "cimpl/field.pyx":120
  *                 number += 1
  *                 bit_index += 1
  *                 if bit_index >= CHUNK_FULL_COUNT:             # <<<<<<<<<<<<<<
@@ -2715,7 +2758,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
   }
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "cimpl/field.pyx":103
+  /* "cimpl/field.pyx":100
  *             self.data = NULL
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -2738,7 +2781,7 @@ static PyObject *__pyx_gb_14sparsebitfield_7IdsPage_6generator(__pyx_CoroutineOb
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":131
+/* "cimpl/field.pyx":128
  *                         number += CHUNK_FULL_COUNT
  * 
  *     cdef void calc_length(self):             # <<<<<<<<<<<<<<
@@ -2756,7 +2799,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
   usize_t __pyx_t_4;
   __Pyx_RefNannySetupContext("calc_length", 0);
 
-  /* "cimpl/field.pyx":134
+  /* "cimpl/field.pyx":131
  *         cdef CHUNK *chunk
  *         cdef usize_t chunk_index
  *         cdef usize_t bits = 0             # <<<<<<<<<<<<<<
@@ -2765,7 +2808,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
  */
   __pyx_v_bits = 0;
 
-  /* "cimpl/field.pyx":135
+  /* "cimpl/field.pyx":132
  *         cdef usize_t chunk_index
  *         cdef usize_t bits = 0
  *         if self.page_state != PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -2775,7 +2818,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
   __pyx_t_1 = ((__pyx_v_self->page_state != 1) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":136
+    /* "cimpl/field.pyx":133
  *         cdef usize_t bits = 0
  *         if self.page_state != PAGE_PARTIAL:
  *             return             # <<<<<<<<<<<<<<
@@ -2784,7 +2827,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":135
+    /* "cimpl/field.pyx":132
  *         cdef usize_t chunk_index
  *         cdef usize_t bits = 0
  *         if self.page_state != PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -2793,7 +2836,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
  */
   }
 
-  /* "cimpl/field.pyx":138
+  /* "cimpl/field.pyx":135
  *             return
  *         else:
  *             for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -2806,7 +2849,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_chunk_index = __pyx_t_4;
 
-      /* "cimpl/field.pyx":139
+      /* "cimpl/field.pyx":136
  *         else:
  *             for chunk_index in range(PAGE_CHUNKS):
  *                 bits += __builtin_popcountl(self.data[chunk_index])             # <<<<<<<<<<<<<<
@@ -2816,7 +2859,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
       __pyx_v_bits = (__pyx_v_bits + __builtin_popcountl((__pyx_v_self->data[__pyx_v_chunk_index])));
     }
 
-    /* "cimpl/field.pyx":140
+    /* "cimpl/field.pyx":137
  *             for chunk_index in range(PAGE_CHUNKS):
  *                 bits += __builtin_popcountl(self.data[chunk_index])
  *             if bits == 0:             # <<<<<<<<<<<<<<
@@ -2826,7 +2869,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
     __pyx_t_1 = ((__pyx_v_bits == 0) != 0);
     if (__pyx_t_1) {
 
-      /* "cimpl/field.pyx":141
+      /* "cimpl/field.pyx":138
  *                 bits += __builtin_popcountl(self.data[chunk_index])
  *             if bits == 0:
  *                 self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -2835,7 +2878,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-      /* "cimpl/field.pyx":140
+      /* "cimpl/field.pyx":137
  *             for chunk_index in range(PAGE_CHUNKS):
  *                 bits += __builtin_popcountl(self.data[chunk_index])
  *             if bits == 0:             # <<<<<<<<<<<<<<
@@ -2845,7 +2888,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
       goto __pyx_L6;
     }
 
-    /* "cimpl/field.pyx":142
+    /* "cimpl/field.pyx":139
  *             if bits == 0:
  *                 self._dealloc(PAGE_EMPTY)
  *             elif bits == PAGE_FULL_COUNT:             # <<<<<<<<<<<<<<
@@ -2855,7 +2898,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
     __pyx_t_1 = ((__pyx_v_bits == PAGE_FULL_COUNT) != 0);
     if (__pyx_t_1) {
 
-      /* "cimpl/field.pyx":143
+      /* "cimpl/field.pyx":140
  *                 self._dealloc(PAGE_EMPTY)
  *             elif bits == PAGE_FULL_COUNT:
  *                 self._dealloc(PAGE_FULL)             # <<<<<<<<<<<<<<
@@ -2864,7 +2907,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 2);
 
-      /* "cimpl/field.pyx":142
+      /* "cimpl/field.pyx":139
  *             if bits == 0:
  *                 self._dealloc(PAGE_EMPTY)
  *             elif bits == PAGE_FULL_COUNT:             # <<<<<<<<<<<<<<
@@ -2874,7 +2917,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
       goto __pyx_L6;
     }
 
-    /* "cimpl/field.pyx":145
+    /* "cimpl/field.pyx":142
  *                 self._dealloc(PAGE_FULL)
  *             else:
  *                 self._count = bits             # <<<<<<<<<<<<<<
@@ -2887,7 +2930,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
     __pyx_L6:;
   }
 
-  /* "cimpl/field.pyx":131
+  /* "cimpl/field.pyx":128
  *                         number += CHUNK_FULL_COUNT
  * 
  *     cdef void calc_length(self):             # <<<<<<<<<<<<<<
@@ -2900,7 +2943,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_calc_length(struct __pyx_obj_14spa
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":148
+/* "cimpl/field.pyx":145
  * 
  *     property count:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -2927,7 +2970,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_5count___get__(struct __pyx_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "cimpl/field.pyx":149
+  /* "cimpl/field.pyx":146
  *     property count:
  *         def __get__(self):
  *             return self._count             # <<<<<<<<<<<<<<
@@ -2935,13 +2978,13 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_5count___get__(struct __pyx_
  *     def __contains__(self, usize_t number):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_self->_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_self->_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":148
+  /* "cimpl/field.pyx":145
  * 
  *     property count:
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -2960,7 +3003,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_5count___get__(struct __pyx_
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":151
+/* "cimpl/field.pyx":148
  *             return self._count
  * 
  *     def __contains__(self, usize_t number):             # <<<<<<<<<<<<<<
@@ -2976,7 +3019,7 @@ static int __pyx_pw_14sparsebitfield_7IdsPage_8__contains__(PyObject *__pyx_v_se
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__contains__ (wrapper)", 0);
   assert(__pyx_arg_number); {
-    __pyx_v_number = __Pyx_PyInt_As_usize_t(__pyx_arg_number); if (unlikely((__pyx_v_number == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L3_error)
+    __pyx_v_number = __Pyx_PyInt_As_usize_t(__pyx_arg_number); if (unlikely((__pyx_v_number == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -3002,7 +3045,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__contains__", 0);
 
-  /* "cimpl/field.pyx":152
+  /* "cimpl/field.pyx":149
  * 
  *     def __contains__(self, usize_t number):
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT             # <<<<<<<<<<<<<<
@@ -3011,7 +3054,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
  */
   __pyx_v_chunk_index = (__pyx_v_number >> CHUNK_SHIFT);
 
-  /* "cimpl/field.pyx":153
+  /* "cimpl/field.pyx":150
  *     def __contains__(self, usize_t number):
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)             # <<<<<<<<<<<<<<
@@ -3020,7 +3063,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
  */
   __pyx_v_chunk_bit = (((usize_t)1) << (__pyx_v_number & CHUNK_MASK));
 
-  /* "cimpl/field.pyx":154
+  /* "cimpl/field.pyx":151
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:             # <<<<<<<<<<<<<<
@@ -3038,26 +3081,26 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "cimpl/field.pyx":155
+    /* "cimpl/field.pyx":152
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
  *             raise AssertionError("Cannot test for %i in a page (overflow)" % number)             # <<<<<<<<<<<<<<
  *         if self.page_state == PAGE_FULL:
  *             return True
  */
-    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 152, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Cannot_test_for_i_in_a_page_over, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_4 = PyUnicode_Format(__pyx_kp_u_Cannot_test_for_i_in_a_page_over, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AssertionError, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AssertionError, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 152, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 155, __pyx_L1_error)
+    __PYX_ERR(0, 152, __pyx_L1_error)
 
-    /* "cimpl/field.pyx":154
+    /* "cimpl/field.pyx":151
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:             # <<<<<<<<<<<<<<
@@ -3066,7 +3109,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
  */
   }
 
-  /* "cimpl/field.pyx":156
+  /* "cimpl/field.pyx":153
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
  *             raise AssertionError("Cannot test for %i in a page (overflow)" % number)
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3076,7 +3119,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
   __pyx_t_1 = ((__pyx_v_self->page_state == 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":157
+    /* "cimpl/field.pyx":154
  *             raise AssertionError("Cannot test for %i in a page (overflow)" % number)
  *         if self.page_state == PAGE_FULL:
  *             return True             # <<<<<<<<<<<<<<
@@ -3086,7 +3129,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
     __pyx_r = 1;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":156
+    /* "cimpl/field.pyx":153
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
  *             raise AssertionError("Cannot test for %i in a page (overflow)" % number)
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3095,7 +3138,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
  */
   }
 
-  /* "cimpl/field.pyx":158
+  /* "cimpl/field.pyx":155
  *         if self.page_state == PAGE_FULL:
  *             return True
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3105,7 +3148,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
   __pyx_t_1 = ((__pyx_v_self->page_state == 3) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":159
+    /* "cimpl/field.pyx":156
  *             return True
  *         if self.page_state == PAGE_EMPTY:
  *             return False             # <<<<<<<<<<<<<<
@@ -3115,7 +3158,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":158
+    /* "cimpl/field.pyx":155
  *         if self.page_state == PAGE_FULL:
  *             return True
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3124,7 +3167,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
  */
   }
 
-  /* "cimpl/field.pyx":160
+  /* "cimpl/field.pyx":157
  *         if self.page_state == PAGE_EMPTY:
  *             return False
  *         return self.data[chunk_index] & chunk_bit != 0             # <<<<<<<<<<<<<<
@@ -3134,7 +3177,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
   __pyx_r = (((__pyx_v_self->data[__pyx_v_chunk_index]) & __pyx_v_chunk_bit) != 0);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":151
+  /* "cimpl/field.pyx":148
  *             return self._count
  * 
  *     def __contains__(self, usize_t number):             # <<<<<<<<<<<<<<
@@ -3153,7 +3196,7 @@ static int __pyx_pf_14sparsebitfield_7IdsPage_7__contains__(struct __pyx_obj_14s
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":162
+/* "cimpl/field.pyx":159
  *         return self.data[chunk_index] & chunk_bit != 0
  * 
  *     cdef void add(self, usize_t number):             # <<<<<<<<<<<<<<
@@ -3172,7 +3215,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   usize_t __pyx_t_5;
   __Pyx_RefNannySetupContext("add", 0);
 
-  /* "cimpl/field.pyx":163
+  /* "cimpl/field.pyx":160
  * 
  *     cdef void add(self, usize_t number):
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT             # <<<<<<<<<<<<<<
@@ -3181,7 +3224,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   __pyx_v_chunk_index = (__pyx_v_number >> CHUNK_SHIFT);
 
-  /* "cimpl/field.pyx":164
+  /* "cimpl/field.pyx":161
  *     cdef void add(self, usize_t number):
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)             # <<<<<<<<<<<<<<
@@ -3190,7 +3233,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   __pyx_v_chunk_bit = (((usize_t)1) << (__pyx_v_number & CHUNK_MASK));
 
-  /* "cimpl/field.pyx":166
+  /* "cimpl/field.pyx":163
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
  * 
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:             # <<<<<<<<<<<<<<
@@ -3208,26 +3251,26 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "cimpl/field.pyx":167
+    /* "cimpl/field.pyx":164
  * 
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
  *             raise AssertionError("Cannot add %i to a page (overflow)" % number)             # <<<<<<<<<<<<<<
  * 
  *         if self.page_state == PAGE_FULL:
  */
-    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Cannot_add_i_to_a_page_overflow, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_4 = PyUnicode_Format(__pyx_kp_u_Cannot_add_i_to_a_page_overflow, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AssertionError, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AssertionError, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 167, __pyx_L1_error)
+    __PYX_ERR(0, 164, __pyx_L1_error)
 
-    /* "cimpl/field.pyx":166
+    /* "cimpl/field.pyx":163
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
  * 
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:             # <<<<<<<<<<<<<<
@@ -3236,7 +3279,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   }
 
-  /* "cimpl/field.pyx":169
+  /* "cimpl/field.pyx":166
  *             raise AssertionError("Cannot add %i to a page (overflow)" % number)
  * 
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3246,7 +3289,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   __pyx_t_1 = ((__pyx_v_self->page_state == 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":170
+    /* "cimpl/field.pyx":167
  * 
  *         if self.page_state == PAGE_FULL:
  *             return             # <<<<<<<<<<<<<<
@@ -3255,7 +3298,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":169
+    /* "cimpl/field.pyx":166
  *             raise AssertionError("Cannot add %i to a page (overflow)" % number)
  * 
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3264,7 +3307,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   }
 
-  /* "cimpl/field.pyx":171
+  /* "cimpl/field.pyx":168
  *         if self.page_state == PAGE_FULL:
  *             return
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3274,7 +3317,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   __pyx_t_1 = ((__pyx_v_self->page_state == 3) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":172
+    /* "cimpl/field.pyx":169
  *             return
  *         if self.page_state == PAGE_EMPTY:
  *             self._alloc()             # <<<<<<<<<<<<<<
@@ -3283,7 +3326,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, NULL);
 
-    /* "cimpl/field.pyx":171
+    /* "cimpl/field.pyx":168
  *         if self.page_state == PAGE_FULL:
  *             return
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3292,7 +3335,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   }
 
-  /* "cimpl/field.pyx":174
+  /* "cimpl/field.pyx":171
  *             self._alloc()
  * 
  *         if self.data[chunk_index] & chunk_bit:             # <<<<<<<<<<<<<<
@@ -3302,7 +3345,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   __pyx_t_1 = (((__pyx_v_self->data[__pyx_v_chunk_index]) & __pyx_v_chunk_bit) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":175
+    /* "cimpl/field.pyx":172
  * 
  *         if self.data[chunk_index] & chunk_bit:
  *             return             # <<<<<<<<<<<<<<
@@ -3311,7 +3354,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":174
+    /* "cimpl/field.pyx":171
  *             self._alloc()
  * 
  *         if self.data[chunk_index] & chunk_bit:             # <<<<<<<<<<<<<<
@@ -3320,7 +3363,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   }
 
-  /* "cimpl/field.pyx":177
+  /* "cimpl/field.pyx":174
  *             return
  * 
  *         self.data[chunk_index] |= chunk_bit             # <<<<<<<<<<<<<<
@@ -3330,7 +3373,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   __pyx_t_5 = __pyx_v_chunk_index;
   (__pyx_v_self->data[__pyx_t_5]) = ((__pyx_v_self->data[__pyx_t_5]) | __pyx_v_chunk_bit);
 
-  /* "cimpl/field.pyx":178
+  /* "cimpl/field.pyx":175
  * 
  *         self.data[chunk_index] |= chunk_bit
  *         self._count += 1             # <<<<<<<<<<<<<<
@@ -3339,7 +3382,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   __pyx_v_self->_count = (__pyx_v_self->_count + 1);
 
-  /* "cimpl/field.pyx":179
+  /* "cimpl/field.pyx":176
  *         self.data[chunk_index] |= chunk_bit
  *         self._count += 1
  *         if self._count == PAGE_FULL_COUNT:             # <<<<<<<<<<<<<<
@@ -3349,7 +3392,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   __pyx_t_1 = ((__pyx_v_self->_count == PAGE_FULL_COUNT) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":180
+    /* "cimpl/field.pyx":177
  *         self._count += 1
  *         if self._count == PAGE_FULL_COUNT:
  *             self._dealloc(PAGE_FULL)             # <<<<<<<<<<<<<<
@@ -3358,7 +3401,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 2);
 
-    /* "cimpl/field.pyx":179
+    /* "cimpl/field.pyx":176
  *         self.data[chunk_index] |= chunk_bit
  *         self._count += 1
  *         if self._count == PAGE_FULL_COUNT:             # <<<<<<<<<<<<<<
@@ -3367,7 +3410,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   }
 
-  /* "cimpl/field.pyx":181
+  /* "cimpl/field.pyx":178
  *         if self._count == PAGE_FULL_COUNT:
  *             self._dealloc(PAGE_FULL)
  *         return             # <<<<<<<<<<<<<<
@@ -3376,7 +3419,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
  */
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":162
+  /* "cimpl/field.pyx":159
  *         return self.data[chunk_index] & chunk_bit != 0
  * 
  *     cdef void add(self, usize_t number):             # <<<<<<<<<<<<<<
@@ -3393,7 +3436,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_add(struct __pyx_obj_14sparsebitfi
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":183
+/* "cimpl/field.pyx":180
  *         return
  * 
  *     cdef void remove(self, usize_t number):             # <<<<<<<<<<<<<<
@@ -3413,7 +3456,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   usize_t __pyx_t_6;
   __Pyx_RefNannySetupContext("remove", 0);
 
-  /* "cimpl/field.pyx":184
+  /* "cimpl/field.pyx":181
  * 
  *     cdef void remove(self, usize_t number):
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT             # <<<<<<<<<<<<<<
@@ -3422,7 +3465,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   __pyx_v_chunk_index = (__pyx_v_number >> CHUNK_SHIFT);
 
-  /* "cimpl/field.pyx":185
+  /* "cimpl/field.pyx":182
  *     cdef void remove(self, usize_t number):
  *         cdef usize_t chunk_index = number >> CHUNK_SHIFT
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)             # <<<<<<<<<<<<<<
@@ -3431,7 +3474,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   __pyx_v_chunk_bit = (((usize_t)1) << (__pyx_v_number & CHUNK_MASK));
 
-  /* "cimpl/field.pyx":187
+  /* "cimpl/field.pyx":184
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
  * 
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:             # <<<<<<<<<<<<<<
@@ -3449,26 +3492,26 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_1)) {
 
-    /* "cimpl/field.pyx":188
+    /* "cimpl/field.pyx":185
  * 
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:
  *             raise AssertionError("Cannot remove %i from a page (overflow)" % number)             # <<<<<<<<<<<<<<
  * 
  *         if self.page_state == PAGE_EMPTY:
  */
-    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_number); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyString_Format(__pyx_kp_s_Cannot_remove_i_from_a_page_over, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_4 = PyUnicode_Format(__pyx_kp_u_Cannot_remove_i_from_a_page_over, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 185, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AssertionError, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_AssertionError, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 185, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 188, __pyx_L1_error)
+    __PYX_ERR(0, 185, __pyx_L1_error)
 
-    /* "cimpl/field.pyx":187
+    /* "cimpl/field.pyx":184
  *         cdef usize_t chunk_bit = (<usize_t>1) << (number & CHUNK_MASK)
  * 
  *         if chunk_index >= PAGE_CHUNKS or chunk_index < 0:             # <<<<<<<<<<<<<<
@@ -3477,7 +3520,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":190
+  /* "cimpl/field.pyx":187
  *             raise AssertionError("Cannot remove %i from a page (overflow)" % number)
  * 
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3487,7 +3530,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((__pyx_v_self->page_state == 3) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":191
+    /* "cimpl/field.pyx":188
  * 
  *         if self.page_state == PAGE_EMPTY:
  *             return             # <<<<<<<<<<<<<<
@@ -3496,7 +3539,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":190
+    /* "cimpl/field.pyx":187
  *             raise AssertionError("Cannot remove %i from a page (overflow)" % number)
  * 
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3505,7 +3548,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":192
+  /* "cimpl/field.pyx":189
  *         if self.page_state == PAGE_EMPTY:
  *             return
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3515,7 +3558,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((__pyx_v_self->page_state == 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":193
+    /* "cimpl/field.pyx":190
  *             return
  *         if self.page_state == PAGE_FULL:
  *             self._alloc(True)             # <<<<<<<<<<<<<<
@@ -3526,7 +3569,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
     __pyx_t_5.fill = 1;
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, &__pyx_t_5); 
 
-    /* "cimpl/field.pyx":192
+    /* "cimpl/field.pyx":189
  *         if self.page_state == PAGE_EMPTY:
  *             return
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3535,7 +3578,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":195
+  /* "cimpl/field.pyx":192
  *             self._alloc(True)
  * 
  *         if not self.data[chunk_index] & chunk_bit:             # <<<<<<<<<<<<<<
@@ -3545,7 +3588,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((!(((__pyx_v_self->data[__pyx_v_chunk_index]) & __pyx_v_chunk_bit) != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":196
+    /* "cimpl/field.pyx":193
  * 
  *         if not self.data[chunk_index] & chunk_bit:
  *             return             # <<<<<<<<<<<<<<
@@ -3554,7 +3597,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":195
+    /* "cimpl/field.pyx":192
  *             self._alloc(True)
  * 
  *         if not self.data[chunk_index] & chunk_bit:             # <<<<<<<<<<<<<<
@@ -3563,7 +3606,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":198
+  /* "cimpl/field.pyx":195
  *             return
  * 
  *         self.data[chunk_index] &= ~chunk_bit             # <<<<<<<<<<<<<<
@@ -3573,7 +3616,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   __pyx_t_6 = __pyx_v_chunk_index;
   (__pyx_v_self->data[__pyx_t_6]) = ((__pyx_v_self->data[__pyx_t_6]) & (~__pyx_v_chunk_bit));
 
-  /* "cimpl/field.pyx":199
+  /* "cimpl/field.pyx":196
  * 
  *         self.data[chunk_index] &= ~chunk_bit
  *         self._count -= 1             # <<<<<<<<<<<<<<
@@ -3582,7 +3625,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   __pyx_v_self->_count = (__pyx_v_self->_count - 1);
 
-  /* "cimpl/field.pyx":200
+  /* "cimpl/field.pyx":197
  *         self.data[chunk_index] &= ~chunk_bit
  *         self._count -= 1
  *         if self._count == 0:             # <<<<<<<<<<<<<<
@@ -3592,7 +3635,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((__pyx_v_self->_count == 0) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":201
+    /* "cimpl/field.pyx":198
  *         self._count -= 1
  *         if self._count == 0:
  *             self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -3601,7 +3644,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-    /* "cimpl/field.pyx":200
+    /* "cimpl/field.pyx":197
  *         self.data[chunk_index] &= ~chunk_bit
  *         self._count -= 1
  *         if self._count == 0:             # <<<<<<<<<<<<<<
@@ -3610,7 +3653,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":202
+  /* "cimpl/field.pyx":199
  *         if self._count == 0:
  *             self._dealloc(PAGE_EMPTY)
  *         return             # <<<<<<<<<<<<<<
@@ -3619,7 +3662,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
  */
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":183
+  /* "cimpl/field.pyx":180
  *         return
  * 
  *     cdef void remove(self, usize_t number):             # <<<<<<<<<<<<<<
@@ -3636,7 +3679,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_remove(struct __pyx_obj_14sparsebi
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":204
+/* "cimpl/field.pyx":201
  *         return
  * 
  *     cdef void update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -3654,7 +3697,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
   usize_t __pyx_t_5;
   __Pyx_RefNannySetupContext("update", 0);
 
-  /* "cimpl/field.pyx":205
+  /* "cimpl/field.pyx":202
  * 
  *     cdef void update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3664,7 +3707,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((__pyx_v_other->page_state == 3) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":206
+    /* "cimpl/field.pyx":203
  *     cdef void update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:
  *             return             # <<<<<<<<<<<<<<
@@ -3673,7 +3716,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":205
+    /* "cimpl/field.pyx":202
  * 
  *     cdef void update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3682,7 +3725,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":207
+  /* "cimpl/field.pyx":204
  *         if other.page_state == PAGE_EMPTY:
  *             return
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3692,7 +3735,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((__pyx_v_self->page_state == 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":208
+    /* "cimpl/field.pyx":205
  *             return
  *         if self.page_state == PAGE_FULL:
  *             return             # <<<<<<<<<<<<<<
@@ -3701,7 +3744,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":207
+    /* "cimpl/field.pyx":204
  *         if other.page_state == PAGE_EMPTY:
  *             return
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3710,7 +3753,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":209
+  /* "cimpl/field.pyx":206
  *         if self.page_state == PAGE_FULL:
  *             return
  *         if other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3720,7 +3763,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((__pyx_v_other->page_state == 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":210
+    /* "cimpl/field.pyx":207
  *             return
  *         if other.page_state == PAGE_FULL:
  *             self._dealloc(PAGE_FULL)             # <<<<<<<<<<<<<<
@@ -3729,7 +3772,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 2);
 
-    /* "cimpl/field.pyx":211
+    /* "cimpl/field.pyx":208
  *         if other.page_state == PAGE_FULL:
  *             self._dealloc(PAGE_FULL)
  *             return             # <<<<<<<<<<<<<<
@@ -3738,7 +3781,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":209
+    /* "cimpl/field.pyx":206
  *         if self.page_state == PAGE_FULL:
  *             return
  *         if other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3747,7 +3790,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":212
+  /* "cimpl/field.pyx":209
  *             self._dealloc(PAGE_FULL)
  *             return
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3757,7 +3800,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
   __pyx_t_1 = ((__pyx_v_self->page_state == 3) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":213
+    /* "cimpl/field.pyx":210
  *             return
  *         if self.page_state == PAGE_EMPTY:
  *             self._alloc()             # <<<<<<<<<<<<<<
@@ -3766,7 +3809,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, NULL);
 
-    /* "cimpl/field.pyx":212
+    /* "cimpl/field.pyx":209
  *             self._dealloc(PAGE_FULL)
  *             return
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3775,7 +3818,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
   }
 
-  /* "cimpl/field.pyx":214
+  /* "cimpl/field.pyx":211
  *         if self.page_state == PAGE_EMPTY:
  *             self._alloc()
  *         for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -3787,7 +3830,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_chunk_index = __pyx_t_4;
 
-    /* "cimpl/field.pyx":215
+    /* "cimpl/field.pyx":212
  *             self._alloc()
  *         for chunk_index in range(PAGE_CHUNKS):
  *             self.data[chunk_index] |= other.data[chunk_index]             # <<<<<<<<<<<<<<
@@ -3798,7 +3841,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
     (__pyx_v_self->data[__pyx_t_5]) = ((__pyx_v_self->data[__pyx_t_5]) | (__pyx_v_other->data[__pyx_v_chunk_index]));
   }
 
-  /* "cimpl/field.pyx":216
+  /* "cimpl/field.pyx":213
  *         for chunk_index in range(PAGE_CHUNKS):
  *             self.data[chunk_index] |= other.data[chunk_index]
  *         self.calc_length()             # <<<<<<<<<<<<<<
@@ -3807,7 +3850,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->calc_length(__pyx_v_self);
 
-  /* "cimpl/field.pyx":204
+  /* "cimpl/field.pyx":201
  *         return
  * 
  *     cdef void update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -3820,7 +3863,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_update(struct __pyx_obj_14sparsebi
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":218
+/* "cimpl/field.pyx":215
  *         self.calc_length()
  * 
  *     cdef void intersection_update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -3838,7 +3881,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("intersection_update", 0);
 
-  /* "cimpl/field.pyx":219
+  /* "cimpl/field.pyx":216
  * 
  *     cdef void intersection_update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3848,7 +3891,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
   switch (__pyx_v_other->page_state) {
     case 3:
 
-    /* "cimpl/field.pyx":220
+    /* "cimpl/field.pyx":217
  *     cdef void intersection_update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:
  *             self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -3857,7 +3900,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-    /* "cimpl/field.pyx":219
+    /* "cimpl/field.pyx":216
  * 
  *     cdef void intersection_update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3866,7 +3909,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
     break;
 
-    /* "cimpl/field.pyx":221
+    /* "cimpl/field.pyx":218
  *         if other.page_state == PAGE_EMPTY:
  *             self._dealloc(PAGE_EMPTY)
  *         elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3875,7 +3918,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
     case 2:
 
-    /* "cimpl/field.pyx":222
+    /* "cimpl/field.pyx":219
  *             self._dealloc(PAGE_EMPTY)
  *         elif other.page_state == PAGE_FULL:
  *             return             # <<<<<<<<<<<<<<
@@ -3884,7 +3927,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":221
+    /* "cimpl/field.pyx":218
  *         if other.page_state == PAGE_EMPTY:
  *             self._dealloc(PAGE_EMPTY)
  *         elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3893,7 +3936,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
     break;
 
-    /* "cimpl/field.pyx":223
+    /* "cimpl/field.pyx":220
  *         elif other.page_state == PAGE_FULL:
  *             return
  *         elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -3902,7 +3945,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
     case 1:
 
-    /* "cimpl/field.pyx":224
+    /* "cimpl/field.pyx":221
  *             return
  *         elif other.page_state == PAGE_PARTIAL:
  *             if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3912,7 +3955,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
     switch (__pyx_v_self->page_state) {
       case 3:
 
-      /* "cimpl/field.pyx":225
+      /* "cimpl/field.pyx":222
  *         elif other.page_state == PAGE_PARTIAL:
  *             if self.page_state == PAGE_EMPTY:
  *                 return             # <<<<<<<<<<<<<<
@@ -3921,7 +3964,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":224
+      /* "cimpl/field.pyx":221
  *             return
  *         elif other.page_state == PAGE_PARTIAL:
  *             if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -3930,7 +3973,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       break;
 
-      /* "cimpl/field.pyx":226
+      /* "cimpl/field.pyx":223
  *             if self.page_state == PAGE_EMPTY:
  *                 return
  *             elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3939,7 +3982,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       case 2:
 
-      /* "cimpl/field.pyx":227
+      /* "cimpl/field.pyx":224
  *                 return
  *             elif self.page_state == PAGE_FULL:
  *                 self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -3948,7 +3991,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-      /* "cimpl/field.pyx":228
+      /* "cimpl/field.pyx":225
  *             elif self.page_state == PAGE_FULL:
  *                 self._dealloc(PAGE_EMPTY)
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)             # <<<<<<<<<<<<<<
@@ -3957,7 +4000,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       (void)(memcpy(__pyx_v_self->data, __pyx_v_other->data, (CHUNK_BYTES * PAGE_CHUNKS)));
 
-      /* "cimpl/field.pyx":229
+      /* "cimpl/field.pyx":226
  *                 self._dealloc(PAGE_EMPTY)
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *                 self.calc_length()             # <<<<<<<<<<<<<<
@@ -3966,7 +4009,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->calc_length(__pyx_v_self);
 
-      /* "cimpl/field.pyx":230
+      /* "cimpl/field.pyx":227
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *                 self.calc_length()
  *                 return             # <<<<<<<<<<<<<<
@@ -3975,7 +4018,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":226
+      /* "cimpl/field.pyx":223
  *             if self.page_state == PAGE_EMPTY:
  *                 return
  *             elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -3984,7 +4027,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       break;
 
-      /* "cimpl/field.pyx":231
+      /* "cimpl/field.pyx":228
  *                 self.calc_length()
  *                 return
  *             elif self.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -3993,7 +4036,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       case 1:
 
-      /* "cimpl/field.pyx":232
+      /* "cimpl/field.pyx":229
  *                 return
  *             elif self.page_state == PAGE_PARTIAL:
  *                 for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -4005,7 +4048,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
       for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
         __pyx_v_chunk_index = __pyx_t_3;
 
-        /* "cimpl/field.pyx":233
+        /* "cimpl/field.pyx":230
  *             elif self.page_state == PAGE_PARTIAL:
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] &= other.data[chunk_index]             # <<<<<<<<<<<<<<
@@ -4016,7 +4059,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
         (__pyx_v_self->data[__pyx_t_4]) = ((__pyx_v_self->data[__pyx_t_4]) & (__pyx_v_other->data[__pyx_v_chunk_index]));
       }
 
-      /* "cimpl/field.pyx":234
+      /* "cimpl/field.pyx":231
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] &= other.data[chunk_index]
  *                 self.calc_length()             # <<<<<<<<<<<<<<
@@ -4025,7 +4068,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->calc_length(__pyx_v_self);
 
-      /* "cimpl/field.pyx":231
+      /* "cimpl/field.pyx":228
  *                 self.calc_length()
  *                 return
  *             elif self.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4035,22 +4078,22 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
       break;
       default:
 
-      /* "cimpl/field.pyx":236
+      /* "cimpl/field.pyx":233
  *                 self.calc_length()
  *             else:
  *                 raise AssertionError("Invalid page state")             # <<<<<<<<<<<<<<
  *         else:
  *             raise AssertionError("Invalid page state")
  */
-      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_AssertionError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 236, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_AssertionError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 233, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_Raise(__pyx_t_5, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __PYX_ERR(0, 236, __pyx_L1_error)
+      __PYX_ERR(0, 233, __pyx_L1_error)
       break;
     }
 
-    /* "cimpl/field.pyx":223
+    /* "cimpl/field.pyx":220
  *         elif other.page_state == PAGE_FULL:
  *             return
  *         elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4060,22 +4103,22 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
     break;
     default:
 
-    /* "cimpl/field.pyx":238
+    /* "cimpl/field.pyx":235
  *                 raise AssertionError("Invalid page state")
  *         else:
  *             raise AssertionError("Invalid page state")             # <<<<<<<<<<<<<<
  * 
  *     cdef void difference_update(self, IdsPage other):
  */
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_AssertionError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 238, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_AssertionError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_Raise(__pyx_t_5, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __PYX_ERR(0, 238, __pyx_L1_error)
+    __PYX_ERR(0, 235, __pyx_L1_error)
     break;
   }
 
-  /* "cimpl/field.pyx":218
+  /* "cimpl/field.pyx":215
  *         self.calc_length()
  * 
  *     cdef void intersection_update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -4092,7 +4135,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_intersection_update(struct __pyx_o
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":240
+/* "cimpl/field.pyx":237
  *             raise AssertionError("Invalid page state")
  * 
  *     cdef void difference_update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -4111,7 +4154,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
   usize_t __pyx_t_6;
   __Pyx_RefNannySetupContext("difference_update", 0);
 
-  /* "cimpl/field.pyx":241
+  /* "cimpl/field.pyx":238
  * 
  *     cdef void difference_update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4121,7 +4164,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
   __pyx_t_1 = ((__pyx_v_other->page_state == 3) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":242
+    /* "cimpl/field.pyx":239
  *     cdef void difference_update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:
  *             return             # <<<<<<<<<<<<<<
@@ -4130,7 +4173,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":241
+    /* "cimpl/field.pyx":238
  * 
  *     cdef void difference_update(self, IdsPage other):
  *         if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4139,7 +4182,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
   }
 
-  /* "cimpl/field.pyx":243
+  /* "cimpl/field.pyx":240
  *         if other.page_state == PAGE_EMPTY:
  *             return
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4149,7 +4192,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
   __pyx_t_1 = ((__pyx_v_self->page_state == 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":244
+    /* "cimpl/field.pyx":241
  *             return
  *         if self.page_state == PAGE_FULL:
  *             self._alloc(True)             # <<<<<<<<<<<<<<
@@ -4160,7 +4203,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
     __pyx_t_2.fill = 1;
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, &__pyx_t_2); 
 
-    /* "cimpl/field.pyx":243
+    /* "cimpl/field.pyx":240
  *         if other.page_state == PAGE_EMPTY:
  *             return
  *         if self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4169,7 +4212,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
   }
 
-  /* "cimpl/field.pyx":245
+  /* "cimpl/field.pyx":242
  *         if self.page_state == PAGE_FULL:
  *             self._alloc(True)
  *         if other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4179,7 +4222,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
   __pyx_t_1 = ((__pyx_v_other->page_state == 2) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":246
+    /* "cimpl/field.pyx":243
  *             self._alloc(True)
  *         if other.page_state == PAGE_FULL:
  *             self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -4188,7 +4231,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-    /* "cimpl/field.pyx":247
+    /* "cimpl/field.pyx":244
  *         if other.page_state == PAGE_FULL:
  *             self._dealloc(PAGE_EMPTY)
  *             return             # <<<<<<<<<<<<<<
@@ -4197,7 +4240,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":245
+    /* "cimpl/field.pyx":242
  *         if self.page_state == PAGE_FULL:
  *             self._alloc(True)
  *         if other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4206,7 +4249,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
   }
 
-  /* "cimpl/field.pyx":248
+  /* "cimpl/field.pyx":245
  *             self._dealloc(PAGE_EMPTY)
  *             return
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4216,7 +4259,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
   __pyx_t_1 = ((__pyx_v_self->page_state == 3) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":249
+    /* "cimpl/field.pyx":246
  *             return
  *         if self.page_state == PAGE_EMPTY:
  *             return             # <<<<<<<<<<<<<<
@@ -4225,7 +4268,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":248
+    /* "cimpl/field.pyx":245
  *             self._dealloc(PAGE_EMPTY)
  *             return
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4234,7 +4277,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
   }
 
-  /* "cimpl/field.pyx":250
+  /* "cimpl/field.pyx":247
  *         if self.page_state == PAGE_EMPTY:
  *             return
  *         for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -4246,7 +4289,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_chunk_index = __pyx_t_5;
 
-    /* "cimpl/field.pyx":251
+    /* "cimpl/field.pyx":248
  *             return
  *         for chunk_index in range(PAGE_CHUNKS):
  *             self.data[chunk_index] &= ~other.data[chunk_index]             # <<<<<<<<<<<<<<
@@ -4257,7 +4300,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
     (__pyx_v_self->data[__pyx_t_6]) = ((__pyx_v_self->data[__pyx_t_6]) & (~(__pyx_v_other->data[__pyx_v_chunk_index])));
   }
 
-  /* "cimpl/field.pyx":252
+  /* "cimpl/field.pyx":249
  *         for chunk_index in range(PAGE_CHUNKS):
  *             self.data[chunk_index] &= ~other.data[chunk_index]
  *         self.calc_length()             # <<<<<<<<<<<<<<
@@ -4266,7 +4309,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->calc_length(__pyx_v_self);
 
-  /* "cimpl/field.pyx":240
+  /* "cimpl/field.pyx":237
  *             raise AssertionError("Invalid page state")
  * 
  *     cdef void difference_update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -4279,7 +4322,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_difference_update(struct __pyx_obj
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":254
+/* "cimpl/field.pyx":251
  *         self.calc_length()
  * 
  *     cdef symmetric_difference_update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -4298,7 +4341,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
   usize_t __pyx_t_5;
   __Pyx_RefNannySetupContext("symmetric_difference_update", 0);
 
-  /* "cimpl/field.pyx":256
+  /* "cimpl/field.pyx":253
  *     cdef symmetric_difference_update(self, IdsPage other):
  *         cdef usize_t chunk_index
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4308,7 +4351,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
   switch (__pyx_v_self->page_state) {
     case 3:
 
-    /* "cimpl/field.pyx":257
+    /* "cimpl/field.pyx":254
  *         cdef usize_t chunk_index
  *         if self.page_state == PAGE_EMPTY:
  *             if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4318,7 +4361,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
     switch (__pyx_v_other->page_state) {
       case 3:
 
-      /* "cimpl/field.pyx":258
+      /* "cimpl/field.pyx":255
  *         if self.page_state == PAGE_EMPTY:
  *             if other.page_state == PAGE_EMPTY:
  *                 return             # <<<<<<<<<<<<<<
@@ -4329,7 +4372,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":257
+      /* "cimpl/field.pyx":254
  *         cdef usize_t chunk_index
  *         if self.page_state == PAGE_EMPTY:
  *             if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4338,7 +4381,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       break;
 
-      /* "cimpl/field.pyx":259
+      /* "cimpl/field.pyx":256
  *             if other.page_state == PAGE_EMPTY:
  *                 return
  *             elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4347,7 +4390,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       case 2:
 
-      /* "cimpl/field.pyx":260
+      /* "cimpl/field.pyx":257
  *                 return
  *             elif other.page_state == PAGE_FULL:
  *                 self._dealloc(PAGE_FULL)             # <<<<<<<<<<<<<<
@@ -4356,7 +4399,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 2);
 
-      /* "cimpl/field.pyx":261
+      /* "cimpl/field.pyx":258
  *             elif other.page_state == PAGE_FULL:
  *                 self._dealloc(PAGE_FULL)
  *                 return             # <<<<<<<<<<<<<<
@@ -4367,7 +4410,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":259
+      /* "cimpl/field.pyx":256
  *             if other.page_state == PAGE_EMPTY:
  *                 return
  *             elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4376,7 +4419,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       break;
 
-      /* "cimpl/field.pyx":262
+      /* "cimpl/field.pyx":259
  *                 self._dealloc(PAGE_FULL)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4385,7 +4428,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       case 1:
 
-      /* "cimpl/field.pyx":263
+      /* "cimpl/field.pyx":260
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:
  *                 self._alloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -4396,7 +4439,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       __pyx_t_1.fill = 3;
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, &__pyx_t_1); 
 
-      /* "cimpl/field.pyx":264
+      /* "cimpl/field.pyx":261
  *             elif other.page_state == PAGE_PARTIAL:
  *                 self._alloc(PAGE_EMPTY)
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)             # <<<<<<<<<<<<<<
@@ -4405,7 +4448,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       (void)(memcpy(__pyx_v_self->data, __pyx_v_other->data, (CHUNK_BYTES * PAGE_CHUNKS)));
 
-      /* "cimpl/field.pyx":262
+      /* "cimpl/field.pyx":259
  *                 self._dealloc(PAGE_FULL)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4416,7 +4459,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       default: break;
     }
 
-    /* "cimpl/field.pyx":256
+    /* "cimpl/field.pyx":253
  *     cdef symmetric_difference_update(self, IdsPage other):
  *         cdef usize_t chunk_index
  *         if self.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4425,7 +4468,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
     break;
 
-    /* "cimpl/field.pyx":265
+    /* "cimpl/field.pyx":262
  *                 self._alloc(PAGE_EMPTY)
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4434,7 +4477,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
     case 2:
 
-    /* "cimpl/field.pyx":266
+    /* "cimpl/field.pyx":263
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         elif self.page_state == PAGE_FULL:
  *             if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4444,7 +4487,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
     switch (__pyx_v_other->page_state) {
       case 3:
 
-      /* "cimpl/field.pyx":267
+      /* "cimpl/field.pyx":264
  *         elif self.page_state == PAGE_FULL:
  *             if other.page_state == PAGE_EMPTY:
  *                 return             # <<<<<<<<<<<<<<
@@ -4455,7 +4498,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":266
+      /* "cimpl/field.pyx":263
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         elif self.page_state == PAGE_FULL:
  *             if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4464,7 +4507,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       break;
 
-      /* "cimpl/field.pyx":268
+      /* "cimpl/field.pyx":265
  *             if other.page_state == PAGE_EMPTY:
  *                 return
  *             elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4473,7 +4516,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       case 2:
 
-      /* "cimpl/field.pyx":269
+      /* "cimpl/field.pyx":266
  *                 return
  *             elif other.page_state == PAGE_FULL:
  *                 self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
@@ -4482,7 +4525,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
-      /* "cimpl/field.pyx":270
+      /* "cimpl/field.pyx":267
  *             elif other.page_state == PAGE_FULL:
  *                 self._dealloc(PAGE_EMPTY)
  *                 return             # <<<<<<<<<<<<<<
@@ -4493,7 +4536,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":268
+      /* "cimpl/field.pyx":265
  *             if other.page_state == PAGE_EMPTY:
  *                 return
  *             elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4502,7 +4545,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       break;
 
-      /* "cimpl/field.pyx":271
+      /* "cimpl/field.pyx":268
  *                 self._dealloc(PAGE_EMPTY)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4511,7 +4554,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       case 1:
 
-      /* "cimpl/field.pyx":272
+      /* "cimpl/field.pyx":269
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:
  *                 self._alloc(PAGE_FULL)             # <<<<<<<<<<<<<<
@@ -4522,7 +4565,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       __pyx_t_1.fill = 2;
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, &__pyx_t_1); 
 
-      /* "cimpl/field.pyx":273
+      /* "cimpl/field.pyx":270
  *             elif other.page_state == PAGE_PARTIAL:
  *                 self._alloc(PAGE_FULL)
  *                 for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -4534,7 +4577,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
         __pyx_v_chunk_index = __pyx_t_4;
 
-        /* "cimpl/field.pyx":274
+        /* "cimpl/field.pyx":271
  *                 self._alloc(PAGE_FULL)
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~other.data[chunk_index]             # <<<<<<<<<<<<<<
@@ -4544,7 +4587,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
         (__pyx_v_self->data[__pyx_v_chunk_index]) = (~(__pyx_v_other->data[__pyx_v_chunk_index]));
       }
 
-      /* "cimpl/field.pyx":271
+      /* "cimpl/field.pyx":268
  *                 self._dealloc(PAGE_EMPTY)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4555,7 +4598,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       default: break;
     }
 
-    /* "cimpl/field.pyx":265
+    /* "cimpl/field.pyx":262
  *                 self._alloc(PAGE_EMPTY)
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4564,7 +4607,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
     break;
 
-    /* "cimpl/field.pyx":275
+    /* "cimpl/field.pyx":272
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~other.data[chunk_index]
  *         elif self.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4573,7 +4616,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
     case 1:
 
-    /* "cimpl/field.pyx":276
+    /* "cimpl/field.pyx":273
  *                     self.data[chunk_index] = ~other.data[chunk_index]
  *         elif self.page_state == PAGE_PARTIAL:
  *             if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4583,7 +4626,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
     switch (__pyx_v_other->page_state) {
       case 3:
 
-      /* "cimpl/field.pyx":277
+      /* "cimpl/field.pyx":274
  *         elif self.page_state == PAGE_PARTIAL:
  *             if other.page_state == PAGE_EMPTY:
  *                 return             # <<<<<<<<<<<<<<
@@ -4594,7 +4637,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":276
+      /* "cimpl/field.pyx":273
  *                     self.data[chunk_index] = ~other.data[chunk_index]
  *         elif self.page_state == PAGE_PARTIAL:
  *             if other.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -4603,7 +4646,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       break;
 
-      /* "cimpl/field.pyx":278
+      /* "cimpl/field.pyx":275
  *             if other.page_state == PAGE_EMPTY:
  *                 return
  *             elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4612,7 +4655,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       case 2:
 
-      /* "cimpl/field.pyx":279
+      /* "cimpl/field.pyx":276
  *                 return
  *             elif other.page_state == PAGE_FULL:
  *                 for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -4624,7 +4667,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
         __pyx_v_chunk_index = __pyx_t_4;
 
-        /* "cimpl/field.pyx":280
+        /* "cimpl/field.pyx":277
  *             elif other.page_state == PAGE_FULL:
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~self.data[chunk_index]             # <<<<<<<<<<<<<<
@@ -4634,7 +4677,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
         (__pyx_v_self->data[__pyx_v_chunk_index]) = (~(__pyx_v_self->data[__pyx_v_chunk_index]));
       }
 
-      /* "cimpl/field.pyx":278
+      /* "cimpl/field.pyx":275
  *             if other.page_state == PAGE_EMPTY:
  *                 return
  *             elif other.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -4643,7 +4686,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       break;
 
-      /* "cimpl/field.pyx":281
+      /* "cimpl/field.pyx":278
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~self.data[chunk_index]
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4652,7 +4695,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
       case 1:
 
-      /* "cimpl/field.pyx":282
+      /* "cimpl/field.pyx":279
  *                     self.data[chunk_index] = ~self.data[chunk_index]
  *             elif other.page_state == PAGE_PARTIAL:
  *                 for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -4664,7 +4707,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
         __pyx_v_chunk_index = __pyx_t_4;
 
-        /* "cimpl/field.pyx":283
+        /* "cimpl/field.pyx":280
  *             elif other.page_state == PAGE_PARTIAL:
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] ^= other.data[chunk_index]             # <<<<<<<<<<<<<<
@@ -4675,7 +4718,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
         (__pyx_v_self->data[__pyx_t_5]) = ((__pyx_v_self->data[__pyx_t_5]) ^ (__pyx_v_other->data[__pyx_v_chunk_index]));
       }
 
-      /* "cimpl/field.pyx":281
+      /* "cimpl/field.pyx":278
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~self.data[chunk_index]
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4686,7 +4729,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       default: break;
     }
 
-    /* "cimpl/field.pyx":275
+    /* "cimpl/field.pyx":272
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~other.data[chunk_index]
  *         elif self.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4697,7 +4740,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
     default: break;
   }
 
-  /* "cimpl/field.pyx":284
+  /* "cimpl/field.pyx":281
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] ^= other.data[chunk_index]
  *         self.calc_length()             # <<<<<<<<<<<<<<
@@ -4706,7 +4749,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->calc_length(__pyx_v_self);
 
-  /* "cimpl/field.pyx":254
+  /* "cimpl/field.pyx":251
  *         self.calc_length()
  * 
  *     cdef symmetric_difference_update(self, IdsPage other):             # <<<<<<<<<<<<<<
@@ -4722,7 +4765,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":286
+/* "cimpl/field.pyx":283
  *         self.calc_length()
  * 
  *     cdef IdsPage clone(self):             # <<<<<<<<<<<<<<
@@ -4740,19 +4783,19 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
   usize_t __pyx_t_4;
   __Pyx_RefNannySetupContext("clone", 0);
 
-  /* "cimpl/field.pyx":287
+  /* "cimpl/field.pyx":284
  * 
  *     cdef IdsPage clone(self):
  *         new_page = IdsPage()             # <<<<<<<<<<<<<<
  *         new_page.page_state = self.page_state
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_IdsPage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 287, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_IdsPage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 284, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_new_page = ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":288
+  /* "cimpl/field.pyx":285
  *     cdef IdsPage clone(self):
  *         new_page = IdsPage()
  *         new_page.page_state = self.page_state             # <<<<<<<<<<<<<<
@@ -4762,7 +4805,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
   __pyx_t_2 = __pyx_v_self->page_state;
   __pyx_v_new_page->page_state = __pyx_t_2;
 
-  /* "cimpl/field.pyx":290
+  /* "cimpl/field.pyx":287
  *         new_page.page_state = self.page_state
  * 
  *         if self.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4772,7 +4815,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
   __pyx_t_3 = ((__pyx_v_self->page_state == 1) != 0);
   if (__pyx_t_3) {
 
-    /* "cimpl/field.pyx":291
+    /* "cimpl/field.pyx":288
  * 
  *         if self.page_state == PAGE_PARTIAL:
  *             new_page._alloc()             # <<<<<<<<<<<<<<
@@ -4781,7 +4824,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_new_page->__pyx_vtab)->_alloc(__pyx_v_new_page, NULL);
 
-    /* "cimpl/field.pyx":292
+    /* "cimpl/field.pyx":289
  *         if self.page_state == PAGE_PARTIAL:
  *             new_page._alloc()
  *             memcpy(new_page.data, self.data, CHUNK_BYTES * PAGE_CHUNKS)             # <<<<<<<<<<<<<<
@@ -4790,7 +4833,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
  */
     (void)(memcpy(__pyx_v_new_page->data, __pyx_v_self->data, (CHUNK_BYTES * PAGE_CHUNKS)));
 
-    /* "cimpl/field.pyx":290
+    /* "cimpl/field.pyx":287
  *         new_page.page_state = self.page_state
  * 
  *         if self.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4799,7 +4842,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
  */
   }
 
-  /* "cimpl/field.pyx":293
+  /* "cimpl/field.pyx":290
  *             new_page._alloc()
  *             memcpy(new_page.data, self.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         new_page._count = self._count             # <<<<<<<<<<<<<<
@@ -4809,7 +4852,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
   __pyx_t_4 = __pyx_v_self->_count;
   __pyx_v_new_page->_count = __pyx_t_4;
 
-  /* "cimpl/field.pyx":294
+  /* "cimpl/field.pyx":291
  *             memcpy(new_page.data, self.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         new_page._count = self._count
  *         return new_page             # <<<<<<<<<<<<<<
@@ -4821,7 +4864,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
   __pyx_r = __pyx_v_new_page;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":286
+  /* "cimpl/field.pyx":283
  *         self.calc_length()
  * 
  *     cdef IdsPage clone(self):             # <<<<<<<<<<<<<<
@@ -4841,7 +4884,7 @@ static struct __pyx_obj_14sparsebitfield_IdsPage *__pyx_f_14sparsebitfield_7IdsP
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":296
+/* "cimpl/field.pyx":293
  *         return new_page
  * 
  *     def __richcmp__(IdsPage a,IdsPage b, operator):             # <<<<<<<<<<<<<<
@@ -4856,7 +4899,7 @@ static PyObject *__pyx_pw_14sparsebitfield_7IdsPage_10__richcmp__(PyObject *__py
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__richcmp__ (wrapper)", 0);
-  __pyx_v_operator = __Pyx_PyInt_From_int(__pyx_arg_operator); if (unlikely(!__pyx_v_operator)) __PYX_ERR(0, 296, __pyx_L3_error)
+  __pyx_v_operator = __Pyx_PyInt_From_int(__pyx_arg_operator); if (unlikely(!__pyx_v_operator)) __PYX_ERR(0, 293, __pyx_L3_error)
   __Pyx_GOTREF(__pyx_v_operator);
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -4864,7 +4907,7 @@ static PyObject *__pyx_pw_14sparsebitfield_7IdsPage_10__richcmp__(PyObject *__py
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_b), __pyx_ptype_14sparsebitfield_IdsPage, 1, "b", 0))) __PYX_ERR(0, 296, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_b), __pyx_ptype_14sparsebitfield_IdsPage, 1, "b", 0))) __PYX_ERR(0, 293, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_v_a), ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_v_b), ((PyObject *)__pyx_v_operator));
 
   /* function exit code */
@@ -4890,38 +4933,38 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
   usize_t __pyx_t_7;
   __Pyx_RefNannySetupContext("__richcmp__", 0);
 
-  /* "cimpl/field.pyx":298
+  /* "cimpl/field.pyx":295
  *     def __richcmp__(IdsPage a,IdsPage b, operator):
  *         cdef usize_t current
  *         if operator == 2:             # <<<<<<<<<<<<<<
  *             if a.count != b.count: # cheap
  *                 return False
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 295, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 298, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 295, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":299
+    /* "cimpl/field.pyx":296
  *         cdef usize_t current
  *         if operator == 2:
  *             if a.count != b.count: # cheap             # <<<<<<<<<<<<<<
  *                 return False
  *             if a.page_state != b.page_state:
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_a), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 299, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_a), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 296, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_b), __pyx_n_s_count); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 299, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_b), __pyx_n_s_count); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 296, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 299, __pyx_L1_error)
+    __pyx_t_4 = PyObject_RichCompare(__pyx_t_1, __pyx_t_3, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 296, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 299, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 296, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_2) {
 
-      /* "cimpl/field.pyx":300
+      /* "cimpl/field.pyx":297
  *         if operator == 2:
  *             if a.count != b.count: # cheap
  *                 return False             # <<<<<<<<<<<<<<
@@ -4933,7 +4976,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
       __pyx_r = Py_False;
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":299
+      /* "cimpl/field.pyx":296
  *         cdef usize_t current
  *         if operator == 2:
  *             if a.count != b.count: # cheap             # <<<<<<<<<<<<<<
@@ -4942,7 +4985,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
  */
     }
 
-    /* "cimpl/field.pyx":301
+    /* "cimpl/field.pyx":298
  *             if a.count != b.count: # cheap
  *                 return False
  *             if a.page_state != b.page_state:             # <<<<<<<<<<<<<<
@@ -4952,7 +4995,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
     __pyx_t_2 = ((__pyx_v_a->page_state != __pyx_v_b->page_state) != 0);
     if (__pyx_t_2) {
 
-      /* "cimpl/field.pyx":302
+      /* "cimpl/field.pyx":299
  *                 return False
  *             if a.page_state != b.page_state:
  *                 return False             # <<<<<<<<<<<<<<
@@ -4964,7 +5007,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
       __pyx_r = Py_False;
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":301
+      /* "cimpl/field.pyx":298
  *             if a.count != b.count: # cheap
  *                 return False
  *             if a.page_state != b.page_state:             # <<<<<<<<<<<<<<
@@ -4973,7 +5016,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
  */
     }
 
-    /* "cimpl/field.pyx":303
+    /* "cimpl/field.pyx":300
  *             if a.page_state != b.page_state:
  *                 return False
  *             if a.page_state != PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -4983,7 +5026,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
     __pyx_t_2 = ((__pyx_v_a->page_state != 1) != 0);
     if (__pyx_t_2) {
 
-      /* "cimpl/field.pyx":304
+      /* "cimpl/field.pyx":301
  *                 return False
  *             if a.page_state != PAGE_PARTIAL:
  *                 return True             # <<<<<<<<<<<<<<
@@ -4995,7 +5038,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
       __pyx_r = Py_True;
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":303
+      /* "cimpl/field.pyx":300
  *             if a.page_state != b.page_state:
  *                 return False
  *             if a.page_state != PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -5004,7 +5047,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
  */
     }
 
-    /* "cimpl/field.pyx":305
+    /* "cimpl/field.pyx":302
  *             if a.page_state != PAGE_PARTIAL:
  *                 return True
  *             for current in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
@@ -5016,7 +5059,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
     for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
       __pyx_v_current = __pyx_t_7;
 
-      /* "cimpl/field.pyx":306
+      /* "cimpl/field.pyx":303
  *                 return True
  *             for current in range(PAGE_CHUNKS):
  *                 if a.data[current] != b.data[current]:             # <<<<<<<<<<<<<<
@@ -5026,7 +5069,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
       __pyx_t_2 = (((__pyx_v_a->data[__pyx_v_current]) != (__pyx_v_b->data[__pyx_v_current])) != 0);
       if (__pyx_t_2) {
 
-        /* "cimpl/field.pyx":307
+        /* "cimpl/field.pyx":304
  *             for current in range(PAGE_CHUNKS):
  *                 if a.data[current] != b.data[current]:
  *                     return False             # <<<<<<<<<<<<<<
@@ -5038,7 +5081,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
         __pyx_r = Py_False;
         goto __pyx_L0;
 
-        /* "cimpl/field.pyx":306
+        /* "cimpl/field.pyx":303
  *                 return True
  *             for current in range(PAGE_CHUNKS):
  *                 if a.data[current] != b.data[current]:             # <<<<<<<<<<<<<<
@@ -5048,7 +5091,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
       }
     }
 
-    /* "cimpl/field.pyx":308
+    /* "cimpl/field.pyx":305
  *                 if a.data[current] != b.data[current]:
  *                     return False
  *             return True             # <<<<<<<<<<<<<<
@@ -5060,7 +5103,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
     __pyx_r = Py_True;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":298
+    /* "cimpl/field.pyx":295
  *     def __richcmp__(IdsPage a,IdsPage b, operator):
  *         cdef usize_t current
  *         if operator == 2:             # <<<<<<<<<<<<<<
@@ -5069,20 +5112,20 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
  */
   }
 
-  /* "cimpl/field.pyx":309
+  /* "cimpl/field.pyx":306
  *                     return False
  *             return True
  *         elif operator == 3:             # <<<<<<<<<<<<<<
  *             return not a == b
  *         raise NotImplementedError()
  */
-  __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 309, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 309, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 306, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":310
+    /* "cimpl/field.pyx":307
  *             return True
  *         elif operator == 3:
  *             return not a == b             # <<<<<<<<<<<<<<
@@ -5090,16 +5133,16 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
  * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = PyObject_RichCompare(((PyObject *)__pyx_v_a), ((PyObject *)__pyx_v_b), Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 310, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 310, __pyx_L1_error)
+    __pyx_t_4 = PyObject_RichCompare(((PyObject *)__pyx_v_a), ((PyObject *)__pyx_v_b), Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 307, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 307, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyBool_FromLong((!__pyx_t_2)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 310, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyBool_FromLong((!__pyx_t_2)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 307, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_r = __pyx_t_4;
     __pyx_t_4 = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":309
+    /* "cimpl/field.pyx":306
  *                     return False
  *             return True
  *         elif operator == 3:             # <<<<<<<<<<<<<<
@@ -5108,20 +5151,20 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
  */
   }
 
-  /* "cimpl/field.pyx":311
+  /* "cimpl/field.pyx":308
  *         elif operator == 3:
  *             return not a == b
  *         raise NotImplementedError()             # <<<<<<<<<<<<<<
  * 
  *     cdef char *set_bits(self, char *start, char *end):
  */
-  __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 311, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 308, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_Raise(__pyx_t_4, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __PYX_ERR(0, 311, __pyx_L1_error)
+  __PYX_ERR(0, 308, __pyx_L1_error)
 
-  /* "cimpl/field.pyx":296
+  /* "cimpl/field.pyx":293
  *         return new_page
  * 
  *     def __richcmp__(IdsPage a,IdsPage b, operator):             # <<<<<<<<<<<<<<
@@ -5142,7 +5185,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":313
+/* "cimpl/field.pyx":310
  *         raise NotImplementedError()
  * 
  *     cdef char *set_bits(self, char *start, char *end):             # <<<<<<<<<<<<<<
@@ -5159,7 +5202,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
   ptrdiff_t __pyx_t_3;
   __Pyx_RefNannySetupContext("set_bits", 0);
 
-  /* "cimpl/field.pyx":314
+  /* "cimpl/field.pyx":311
  * 
  *     cdef char *set_bits(self, char *start, char *end):
  *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)             # <<<<<<<<<<<<<<
@@ -5175,7 +5218,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
   }
   __pyx_v_bytes_to_read = __pyx_t_3;
 
-  /* "cimpl/field.pyx":315
+  /* "cimpl/field.pyx":312
  *     cdef char *set_bits(self, char *start, char *end):
  *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)
  *         self._alloc()             # <<<<<<<<<<<<<<
@@ -5184,7 +5227,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, NULL);
 
-  /* "cimpl/field.pyx":316
+  /* "cimpl/field.pyx":313
  *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)
  *         self._alloc()
  *         memcpy(self.data, start, bytes_to_read)             # <<<<<<<<<<<<<<
@@ -5193,7 +5236,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
  */
   (void)(memcpy(__pyx_v_self->data, __pyx_v_start, __pyx_v_bytes_to_read));
 
-  /* "cimpl/field.pyx":317
+  /* "cimpl/field.pyx":314
  *         self._alloc()
  *         memcpy(self.data, start, bytes_to_read)
  *         self.calc_length()             # <<<<<<<<<<<<<<
@@ -5202,7 +5245,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->calc_length(__pyx_v_self);
 
-  /* "cimpl/field.pyx":318
+  /* "cimpl/field.pyx":315
  *         memcpy(self.data, start, bytes_to_read)
  *         self.calc_length()
  *         return start + bytes_to_read             # <<<<<<<<<<<<<<
@@ -5212,7 +5255,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
   __pyx_r = (__pyx_v_start + __pyx_v_bytes_to_read);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":313
+  /* "cimpl/field.pyx":310
  *         raise NotImplementedError()
  * 
  *     cdef char *set_bits(self, char *start, char *end):             # <<<<<<<<<<<<<<
@@ -5333,7 +5376,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_13__setstate_cython__(CYTHON
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":334
+/* "cimpl/field.pyx":331
  *     __slots__ = ()
  * 
  *     def __cinit__(self, _data=None):             # <<<<<<<<<<<<<<
@@ -5370,7 +5413,7 @@ static int __pyx_pw_14sparsebitfield_14SparseBitfield_1__cinit__(PyObject *__pyx
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 334, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 331, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5384,7 +5427,7 @@ static int __pyx_pw_14sparsebitfield_14SparseBitfield_1__cinit__(PyObject *__pyx
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 334, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 331, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sparsebitfield.SparseBitfield.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5409,16 +5452,16 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield___cinit__(struct __pyx_obj
   int __pyx_t_7;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "cimpl/field.pyx":335
+  /* "cimpl/field.pyx":332
  * 
  *     def __cinit__(self, _data=None):
  *         self.pages = SortedDict({})             # <<<<<<<<<<<<<<
  *         if _data is not None:
  *             self.load(_data)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_SortedDict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_SortedDict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 332, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 335, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 332, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -5431,14 +5474,14 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield___cinit__(struct __pyx_obj
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 335, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 332, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5447,20 +5490,20 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield___cinit__(struct __pyx_obj
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 335, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 332, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -5472,7 +5515,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield___cinit__(struct __pyx_obj
   __pyx_v_self->pages = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":336
+  /* "cimpl/field.pyx":333
  *     def __cinit__(self, _data=None):
  *         self.pages = SortedDict({})
  *         if _data is not None:             # <<<<<<<<<<<<<<
@@ -5483,18 +5526,18 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield___cinit__(struct __pyx_obj
   __pyx_t_7 = (__pyx_t_6 != 0);
   if (__pyx_t_7) {
 
-    /* "cimpl/field.pyx":337
+    /* "cimpl/field.pyx":334
  *         self.pages = SortedDict({})
  *         if _data is not None:
  *             self.load(_data)             # <<<<<<<<<<<<<<
  * 
  *     cdef _ensure_page_exists(self, usize_t page):
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->load(__pyx_v_self, __pyx_v__data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 337, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->load(__pyx_v_self, __pyx_v__data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":336
+    /* "cimpl/field.pyx":333
  *     def __cinit__(self, _data=None):
  *         self.pages = SortedDict({})
  *         if _data is not None:             # <<<<<<<<<<<<<<
@@ -5503,7 +5546,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield___cinit__(struct __pyx_obj
  */
   }
 
-  /* "cimpl/field.pyx":334
+  /* "cimpl/field.pyx":331
  *     __slots__ = ()
  * 
  *     def __cinit__(self, _data=None):             # <<<<<<<<<<<<<<
@@ -5527,7 +5570,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield___cinit__(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":339
+/* "cimpl/field.pyx":336
  *             self.load(_data)
  * 
  *     cdef _ensure_page_exists(self, usize_t page):             # <<<<<<<<<<<<<<
@@ -5543,33 +5586,33 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield__ensure_page_exists(s
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("_ensure_page_exists", 0);
 
-  /* "cimpl/field.pyx":340
+  /* "cimpl/field.pyx":337
  * 
  *     cdef _ensure_page_exists(self, usize_t page):
  *         if page not in self.pages:             # <<<<<<<<<<<<<<
  *           self.pages[page] = IdsPage()
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_page); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 340, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_page); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 337, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 340, __pyx_L1_error)
+  __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 337, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "cimpl/field.pyx":341
+    /* "cimpl/field.pyx":338
  *     cdef _ensure_page_exists(self, usize_t page):
  *         if page not in self.pages:
  *           self.pages[page] = IdsPage()             # <<<<<<<<<<<<<<
  * 
  *     cpdef add(self, object number):
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_IdsPage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 341, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_IdsPage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 338, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->pages, __pyx_v_page, __pyx_t_1, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 341, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->pages, __pyx_v_page, __pyx_t_1, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 338, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":340
+    /* "cimpl/field.pyx":337
  * 
  *     cdef _ensure_page_exists(self, usize_t page):
  *         if page not in self.pages:             # <<<<<<<<<<<<<<
@@ -5578,7 +5621,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield__ensure_page_exists(s
  */
   }
 
-  /* "cimpl/field.pyx":339
+  /* "cimpl/field.pyx":336
  *             self.load(_data)
  * 
  *     cdef _ensure_page_exists(self, usize_t page):             # <<<<<<<<<<<<<<
@@ -5599,7 +5642,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield__ensure_page_exists(s
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":343
+/* "cimpl/field.pyx":340
  *           self.pages[page] = IdsPage()
  * 
  *     cpdef add(self, object number):             # <<<<<<<<<<<<<<
@@ -5625,7 +5668,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 343, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_add); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 340, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_3add)) {
       __Pyx_XDECREF(__pyx_r);
@@ -5641,13 +5684,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 340, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_number};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 340, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -5655,19 +5698,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_number};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 340, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 343, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 340, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(__pyx_v_number);
           __Pyx_GIVEREF(__pyx_v_number);
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_number);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 340, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -5681,63 +5724,63 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":345
+  /* "cimpl/field.pyx":342
  *     cpdef add(self, object number):
  *         """Add a positive integer to the bitfield"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         self._ensure_page_exists(page_no)
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_page_no = __pyx_t_6;
 
-  /* "cimpl/field.pyx":346
+  /* "cimpl/field.pyx":343
  *         """Add a positive integer to the bitfield"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         self._ensure_page_exists(page_no)
  *         cdef IdsPage page = self.pages[page_no]
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 346, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 346, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 346, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_page_index = __pyx_t_6;
 
-  /* "cimpl/field.pyx":347
+  /* "cimpl/field.pyx":344
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         self._ensure_page_exists(page_no)             # <<<<<<<<<<<<<<
  *         cdef IdsPage page = self.pages[page_no]
  *         page.add(page_index)
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 347, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 344, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":348
+  /* "cimpl/field.pyx":345
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         self._ensure_page_exists(page_no)
  *         cdef IdsPage page = self.pages[page_no]             # <<<<<<<<<<<<<<
  *         page.add(page_index)
  * 
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 345, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 348, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 345, __pyx_L1_error)
   __pyx_v_page = ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":349
+  /* "cimpl/field.pyx":346
  *         self._ensure_page_exists(page_no)
  *         cdef IdsPage page = self.pages[page_no]
  *         page.add(page_index)             # <<<<<<<<<<<<<<
@@ -5746,7 +5789,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->add(__pyx_v_page, __pyx_v_page_index);
 
-  /* "cimpl/field.pyx":343
+  /* "cimpl/field.pyx":340
  *           self.pages[page] = IdsPage()
  * 
  *     cpdef add(self, object number):             # <<<<<<<<<<<<<<
@@ -5792,7 +5835,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_2add(struct __pyx_ob
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("add", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_add(__pyx_v_self, __pyx_v_number, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 343, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_add(__pyx_v_self, __pyx_v_number, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 340, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5809,7 +5852,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_2add(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":351
+/* "cimpl/field.pyx":348
  *         page.add(page_index)
  * 
  *     cpdef remove(SparseBitfield self, object number):             # <<<<<<<<<<<<<<
@@ -5840,7 +5883,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_remove); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_remove); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_5remove)) {
       __Pyx_XDECREF(__pyx_r);
@@ -5856,13 +5899,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_number};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -5870,19 +5913,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_number};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 351, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 348, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(__pyx_v_number);
           __Pyx_GIVEREF(__pyx_v_number);
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_number);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -5896,50 +5939,50 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":354
+  /* "cimpl/field.pyx":351
  *         """Remove a positive integer from the bitfield
  *         If the integer does not exist in the field, raise a KeyError"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         if page_no not in self.pages:
  *             raise KeyError()
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 354, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 354, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 351, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_page_no = __pyx_t_6;
 
-  /* "cimpl/field.pyx":355
+  /* "cimpl/field.pyx":352
  *         If the integer does not exist in the field, raise a KeyError"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             raise KeyError()
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 352, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 355, __pyx_L1_error)
+  __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 352, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_8 = (__pyx_t_7 != 0);
   if (unlikely(__pyx_t_8)) {
 
-    /* "cimpl/field.pyx":356
+    /* "cimpl/field.pyx":353
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:
  *             raise KeyError()             # <<<<<<<<<<<<<<
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         cdef IdsPage page = self.pages[page_no]
  */
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_builtin_KeyError); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 356, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_builtin_KeyError); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 356, __pyx_L1_error)
+    __PYX_ERR(0, 353, __pyx_L1_error)
 
-    /* "cimpl/field.pyx":355
+    /* "cimpl/field.pyx":352
  *         If the integer does not exist in the field, raise a KeyError"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
@@ -5948,49 +5991,49 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
  */
   }
 
-  /* "cimpl/field.pyx":357
+  /* "cimpl/field.pyx":354
  *         if page_no not in self.pages:
  *             raise KeyError()
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef IdsPage page = self.pages[page_no]
  *         cdef size_t before_count = page.count
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 354, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 354, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 354, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_page_index = __pyx_t_6;
 
-  /* "cimpl/field.pyx":358
+  /* "cimpl/field.pyx":355
  *             raise KeyError()
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         cdef IdsPage page = self.pages[page_no]             # <<<<<<<<<<<<<<
  *         cdef size_t before_count = page.count
  *         page.remove(page_index)
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 358, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 355, __pyx_L1_error)
   __pyx_v_page = ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":359
+  /* "cimpl/field.pyx":356
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         cdef IdsPage page = self.pages[page_no]
  *         cdef size_t before_count = page.count             # <<<<<<<<<<<<<<
  *         page.remove(page_index)
  *         cdef size_t after_count = page.count
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_page), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_page), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_9 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_9 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 356, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_before_count = __pyx_t_9;
 
-  /* "cimpl/field.pyx":360
+  /* "cimpl/field.pyx":357
  *         cdef IdsPage page = self.pages[page_no]
  *         cdef size_t before_count = page.count
  *         page.remove(page_index)             # <<<<<<<<<<<<<<
@@ -5999,20 +6042,20 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->remove(__pyx_v_page, __pyx_v_page_index);
 
-  /* "cimpl/field.pyx":361
+  /* "cimpl/field.pyx":358
  *         cdef size_t before_count = page.count
  *         page.remove(page_index)
  *         cdef size_t after_count = page.count             # <<<<<<<<<<<<<<
  *         if before_count == after_count:
  *             raise KeyError()
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_page), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_page), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 358, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_9 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyInt_As_size_t(__pyx_t_1); if (unlikely((__pyx_t_9 == (size_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 358, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_after_count = __pyx_t_9;
 
-  /* "cimpl/field.pyx":362
+  /* "cimpl/field.pyx":359
  *         page.remove(page_index)
  *         cdef size_t after_count = page.count
  *         if before_count == after_count:             # <<<<<<<<<<<<<<
@@ -6022,20 +6065,20 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
   __pyx_t_8 = ((__pyx_v_before_count == __pyx_v_after_count) != 0);
   if (unlikely(__pyx_t_8)) {
 
-    /* "cimpl/field.pyx":363
+    /* "cimpl/field.pyx":360
  *         cdef size_t after_count = page.count
  *         if before_count == after_count:
  *             raise KeyError()             # <<<<<<<<<<<<<<
  * 
  *     cpdef discard(SparseBitfield self, object number):
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_KeyError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 363, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_KeyError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 360, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 363, __pyx_L1_error)
+    __PYX_ERR(0, 360, __pyx_L1_error)
 
-    /* "cimpl/field.pyx":362
+    /* "cimpl/field.pyx":359
  *         page.remove(page_index)
  *         cdef size_t after_count = page.count
  *         if before_count == after_count:             # <<<<<<<<<<<<<<
@@ -6044,7 +6087,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
  */
   }
 
-  /* "cimpl/field.pyx":351
+  /* "cimpl/field.pyx":348
  *         page.add(page_index)
  * 
  *     cpdef remove(SparseBitfield self, object number):             # <<<<<<<<<<<<<<
@@ -6090,7 +6133,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_4remove(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("remove", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_remove(__pyx_v_self, __pyx_v_number, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_remove(__pyx_v_self, __pyx_v_number, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6107,7 +6150,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_4remove(struct __pyx
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":365
+/* "cimpl/field.pyx":362
  *             raise KeyError()
  * 
  *     cpdef discard(SparseBitfield self, object number):             # <<<<<<<<<<<<<<
@@ -6135,7 +6178,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_discard); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 365, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_discard); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 362, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_7discard)) {
       __Pyx_XDECREF(__pyx_r);
@@ -6151,13 +6194,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_number); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 362, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_number};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 362, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -6165,19 +6208,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_v_number};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 362, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 365, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 362, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(__pyx_v_number);
           __Pyx_GIVEREF(__pyx_v_number);
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_number);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 362, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -6191,37 +6234,37 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":368
+  /* "cimpl/field.pyx":365
  *         """Remove a positive integer from the bitfield if it is a member.
  *         If the element is not a member, do nothing."""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         if page_no not in self.pages:
  *             return
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 368, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 365, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 368, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 368, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 365, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_page_no = __pyx_t_6;
 
-  /* "cimpl/field.pyx":369
+  /* "cimpl/field.pyx":366
  *         If the element is not a member, do nothing."""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             return
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 369, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 369, __pyx_L1_error)
+  __pyx_t_7 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_8 = (__pyx_t_7 != 0);
   if (__pyx_t_8) {
 
-    /* "cimpl/field.pyx":370
+    /* "cimpl/field.pyx":367
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:
  *             return             # <<<<<<<<<<<<<<
@@ -6232,7 +6275,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":369
+    /* "cimpl/field.pyx":366
  *         If the element is not a member, do nothing."""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
@@ -6241,36 +6284,36 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
  */
   }
 
-  /* "cimpl/field.pyx":371
+  /* "cimpl/field.pyx":368
  *         if page_no not in self.pages:
  *             return
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef IdsPage page = self.pages[page_no]
  *         page.remove(page_index)
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 371, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 371, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 368, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_page_index = __pyx_t_6;
 
-  /* "cimpl/field.pyx":372
+  /* "cimpl/field.pyx":369
  *             return
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         cdef IdsPage page = self.pages[page_no]             # <<<<<<<<<<<<<<
  *         page.remove(page_index)
  * 
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 369, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 372, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 369, __pyx_L1_error)
   __pyx_v_page = ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":373
+  /* "cimpl/field.pyx":370
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         cdef IdsPage page = self.pages[page_no]
  *         page.remove(page_index)             # <<<<<<<<<<<<<<
@@ -6279,7 +6322,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->remove(__pyx_v_page, __pyx_v_page_index);
 
-  /* "cimpl/field.pyx":365
+  /* "cimpl/field.pyx":362
  *             raise KeyError()
  * 
  *     cpdef discard(SparseBitfield self, object number):             # <<<<<<<<<<<<<<
@@ -6325,7 +6368,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_6discard(struct __py
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("discard", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_discard(__pyx_v_self, __pyx_v_number, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_discard(__pyx_v_self, __pyx_v_number, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 362, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6342,7 +6385,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_6discard(struct __py
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":377
+/* "cimpl/field.pyx":374
  *     property count:
  *         """The number of integers in the field"""
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -6369,13 +6412,15 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_5count___get__(struc
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  PyObject *(*__pyx_t_5)(PyObject *);
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  int __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "cimpl/field.pyx":378
+  /* "cimpl/field.pyx":375
  *         """The number of integers in the field"""
  *         def __get__(self):
  *             cdef object num = 0             # <<<<<<<<<<<<<<
@@ -6385,102 +6430,49 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_5count___get__(struc
   __Pyx_INCREF(__pyx_int_0);
   __pyx_v_num = __pyx_int_0;
 
-  /* "cimpl/field.pyx":379
+  /* "cimpl/field.pyx":376
  *         def __get__(self):
  *             cdef object num = 0
  *             for page in self.pages.values():             # <<<<<<<<<<<<<<
  *                 num += page.count
  *             return num
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->pages, __pyx_n_s_values); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 379, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
+  __pyx_t_2 = 0;
+  if (unlikely(__pyx_v_self->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "values");
+    __PYX_ERR(0, 376, __pyx_L1_error)
   }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
-    __pyx_t_5 = NULL;
-  } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 379, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 379, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_5)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 379, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 379, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 379, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_5(__pyx_t_2);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 379, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    __Pyx_XDECREF_SET(__pyx_v_page, __pyx_t_1);
-    __pyx_t_1 = 0;
+  __pyx_t_5 = __Pyx_dict_iterator(__pyx_v_self->pages, 0, __pyx_n_s_values, (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 376, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_5;
+  __pyx_t_5 = 0;
+  while (1) {
+    __pyx_t_6 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_3, &__pyx_t_2, NULL, &__pyx_t_5, NULL, __pyx_t_4);
+    if (unlikely(__pyx_t_6 == 0)) break;
+    if (unlikely(__pyx_t_6 == -1)) __PYX_ERR(0, 376, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_XDECREF_SET(__pyx_v_page, __pyx_t_5);
+    __pyx_t_5 = 0;
 
-    /* "cimpl/field.pyx":380
+    /* "cimpl/field.pyx":377
  *             cdef object num = 0
  *             for page in self.pages.values():
  *                 num += page.count             # <<<<<<<<<<<<<<
  *             return num
  * 
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_page, __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 380, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_num, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 380, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF_SET(__pyx_v_num, __pyx_t_3);
-    __pyx_t_3 = 0;
-
-    /* "cimpl/field.pyx":379
- *         def __get__(self):
- *             cdef object num = 0
- *             for page in self.pages.values():             # <<<<<<<<<<<<<<
- *                 num += page.count
- *             return num
- */
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_page, __pyx_n_s_count); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 377, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_7 = PyNumber_InPlaceAdd(__pyx_v_num, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 377, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_DECREF_SET(__pyx_v_num, __pyx_t_7);
+    __pyx_t_7 = 0;
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":381
+  /* "cimpl/field.pyx":378
  *             for page in self.pages.values():
  *                 num += page.count
  *             return num             # <<<<<<<<<<<<<<
@@ -6492,7 +6484,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_5count___get__(struc
   __pyx_r = __pyx_v_num;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":377
+  /* "cimpl/field.pyx":374
  *     property count:
  *         """The number of integers in the field"""
  *         def __get__(self):             # <<<<<<<<<<<<<<
@@ -6503,8 +6495,8 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_5count___get__(struc
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("sparsebitfield.SparseBitfield.count.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -6515,7 +6507,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_5count___get__(struc
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":383
+/* "cimpl/field.pyx":380
  *             return num
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
@@ -6547,21 +6539,21 @@ static Py_ssize_t __pyx_pf_14sparsebitfield_14SparseBitfield_8__len__(struct __p
   Py_ssize_t __pyx_t_2;
   __Pyx_RefNannySetupContext("__len__", 0);
 
-  /* "cimpl/field.pyx":385
+  /* "cimpl/field.pyx":382
  *     def __len__(self):
  *         """The number of integers in the field"""
  *         return self.count             # <<<<<<<<<<<<<<
  * 
  *     def __contains__(self, number):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 385, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_count); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 382, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_2 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 385, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_2 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 382, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":383
+  /* "cimpl/field.pyx":380
  *             return num
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
@@ -6579,7 +6571,7 @@ static Py_ssize_t __pyx_pf_14sparsebitfield_14SparseBitfield_8__len__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":387
+/* "cimpl/field.pyx":384
  *         return self.count
  * 
  *     def __contains__(self, number):             # <<<<<<<<<<<<<<
@@ -6616,37 +6608,37 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("__contains__", 0);
 
-  /* "cimpl/field.pyx":389
+  /* "cimpl/field.pyx":386
  *     def __contains__(self, number):
  *         """Returns true if number is present in the field"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         if page_no not in self.pages:
  *             return False
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 389, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 389, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 389, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_page_no = __pyx_t_3;
 
-  /* "cimpl/field.pyx":390
+  /* "cimpl/field.pyx":387
  *         """Returns true if number is present in the field"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             return False
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 390, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 387, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_5 = (__pyx_t_4 != 0);
   if (__pyx_t_5) {
 
-    /* "cimpl/field.pyx":391
+    /* "cimpl/field.pyx":388
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:
  *             return False             # <<<<<<<<<<<<<<
@@ -6656,7 +6648,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":390
+    /* "cimpl/field.pyx":387
  *         """Returns true if number is present in the field"""
  *         cdef usize_t page_no = number / PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
@@ -6665,40 +6657,40 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
  */
   }
 
-  /* "cimpl/field.pyx":392
+  /* "cimpl/field.pyx":389
  *         if page_no not in self.pages:
  *             return False
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         return page_index in self.pages[page_no]
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 392, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 389, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 392, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Remainder(__pyx_v_number, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 389, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_3 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 392, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_3 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 389, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_page_index = __pyx_t_3;
 
-  /* "cimpl/field.pyx":393
+  /* "cimpl/field.pyx":390
  *             return False
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         return page_index in self.pages[page_no]             # <<<<<<<<<<<<<<
  * 
  *     def __iter__(self):
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_page_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 393, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_page_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 393, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 393, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_t_2, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 390, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":387
+  /* "cimpl/field.pyx":384
  *         return self.count
  * 
  *     def __contains__(self, number):             # <<<<<<<<<<<<<<
@@ -6718,7 +6710,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
 }
 static PyObject *__pyx_gb_14sparsebitfield_14SparseBitfield_14generator1(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "cimpl/field.pyx":395
+/* "cimpl/field.pyx":392
  *         return page_index in self.pages[page_no]
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -6752,7 +6744,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_12__iter__(struct __
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_14sparsebitfield___pyx_scope_struct_1___iter__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 395, __pyx_L1_error)
+    __PYX_ERR(0, 392, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -6760,7 +6752,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_12__iter__(struct __
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_14sparsebitfield_14SparseBitfield_14generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iter, __pyx_n_s_SparseBitfield___iter, __pyx_n_s_sparsebitfield); if (unlikely(!gen)) __PYX_ERR(0, 395, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_14sparsebitfield_14SparseBitfield_14generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iter, __pyx_n_s_SparseBitfield___iter, __pyx_n_s_sparsebitfield); if (unlikely(!gen)) __PYX_ERR(0, 392, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -6781,152 +6773,63 @@ static PyObject *__pyx_gb_14sparsebitfield_14SparseBitfield_14generator1(__pyx_C
   struct __pyx_obj_14sparsebitfield___pyx_scope_struct_1___iter__ *__pyx_cur_scope = ((struct __pyx_obj_14sparsebitfield___pyx_scope_struct_1___iter__ *)__pyx_generator->closure);
   PyObject *__pyx_r = NULL;
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  Py_ssize_t __pyx_t_4;
-  PyObject *(*__pyx_t_5)(PyObject *);
+  Py_ssize_t __pyx_t_2;
+  Py_ssize_t __pyx_t_3;
+  int __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *(*__pyx_t_8)(PyObject *);
-  usize_t __pyx_t_9;
-  Py_ssize_t __pyx_t_10;
-  PyObject *(*__pyx_t_11)(PyObject *);
+  int __pyx_t_7;
+  usize_t __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  PyObject *(*__pyx_t_10)(PyObject *);
+  PyObject *__pyx_t_11 = NULL;
   PyObject *__pyx_t_12 = NULL;
+  PyObject *__pyx_t_13 = NULL;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__iter__", 0);
   switch (__pyx_generator->resume_label) {
     case 0: goto __pyx_L3_first_run;
-    case 1: goto __pyx_L10_resume_from_yield;
+    case 1: goto __pyx_L8_resume_from_yield;
     default: /* CPython raises the right error here */
     __Pyx_RefNannyFinishContext();
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 395, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 392, __pyx_L1_error)
 
-  /* "cimpl/field.pyx":401
+  /* "cimpl/field.pyx":398
  *         cdef usize_t next_item
  * 
  *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
  *              for next_item in page:
  *                  yield <object>next_item + (<object>page_no * <object>PAGE_FULL_COUNT)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_cur_scope->__pyx_v_self->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 401, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
+  __pyx_t_2 = 0;
+  if (unlikely(__pyx_cur_scope->__pyx_v_self->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 398, __pyx_L1_error)
   }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_4 = 0;
-    __pyx_t_5 = NULL;
-  } else {
-    __pyx_t_4 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 401, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 401, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_5)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 401, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_4); __Pyx_INCREF(__pyx_t_1); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 401, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 401, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_5(__pyx_t_2);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 401, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 401, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_6 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_6 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_6);
-      #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_7 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 401, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_8 = Py_TYPE(__pyx_t_7)->tp_iternext;
-      index = 0; __pyx_t_3 = __pyx_t_8(__pyx_t_7); if (unlikely(!__pyx_t_3)) goto __pyx_L6_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_6 = __pyx_t_8(__pyx_t_7); if (unlikely(!__pyx_t_6)) goto __pyx_L6_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_6);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_7), 2) < 0) __PYX_ERR(0, 401, __pyx_L1_error)
-      __pyx_t_8 = NULL;
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      goto __pyx_L7_unpacking_done;
-      __pyx_L6_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_8 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 401, __pyx_L1_error)
-      __pyx_L7_unpacking_done:;
-    }
-    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 401, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 401, __pyx_L1_error)
-    __pyx_cur_scope->__pyx_v_page_no = __pyx_t_9;
+  __pyx_t_5 = __Pyx_dict_iterator(__pyx_cur_scope->__pyx_v_self->pages, 0, __pyx_n_s_items, (&__pyx_t_3), (&__pyx_t_4)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 398, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_5;
+  __pyx_t_5 = 0;
+  while (1) {
+    __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_3, &__pyx_t_2, &__pyx_t_5, &__pyx_t_6, NULL, __pyx_t_4);
+    if (unlikely(__pyx_t_7 == 0)) break;
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 398, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_8 = __Pyx_PyInt_As_usize_t(__pyx_t_5); if (unlikely((__pyx_t_8 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 398, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 398, __pyx_L1_error)
+    __pyx_cur_scope->__pyx_v_page_no = __pyx_t_8;
     __Pyx_XGOTREF(((PyObject *)__pyx_cur_scope->__pyx_v_page));
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_6));
     __Pyx_GIVEREF(__pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "cimpl/field.pyx":402
+    /* "cimpl/field.pyx":399
  * 
  *         for page_no, page in self.pages.items():
  *              for next_item in page:             # <<<<<<<<<<<<<<
@@ -6934,99 +6837,101 @@ static PyObject *__pyx_gb_14sparsebitfield_14SparseBitfield_14generator1(__pyx_C
  * 
  */
     if (likely(PyList_CheckExact(((PyObject *)__pyx_cur_scope->__pyx_v_page))) || PyTuple_CheckExact(((PyObject *)__pyx_cur_scope->__pyx_v_page))) {
-      __pyx_t_1 = ((PyObject *)__pyx_cur_scope->__pyx_v_page); __Pyx_INCREF(__pyx_t_1); __pyx_t_10 = 0;
-      __pyx_t_11 = NULL;
+      __pyx_t_6 = ((PyObject *)__pyx_cur_scope->__pyx_v_page); __Pyx_INCREF(__pyx_t_6); __pyx_t_9 = 0;
+      __pyx_t_10 = NULL;
     } else {
-      __pyx_t_10 = -1; __pyx_t_1 = PyObject_GetIter(((PyObject *)__pyx_cur_scope->__pyx_v_page)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_11 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 402, __pyx_L1_error)
+      __pyx_t_9 = -1; __pyx_t_6 = PyObject_GetIter(((PyObject *)__pyx_cur_scope->__pyx_v_page)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 399, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_10 = Py_TYPE(__pyx_t_6)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 399, __pyx_L1_error)
     }
     for (;;) {
-      if (likely(!__pyx_t_11)) {
-        if (likely(PyList_CheckExact(__pyx_t_1))) {
-          if (__pyx_t_10 >= PyList_GET_SIZE(__pyx_t_1)) break;
+      if (likely(!__pyx_t_10)) {
+        if (likely(PyList_CheckExact(__pyx_t_6))) {
+          if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_6 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_10); __Pyx_INCREF(__pyx_t_6); __pyx_t_10++; if (unlikely(0 < 0)) __PYX_ERR(0, 402, __pyx_L1_error)
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_6, __pyx_t_9); __Pyx_INCREF(__pyx_t_5); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 399, __pyx_L1_error)
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 402, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_6);
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_5);
           #endif
         } else {
-          if (__pyx_t_10 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+          if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_6)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_10); __Pyx_INCREF(__pyx_t_6); __pyx_t_10++; if (unlikely(0 < 0)) __PYX_ERR(0, 402, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_6, __pyx_t_9); __Pyx_INCREF(__pyx_t_5); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 399, __pyx_L1_error)
           #else
-          __pyx_t_6 = PySequence_ITEM(__pyx_t_1, __pyx_t_10); __pyx_t_10++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 402, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_6);
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_6, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 399, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_5);
           #endif
         }
       } else {
-        __pyx_t_6 = __pyx_t_11(__pyx_t_1);
-        if (unlikely(!__pyx_t_6)) {
+        __pyx_t_5 = __pyx_t_10(__pyx_t_6);
+        if (unlikely(!__pyx_t_5)) {
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 402, __pyx_L1_error)
+            else __PYX_ERR(0, 399, __pyx_L1_error)
           }
           break;
         }
-        __Pyx_GOTREF(__pyx_t_6);
+        __Pyx_GOTREF(__pyx_t_5);
       }
-      __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_6); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 402, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_cur_scope->__pyx_v_next_item = __pyx_t_9;
+      __pyx_t_8 = __Pyx_PyInt_As_usize_t(__pyx_t_5); if (unlikely((__pyx_t_8 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 399, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_cur_scope->__pyx_v_next_item = __pyx_t_8;
 
-      /* "cimpl/field.pyx":403
+      /* "cimpl/field.pyx":400
  *         for page_no, page in self.pages.items():
  *              for next_item in page:
  *                  yield <object>next_item + (<object>page_no * <object>PAGE_FULL_COUNT)             # <<<<<<<<<<<<<<
  * 
  *     def __richcmp__(SparseBitfield a,SparseBitfield b, operator):
  */
-      __pyx_t_6 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_next_item); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_page_no); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_12 = PyNumber_Multiply(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 403, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_next_item); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 400, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_5);
+      __pyx_t_11 = __Pyx_PyInt_From_usize_t(__pyx_cur_scope->__pyx_v_page_no); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 400, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_11);
+      __pyx_t_12 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 400, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = PyNumber_Add(__pyx_t_6, __pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 403, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_13 = PyNumber_Multiply(__pyx_t_11, __pyx_t_12); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 400, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_13);
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_r = __pyx_t_7;
-      __pyx_t_7 = 0;
+      __pyx_t_12 = PyNumber_Add(__pyx_t_5, __pyx_t_13); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 400, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_12);
+      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+      __pyx_r = __pyx_t_12;
+      __pyx_t_12 = 0;
       __Pyx_XGIVEREF(__pyx_t_1);
       __pyx_cur_scope->__pyx_t_0 = __pyx_t_1;
-      __Pyx_XGIVEREF(__pyx_t_2);
       __pyx_cur_scope->__pyx_t_1 = __pyx_t_2;
-      __pyx_cur_scope->__pyx_t_2 = __pyx_t_4;
-      __pyx_cur_scope->__pyx_t_3 = __pyx_t_5;
-      __pyx_cur_scope->__pyx_t_4 = __pyx_t_10;
-      __pyx_cur_scope->__pyx_t_5 = __pyx_t_11;
+      __pyx_cur_scope->__pyx_t_2 = __pyx_t_3;
+      __pyx_cur_scope->__pyx_t_3 = __pyx_t_4;
+      __Pyx_XGIVEREF(__pyx_t_6);
+      __pyx_cur_scope->__pyx_t_4 = __pyx_t_6;
+      __pyx_cur_scope->__pyx_t_5 = __pyx_t_9;
+      __pyx_cur_scope->__pyx_t_6 = __pyx_t_10;
       __Pyx_XGIVEREF(__pyx_r);
       __Pyx_RefNannyFinishContext();
       __Pyx_Coroutine_ResetAndClearException(__pyx_generator);
       /* return from generator, yielding value */
       __pyx_generator->resume_label = 1;
       return __pyx_r;
-      __pyx_L10_resume_from_yield:;
+      __pyx_L8_resume_from_yield:;
       __pyx_t_1 = __pyx_cur_scope->__pyx_t_0;
       __pyx_cur_scope->__pyx_t_0 = 0;
       __Pyx_XGOTREF(__pyx_t_1);
       __pyx_t_2 = __pyx_cur_scope->__pyx_t_1;
-      __pyx_cur_scope->__pyx_t_1 = 0;
-      __Pyx_XGOTREF(__pyx_t_2);
-      __pyx_t_4 = __pyx_cur_scope->__pyx_t_2;
-      __pyx_t_5 = __pyx_cur_scope->__pyx_t_3;
-      __pyx_t_10 = __pyx_cur_scope->__pyx_t_4;
-      __pyx_t_11 = __pyx_cur_scope->__pyx_t_5;
-      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 403, __pyx_L1_error)
+      __pyx_t_3 = __pyx_cur_scope->__pyx_t_2;
+      __pyx_t_4 = __pyx_cur_scope->__pyx_t_3;
+      __pyx_t_6 = __pyx_cur_scope->__pyx_t_4;
+      __pyx_cur_scope->__pyx_t_4 = 0;
+      __Pyx_XGOTREF(__pyx_t_6);
+      __pyx_t_9 = __pyx_cur_scope->__pyx_t_5;
+      __pyx_t_10 = __pyx_cur_scope->__pyx_t_6;
+      if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 400, __pyx_L1_error)
 
-      /* "cimpl/field.pyx":402
+      /* "cimpl/field.pyx":399
  * 
  *         for page_no, page in self.pages.items():
  *              for next_item in page:             # <<<<<<<<<<<<<<
@@ -7034,20 +6939,12 @@ static PyObject *__pyx_gb_14sparsebitfield_14SparseBitfield_14generator1(__pyx_C
  * 
  */
     }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "cimpl/field.pyx":401
- *         cdef usize_t next_item
- * 
- *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
- *              for next_item in page:
- *                  yield <object>next_item + (<object>page_no * <object>PAGE_FULL_COUNT)
- */
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "cimpl/field.pyx":395
+  /* "cimpl/field.pyx":392
  *         return page_index in self.pages[page_no]
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -7060,11 +6957,11 @@ static PyObject *__pyx_gb_14sparsebitfield_14SparseBitfield_14generator1(__pyx_C
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_13);
   __Pyx_AddTraceback("__iter__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_r); __pyx_r = 0;
@@ -7075,7 +6972,7 @@ static PyObject *__pyx_gb_14sparsebitfield_14SparseBitfield_14generator1(__pyx_C
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":405
+/* "cimpl/field.pyx":402
  *                  yield <object>next_item + (<object>page_no * <object>PAGE_FULL_COUNT)
  * 
  *     def __richcmp__(SparseBitfield a,SparseBitfield b, operator):             # <<<<<<<<<<<<<<
@@ -7090,7 +6987,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_16__richcmp__(PyObje
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__richcmp__ (wrapper)", 0);
-  __pyx_v_operator = __Pyx_PyInt_From_int(__pyx_arg_operator); if (unlikely(!__pyx_v_operator)) __PYX_ERR(0, 405, __pyx_L3_error)
+  __pyx_v_operator = __Pyx_PyInt_From_int(__pyx_arg_operator); if (unlikely(!__pyx_v_operator)) __PYX_ERR(0, 402, __pyx_L3_error)
   __Pyx_GOTREF(__pyx_v_operator);
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7098,7 +6995,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_16__richcmp__(PyObje
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_b), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "b", 0))) __PYX_ERR(0, 405, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_b), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "b", 0))) __PYX_ERR(0, 402, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_a), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_b), ((PyObject *)__pyx_v_operator));
 
   /* function exit code */
@@ -7120,27 +7017,28 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
   PyObject *__pyx_t_3 = NULL;
   Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
-  PyObject *__pyx_t_6 = NULL;
-  PyObject *(*__pyx_t_7)(PyObject *);
+  int __pyx_t_6;
+  int __pyx_t_7;
   usize_t __pyx_t_8;
   int __pyx_t_9;
   PyObject *__pyx_t_10 = NULL;
+  PyObject *__pyx_t_11 = NULL;
   __Pyx_RefNannySetupContext("__richcmp__", 0);
 
-  /* "cimpl/field.pyx":407
+  /* "cimpl/field.pyx":404
  *     def __richcmp__(SparseBitfield a,SparseBitfield b, operator):
  *         cdef usize_t page_no
  *         if operator == 0:             # <<<<<<<<<<<<<<
  *             return (b != a) and (a.issubset(b))
  *         if operator == 1:
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 407, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":408
+    /* "cimpl/field.pyx":405
  *         cdef usize_t page_no
  *         if operator == 0:
  *             return (b != a) and (a.issubset(b))             # <<<<<<<<<<<<<<
@@ -7148,8 +7046,8 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  *             return a.issubset(b)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_v_b), ((PyObject *)__pyx_v_a), Py_NE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 408, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 408, __pyx_L1_error)
+    __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_v_b), ((PyObject *)__pyx_v_a), Py_NE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 405, __pyx_L1_error)
     if (__pyx_t_2) {
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else {
@@ -7158,7 +7056,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       goto __pyx_L4_bool_binop_done;
     }
-    __pyx_t_3 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_a->__pyx_vtab)->issubset(__pyx_v_a, __pyx_v_b, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 408, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_a->__pyx_vtab)->issubset(__pyx_v_a, __pyx_v_b, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 405, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_t_3);
     __pyx_t_1 = __pyx_t_3;
@@ -7168,7 +7066,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":407
+    /* "cimpl/field.pyx":404
  *     def __richcmp__(SparseBitfield a,SparseBitfield b, operator):
  *         cdef usize_t page_no
  *         if operator == 0:             # <<<<<<<<<<<<<<
@@ -7177,20 +7075,20 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
   }
 
-  /* "cimpl/field.pyx":409
+  /* "cimpl/field.pyx":406
  *         if operator == 0:
  *             return (b != a) and (a.issubset(b))
  *         if operator == 1:             # <<<<<<<<<<<<<<
  *             return a.issubset(b)
  *         if operator == 2:
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 406, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":410
+    /* "cimpl/field.pyx":407
  *             return (b != a) and (a.issubset(b))
  *         if operator == 1:
  *             return a.issubset(b)             # <<<<<<<<<<<<<<
@@ -7198,13 +7096,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  *             if len(a.pages) != len(b.pages):
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_a->__pyx_vtab)->issubset(__pyx_v_a, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 410, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_a->__pyx_vtab)->issubset(__pyx_v_a, __pyx_v_b, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":409
+    /* "cimpl/field.pyx":406
  *         if operator == 0:
  *             return (b != a) and (a.issubset(b))
  *         if operator == 1:             # <<<<<<<<<<<<<<
@@ -7213,20 +7111,20 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
   }
 
-  /* "cimpl/field.pyx":411
+  /* "cimpl/field.pyx":408
  *         if operator == 1:
  *             return a.issubset(b)
  *         if operator == 2:             # <<<<<<<<<<<<<<
  *             if len(a.pages) != len(b.pages):
  *                 return False
  */
-  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 408, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 408, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":412
+    /* "cimpl/field.pyx":409
  *             return a.issubset(b)
  *         if operator == 2:
  *             if len(a.pages) != len(b.pages):             # <<<<<<<<<<<<<<
@@ -7235,16 +7133,16 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
     __pyx_t_1 = __pyx_v_a->pages;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 412, __pyx_L1_error)
+    __pyx_t_4 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 409, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = __pyx_v_b->pages;
     __Pyx_INCREF(__pyx_t_1);
-    __pyx_t_5 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 412, __pyx_L1_error)
+    __pyx_t_5 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 409, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_2 = ((__pyx_t_4 != __pyx_t_5) != 0);
     if (__pyx_t_2) {
 
-      /* "cimpl/field.pyx":413
+      /* "cimpl/field.pyx":410
  *         if operator == 2:
  *             if len(a.pages) != len(b.pages):
  *                 return False             # <<<<<<<<<<<<<<
@@ -7256,7 +7154,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
       __pyx_r = Py_False;
       goto __pyx_L0;
 
-      /* "cimpl/field.pyx":412
+      /* "cimpl/field.pyx":409
  *             return a.issubset(b)
  *         if operator == 2:
  *             if len(a.pages) != len(b.pages):             # <<<<<<<<<<<<<<
@@ -7265,92 +7163,47 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
     }
 
-    /* "cimpl/field.pyx":414
+    /* "cimpl/field.pyx":411
  *             if len(a.pages) != len(b.pages):
  *                 return False
  *             for page_no in a.pages.keys():             # <<<<<<<<<<<<<<
  *                 if page_no not in b.pages:
  *                     return False
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_a->pages, __pyx_n_s_keys); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 414, __pyx_L1_error)
+    __pyx_t_5 = 0;
+    if (unlikely(__pyx_v_a->pages == Py_None)) {
+      PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "keys");
+      __PYX_ERR(0, 411, __pyx_L1_error)
+    }
+    __pyx_t_3 = __Pyx_dict_iterator(__pyx_v_a->pages, 0, __pyx_n_s_keys, (&__pyx_t_4), (&__pyx_t_6)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 411, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = NULL;
-    if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_6)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_6);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    if (__pyx_t_6) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    } else {
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
-    }
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-      __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_5 = 0;
-      __pyx_t_7 = NULL;
-    } else {
-      __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 414, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_1);
+    __pyx_t_1 = __pyx_t_3;
+    __pyx_t_3 = 0;
+    while (1) {
+      __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_4, &__pyx_t_5, &__pyx_t_3, NULL, NULL, __pyx_t_6);
+      if (unlikely(__pyx_t_7 == 0)) break;
+      if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 411, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 414, __pyx_L1_error)
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    for (;;) {
-      if (likely(!__pyx_t_7)) {
-        if (likely(PyList_CheckExact(__pyx_t_3))) {
-          if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_3)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 414, __pyx_L1_error)
-          #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          #endif
-        } else {
-          if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
-          #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 414, __pyx_L1_error)
-          #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_1);
-          #endif
-        }
-      } else {
-        __pyx_t_1 = __pyx_t_7(__pyx_t_3);
-        if (unlikely(!__pyx_t_1)) {
-          PyObject* exc_type = PyErr_Occurred();
-          if (exc_type) {
-            if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 414, __pyx_L1_error)
-          }
-          break;
-        }
-        __Pyx_GOTREF(__pyx_t_1);
-      }
-      __pyx_t_8 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_8 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 414, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_8 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_8 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 411, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_v_page_no = __pyx_t_8;
 
-      /* "cimpl/field.pyx":415
+      /* "cimpl/field.pyx":412
  *                 return False
  *             for page_no in a.pages.keys():
  *                 if page_no not in b.pages:             # <<<<<<<<<<<<<<
  *                     return False
  *                 if a.pages[page_no] != b.pages[page_no]:
  */
-      __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 415, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_v_b->pages, Py_NE)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 415, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 412, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_2 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_v_b->pages, Py_NE)); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 412, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_9 = (__pyx_t_2 != 0);
       if (__pyx_t_9) {
 
-        /* "cimpl/field.pyx":416
+        /* "cimpl/field.pyx":413
  *             for page_no in a.pages.keys():
  *                 if page_no not in b.pages:
  *                     return False             # <<<<<<<<<<<<<<
@@ -7360,10 +7213,10 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
         __Pyx_XDECREF(__pyx_r);
         __Pyx_INCREF(Py_False);
         __pyx_r = Py_False;
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L0;
 
-        /* "cimpl/field.pyx":415
+        /* "cimpl/field.pyx":412
  *                 return False
  *             for page_no in a.pages.keys():
  *                 if page_no not in b.pages:             # <<<<<<<<<<<<<<
@@ -7372,25 +7225,25 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
       }
 
-      /* "cimpl/field.pyx":417
+      /* "cimpl/field.pyx":414
  *                 if page_no not in b.pages:
  *                     return False
  *                 if a.pages[page_no] != b.pages[page_no]:             # <<<<<<<<<<<<<<
  *                     return False
  *             return True
  */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_a->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 417, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_b->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 417, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_10 = PyObject_RichCompare(__pyx_t_1, __pyx_t_6, Py_NE); __Pyx_XGOTREF(__pyx_t_10); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 417, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_10); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 417, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_a->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 414, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_10 = __Pyx_GetItemInt(__pyx_v_b->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 414, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_10);
+      __pyx_t_11 = PyObject_RichCompare(__pyx_t_3, __pyx_t_10, Py_NE); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 414, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_11); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 414, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       if (__pyx_t_9) {
 
-        /* "cimpl/field.pyx":418
+        /* "cimpl/field.pyx":415
  *                     return False
  *                 if a.pages[page_no] != b.pages[page_no]:
  *                     return False             # <<<<<<<<<<<<<<
@@ -7400,10 +7253,10 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
         __Pyx_XDECREF(__pyx_r);
         __Pyx_INCREF(Py_False);
         __pyx_r = Py_False;
-        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         goto __pyx_L0;
 
-        /* "cimpl/field.pyx":417
+        /* "cimpl/field.pyx":414
  *                 if page_no not in b.pages:
  *                     return False
  *                 if a.pages[page_no] != b.pages[page_no]:             # <<<<<<<<<<<<<<
@@ -7411,18 +7264,10 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  *             return True
  */
       }
-
-      /* "cimpl/field.pyx":414
- *             if len(a.pages) != len(b.pages):
- *                 return False
- *             for page_no in a.pages.keys():             # <<<<<<<<<<<<<<
- *                 if page_no not in b.pages:
- *                     return False
- */
     }
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":419
+    /* "cimpl/field.pyx":416
  *                 if a.pages[page_no] != b.pages[page_no]:
  *                     return False
  *             return True             # <<<<<<<<<<<<<<
@@ -7434,7 +7279,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
     __pyx_r = Py_True;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":411
+    /* "cimpl/field.pyx":408
  *         if operator == 1:
  *             return a.issubset(b)
  *         if operator == 2:             # <<<<<<<<<<<<<<
@@ -7443,20 +7288,20 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
   }
 
-  /* "cimpl/field.pyx":420
+  /* "cimpl/field.pyx":417
  *                     return False
  *             return True
  *         if operator == 3:             # <<<<<<<<<<<<<<
  *             return not a == b
  *         if operator == 4:
  */
-  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 420, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 420, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 417, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 417, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_9) {
 
-    /* "cimpl/field.pyx":421
+    /* "cimpl/field.pyx":418
  *             return True
  *         if operator == 3:
  *             return not a == b             # <<<<<<<<<<<<<<
@@ -7464,16 +7309,16 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  *             return (a != b) and (b.issubset(a))
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_v_a), ((PyObject *)__pyx_v_b), Py_EQ); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 421, __pyx_L1_error)
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 421, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyBool_FromLong((!__pyx_t_9)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 421, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_r = __pyx_t_3;
-    __pyx_t_3 = 0;
+    __pyx_t_1 = PyObject_RichCompare(((PyObject *)__pyx_v_a), ((PyObject *)__pyx_v_b), Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 418, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 418, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyBool_FromLong((!__pyx_t_9)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 418, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_r = __pyx_t_1;
+    __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":420
+    /* "cimpl/field.pyx":417
  *                     return False
  *             return True
  *         if operator == 3:             # <<<<<<<<<<<<<<
@@ -7482,20 +7327,20 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
   }
 
-  /* "cimpl/field.pyx":422
+  /* "cimpl/field.pyx":419
  *         if operator == 3:
  *             return not a == b
  *         if operator == 4:             # <<<<<<<<<<<<<<
  *             return (a != b) and (b.issubset(a))
  *         if operator == 5:
  */
-  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_4, 4, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 422, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 422, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_4, 4, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 419, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_9) {
 
-    /* "cimpl/field.pyx":423
+    /* "cimpl/field.pyx":420
  *             return not a == b
  *         if operator == 4:
  *             return (a != b) and (b.issubset(a))             # <<<<<<<<<<<<<<
@@ -7503,27 +7348,27 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  *             return b.issubset(a)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_10 = PyObject_RichCompare(((PyObject *)__pyx_v_a), ((PyObject *)__pyx_v_b), Py_NE); __Pyx_XGOTREF(__pyx_t_10); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 423, __pyx_L1_error)
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_10); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 423, __pyx_L1_error)
+    __pyx_t_11 = PyObject_RichCompare(((PyObject *)__pyx_v_a), ((PyObject *)__pyx_v_b), Py_NE); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_11); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 420, __pyx_L1_error)
     if (__pyx_t_9) {
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     } else {
-      __Pyx_INCREF(__pyx_t_10);
-      __pyx_t_3 = __pyx_t_10;
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __Pyx_INCREF(__pyx_t_11);
+      __pyx_t_1 = __pyx_t_11;
+      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       goto __pyx_L15_bool_binop_done;
     }
-    __pyx_t_10 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_b->__pyx_vtab)->issubset(__pyx_v_b, __pyx_v_a, 0); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 423, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_INCREF(__pyx_t_10);
-    __pyx_t_3 = __pyx_t_10;
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_t_11 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_b->__pyx_vtab)->issubset(__pyx_v_b, __pyx_v_a, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_INCREF(__pyx_t_11);
+    __pyx_t_1 = __pyx_t_11;
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __pyx_L15_bool_binop_done:;
-    __pyx_r = __pyx_t_3;
-    __pyx_t_3 = 0;
+    __pyx_r = __pyx_t_1;
+    __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":422
+    /* "cimpl/field.pyx":419
  *         if operator == 3:
  *             return not a == b
  *         if operator == 4:             # <<<<<<<<<<<<<<
@@ -7532,20 +7377,20 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
   }
 
-  /* "cimpl/field.pyx":424
+  /* "cimpl/field.pyx":421
  *         if operator == 4:
  *             return (a != b) and (b.issubset(a))
  *         if operator == 5:             # <<<<<<<<<<<<<<
  *             return b.issubset(a)
  *         raise NotImplementedError()
  */
-  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_5, 5, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 424, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_1 = __Pyx_PyInt_EqObjC(__pyx_v_operator, __pyx_int_5, 5, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 421, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 421, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_9) {
 
-    /* "cimpl/field.pyx":425
+    /* "cimpl/field.pyx":422
  *             return (a != b) and (b.issubset(a))
  *         if operator == 5:
  *             return b.issubset(a)             # <<<<<<<<<<<<<<
@@ -7553,13 +7398,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  * 
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_3 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_b->__pyx_vtab)->issubset(__pyx_v_b, __pyx_v_a, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 425, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_r = __pyx_t_3;
-    __pyx_t_3 = 0;
+    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_b->__pyx_vtab)->issubset(__pyx_v_b, __pyx_v_a, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_r = __pyx_t_1;
+    __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":424
+    /* "cimpl/field.pyx":421
  *         if operator == 4:
  *             return (a != b) and (b.issubset(a))
  *         if operator == 5:             # <<<<<<<<<<<<<<
@@ -7568,20 +7413,20 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
  */
   }
 
-  /* "cimpl/field.pyx":426
+  /* "cimpl/field.pyx":423
  *         if operator == 5:
  *             return b.issubset(a)
  *         raise NotImplementedError()             # <<<<<<<<<<<<<<
  * 
  *     def __or__(SparseBitfield x, SparseBitfield y):
  */
-  __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 426, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_Raise(__pyx_t_3, 0, 0, 0);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_NotImplementedError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 423, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __PYX_ERR(0, 423, __pyx_L1_error)
 
-  /* "cimpl/field.pyx":405
+  /* "cimpl/field.pyx":402
  *                  yield <object>next_item + (<object>page_no * <object>PAGE_FULL_COUNT)
  * 
  *     def __richcmp__(SparseBitfield a,SparseBitfield b, operator):             # <<<<<<<<<<<<<<
@@ -7593,8 +7438,8 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_XDECREF(__pyx_t_11);
   __Pyx_AddTraceback("sparsebitfield.SparseBitfield.__richcmp__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -7603,7 +7448,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_15__richcmp__(struct
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":428
+/* "cimpl/field.pyx":425
  *         raise NotImplementedError()
  * 
  *     def __or__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -7621,8 +7466,8 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_18__or__(PyObject *_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__or__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "x", 0))) __PYX_ERR(0, 428, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 428, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "x", 0))) __PYX_ERR(0, 425, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 425, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_17__or__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_x), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_y));
 
   /* function exit code */
@@ -7641,31 +7486,31 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_17__or__(struct __py
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__or__", 0);
 
-  /* "cimpl/field.pyx":431
+  /* "cimpl/field.pyx":428
  *         """Return a new object that is the union of two bitfields"""
  *         cdef SparseBitfield new
  *         new = x.clone()             # <<<<<<<<<<<<<<
  *         new.update(y)
  *         return new
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->clone(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 431, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->clone(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 428, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 431, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 428, __pyx_L1_error)
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":432
+  /* "cimpl/field.pyx":429
  *         cdef SparseBitfield new
  *         new = x.clone()
  *         new.update(y)             # <<<<<<<<<<<<<<
  *         return new
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->update(__pyx_v_new, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 432, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->update(__pyx_v_new, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 429, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":433
+  /* "cimpl/field.pyx":430
  *         new = x.clone()
  *         new.update(y)
  *         return new             # <<<<<<<<<<<<<<
@@ -7677,7 +7522,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_17__or__(struct __py
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":428
+  /* "cimpl/field.pyx":425
  *         raise NotImplementedError()
  * 
  *     def __or__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -7697,7 +7542,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_17__or__(struct __py
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":435
+/* "cimpl/field.pyx":432
  *         return new
  * 
  *     def __ior__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -7711,7 +7556,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_20__ior__(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__ior__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 435, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 432, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_19__ior__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_x), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_y));
 
   /* function exit code */
@@ -7729,7 +7574,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_19__ior__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__ior__", 0);
 
-  /* "cimpl/field.pyx":436
+  /* "cimpl/field.pyx":433
  * 
  *     def __ior__(SparseBitfield x, SparseBitfield y):
  *         return x.update(y)             # <<<<<<<<<<<<<<
@@ -7737,13 +7582,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_19__ior__(struct __p
  *     def union(SparseBitfield self, SparseBitfield other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->update(__pyx_v_x, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 436, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->update(__pyx_v_x, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":435
+  /* "cimpl/field.pyx":432
  *         return new
  * 
  *     def __ior__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -7762,7 +7607,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_19__ior__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":438
+/* "cimpl/field.pyx":435
  *         return x.update(y)
  * 
  *     def union(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -7776,7 +7621,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_22union(PyObject *__
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("union (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 438, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 435, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_21union(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -7794,7 +7639,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_21union(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("union", 0);
 
-  /* "cimpl/field.pyx":439
+  /* "cimpl/field.pyx":436
  * 
  *     def union(SparseBitfield self, SparseBitfield other):
  *         return self | other             # <<<<<<<<<<<<<<
@@ -7802,13 +7647,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_21union(struct __pyx
  *     def __add__(SparseBitfield x, usize_t y):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Or(((PyObject *)__pyx_v_self), ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 439, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Or(((PyObject *)__pyx_v_self), ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 436, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":438
+  /* "cimpl/field.pyx":435
  *         return x.update(y)
  * 
  *     def union(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -7827,7 +7672,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_21union(struct __pyx
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":441
+/* "cimpl/field.pyx":438
  *         return self | other
  * 
  *     def __add__(SparseBitfield x, usize_t y):             # <<<<<<<<<<<<<<
@@ -7847,7 +7692,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_24__add__(PyObject *
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__add__ (wrapper)", 0);
   assert(__pyx_arg_y); {
-    __pyx_v_y = __Pyx_PyInt_As_usize_t(__pyx_arg_y); if (unlikely((__pyx_v_y == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 441, __pyx_L3_error)
+    __pyx_v_y = __Pyx_PyInt_As_usize_t(__pyx_arg_y); if (unlikely((__pyx_v_y == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 438, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7855,7 +7700,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_24__add__(PyObject *
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "x", 0))) __PYX_ERR(0, 441, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "x", 0))) __PYX_ERR(0, 438, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_23__add__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_x), ((usize_t)__pyx_v_y));
 
   /* function exit code */
@@ -7875,34 +7720,34 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_23__add__(struct __p
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__add__", 0);
 
-  /* "cimpl/field.pyx":444
+  /* "cimpl/field.pyx":441
  *         """Return a new field with the integer added"""
  *         cdef SparseBitfield new
  *         new = x.clone()             # <<<<<<<<<<<<<<
  *         new.add(y)
  *         return new
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->clone(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 444, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->clone(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 441, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 444, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 441, __pyx_L1_error)
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":445
+  /* "cimpl/field.pyx":442
  *         cdef SparseBitfield new
  *         new = x.clone()
  *         new.add(y)             # <<<<<<<<<<<<<<
  *         return new
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_y); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 445, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_y); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 442, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->add(__pyx_v_new, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 445, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->add(__pyx_v_new, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 442, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":446
+  /* "cimpl/field.pyx":443
  *         new = x.clone()
  *         new.add(y)
  *         return new             # <<<<<<<<<<<<<<
@@ -7914,7 +7759,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_23__add__(struct __p
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":441
+  /* "cimpl/field.pyx":438
  *         return self | other
  * 
  *     def __add__(SparseBitfield x, usize_t y):             # <<<<<<<<<<<<<<
@@ -7935,7 +7780,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_23__add__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":448
+/* "cimpl/field.pyx":445
  *         return new
  * 
  *     def __iadd__(SparseBitfield x, usize_t y):             # <<<<<<<<<<<<<<
@@ -7955,7 +7800,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_26__iadd__(PyObject 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__iadd__ (wrapper)", 0);
   assert(__pyx_arg_y); {
-    __pyx_v_y = __Pyx_PyInt_As_usize_t(__pyx_arg_y); if (unlikely((__pyx_v_y == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 448, __pyx_L3_error)
+    __pyx_v_y = __Pyx_PyInt_As_usize_t(__pyx_arg_y); if (unlikely((__pyx_v_y == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 445, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -7977,21 +7822,21 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_25__iadd__(struct __
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__iadd__", 0);
 
-  /* "cimpl/field.pyx":450
+  /* "cimpl/field.pyx":447
  *     def __iadd__(SparseBitfield x, usize_t y):
  *         """Add a positive integer to the field"""
  *         x.add(y)             # <<<<<<<<<<<<<<
  *         return x
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_y); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 450, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_y); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 447, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->add(__pyx_v_x, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 450, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->add(__pyx_v_x, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 447, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":451
+  /* "cimpl/field.pyx":448
  *         """Add a positive integer to the field"""
  *         x.add(y)
  *         return x             # <<<<<<<<<<<<<<
@@ -8003,7 +7848,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_25__iadd__(struct __
   __pyx_r = ((PyObject *)__pyx_v_x);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":448
+  /* "cimpl/field.pyx":445
  *         return new
  * 
  *     def __iadd__(SparseBitfield x, usize_t y):             # <<<<<<<<<<<<<<
@@ -8023,7 +7868,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_25__iadd__(struct __
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":453
+/* "cimpl/field.pyx":450
  *         return x
  * 
  *     def __sub__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -8037,8 +7882,8 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_28__sub__(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__sub__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "x", 0))) __PYX_ERR(0, 453, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 453, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_x), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "x", 0))) __PYX_ERR(0, 450, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 450, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_27__sub__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_x), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_y));
 
   /* function exit code */
@@ -8057,31 +7902,31 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_27__sub__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__sub__", 0);
 
-  /* "cimpl/field.pyx":455
+  /* "cimpl/field.pyx":452
  *     def __sub__(SparseBitfield x, SparseBitfield y):
  *         cdef SparseBitfield new
  *         new = x.clone()             # <<<<<<<<<<<<<<
  *         new.difference_update(y)
  *         return new
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->clone(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 455, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->clone(__pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 452, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 455, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 452, __pyx_L1_error)
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":456
+  /* "cimpl/field.pyx":453
  *         cdef SparseBitfield new
  *         new = x.clone()
  *         new.difference_update(y)             # <<<<<<<<<<<<<<
  *         return new
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->difference_update(__pyx_v_new, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 456, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->difference_update(__pyx_v_new, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 453, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":457
+  /* "cimpl/field.pyx":454
  *         new = x.clone()
  *         new.difference_update(y)
  *         return new             # <<<<<<<<<<<<<<
@@ -8093,7 +7938,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_27__sub__(struct __p
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":453
+  /* "cimpl/field.pyx":450
  *         return x
  * 
  *     def __sub__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -8113,7 +7958,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_27__sub__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":459
+/* "cimpl/field.pyx":456
  *         return new
  * 
  *     def __isub__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -8127,7 +7972,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_30__isub__(PyObject 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__isub__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 459, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_y), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "y", 0))) __PYX_ERR(0, 456, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_29__isub__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_x), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_y));
 
   /* function exit code */
@@ -8145,7 +7990,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_29__isub__(struct __
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__isub__", 0);
 
-  /* "cimpl/field.pyx":460
+  /* "cimpl/field.pyx":457
  * 
  *     def __isub__(SparseBitfield x, SparseBitfield y):
  *         return x.difference_update(y)             # <<<<<<<<<<<<<<
@@ -8153,13 +7998,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_29__isub__(struct __
  *     def __xor__(SparseBitfield self, SparseBitfield other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->difference_update(__pyx_v_x, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 460, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_x->__pyx_vtab)->difference_update(__pyx_v_x, __pyx_v_y, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 457, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":459
+  /* "cimpl/field.pyx":456
  *         return new
  * 
  *     def __isub__(SparseBitfield x, SparseBitfield y):             # <<<<<<<<<<<<<<
@@ -8178,7 +8023,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_29__isub__(struct __
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":462
+/* "cimpl/field.pyx":459
  *         return x.difference_update(y)
  * 
  *     def __xor__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8192,8 +8037,8 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_32__xor__(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__xor__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_self), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "self", 0))) __PYX_ERR(0, 462, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 462, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_self), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "self", 0))) __PYX_ERR(0, 459, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 459, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_31__xor__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -8211,7 +8056,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_31__xor__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__xor__", 0);
 
-  /* "cimpl/field.pyx":463
+  /* "cimpl/field.pyx":460
  * 
  *     def __xor__(SparseBitfield self, SparseBitfield other):
  *         return self.symmetric_difference(other)             # <<<<<<<<<<<<<<
@@ -8219,13 +8064,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_31__xor__(struct __p
  *     def __ixor__(SparseBitfield self, SparseBitfield other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->symmetric_difference(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 463, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->symmetric_difference(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 460, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":462
+  /* "cimpl/field.pyx":459
  *         return x.difference_update(y)
  * 
  *     def __xor__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8244,7 +8089,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_31__xor__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":465
+/* "cimpl/field.pyx":462
  *         return self.symmetric_difference(other)
  * 
  *     def __ixor__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8258,7 +8103,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_34__ixor__(PyObject 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__ixor__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 465, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 462, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_33__ixor__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -8276,7 +8121,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_33__ixor__(struct __
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__ixor__", 0);
 
-  /* "cimpl/field.pyx":466
+  /* "cimpl/field.pyx":463
  * 
  *     def __ixor__(SparseBitfield self, SparseBitfield other):
  *         return self.symmetric_difference_update(other)             # <<<<<<<<<<<<<<
@@ -8284,13 +8129,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_33__ixor__(struct __
  *     def __and__(SparseBitfield self, SparseBitfield other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->symmetric_difference_update(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->symmetric_difference_update(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 463, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":465
+  /* "cimpl/field.pyx":462
  *         return self.symmetric_difference(other)
  * 
  *     def __ixor__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8309,7 +8154,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_33__ixor__(struct __
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":468
+/* "cimpl/field.pyx":465
  *         return self.symmetric_difference_update(other)
  * 
  *     def __and__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8323,8 +8168,8 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_36__and__(PyObject *
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__and__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_self), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "self", 0))) __PYX_ERR(0, 468, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 468, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_self), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "self", 0))) __PYX_ERR(0, 465, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 465, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_35__and__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -8342,7 +8187,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_35__and__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__and__", 0);
 
-  /* "cimpl/field.pyx":469
+  /* "cimpl/field.pyx":466
  * 
  *     def __and__(SparseBitfield self, SparseBitfield other):
  *         return self.intersection(other)             # <<<<<<<<<<<<<<
@@ -8350,13 +8195,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_35__and__(struct __p
  *     def __iand__(SparseBitfield self, SparseBitfield other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->intersection(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 469, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->intersection(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":468
+  /* "cimpl/field.pyx":465
  *         return self.symmetric_difference_update(other)
  * 
  *     def __and__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8375,7 +8220,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_35__and__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":471
+/* "cimpl/field.pyx":468
  *         return self.intersection(other)
  * 
  *     def __iand__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8389,7 +8234,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_38__iand__(PyObject 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__iand__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 471, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 468, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_37__iand__(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -8407,7 +8252,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_37__iand__(struct __
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__iand__", 0);
 
-  /* "cimpl/field.pyx":472
+  /* "cimpl/field.pyx":469
  * 
  *     def __iand__(SparseBitfield self, SparseBitfield other):
  *         return self.intersection_update(other)             # <<<<<<<<<<<<<<
@@ -8415,13 +8260,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_37__iand__(struct __
  *     cpdef update(self, SparseBitfield other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->intersection_update(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 472, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->intersection_update(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 469, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":471
+  /* "cimpl/field.pyx":468
  *         return self.intersection(other)
  * 
  *     def __iand__(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8440,7 +8285,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_37__iand__(struct __
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":474
+/* "cimpl/field.pyx":471
  *         return self.intersection_update(other)
  * 
  *     cpdef update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8461,16 +8306,17 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_update(struct __pyx_o
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  PyObject *(*__pyx_t_8)(PyObject *);
-  usize_t __pyx_t_9;
-  int __pyx_t_10;
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  usize_t __pyx_t_10;
+  int __pyx_t_11;
   __Pyx_RefNannySetupContext("update", 0);
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 474, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 471, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_40update)) {
       __Pyx_XDECREF(__pyx_r);
@@ -8486,13 +8332,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_update(struct __pyx_o
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 474, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 471, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 474, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 471, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -8500,19 +8346,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_update(struct __pyx_o
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 474, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 471, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 474, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 471, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 474, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 471, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -8526,137 +8372,47 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_update(struct __pyx_o
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":479
+  /* "cimpl/field.pyx":476
  *         cdef IdsPage other_page, page
  * 
  *         for other_page_no, other_page in other.pages.items():             # <<<<<<<<<<<<<<
  *             if other_page.page_state == PAGE_EMPTY:
  *                 continue
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 479, __pyx_L1_error)
+  __pyx_t_6 = 0;
+  if (unlikely(__pyx_v_other->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 476, __pyx_L1_error)
+  }
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_other->pages, 0, __pyx_n_s_items, (&__pyx_t_7), (&__pyx_t_8)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 476, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 479, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 479, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 479, __pyx_L1_error)
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  while (1) {
+    __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_7, &__pyx_t_6, &__pyx_t_2, &__pyx_t_3, NULL, __pyx_t_8);
+    if (unlikely(__pyx_t_9 == 0)) break;
+    if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 476, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 479, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 479, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 479, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 479, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 479, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_7(__pyx_t_2);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 479, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 479, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_5);
-      #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 479, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 479, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 479, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext;
-      index = 0; __pyx_t_3 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_5 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_5)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_5);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 479, __pyx_L1_error)
-      __pyx_t_8 = NULL;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      goto __pyx_L6_unpacking_done;
-      __pyx_L5_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 479, __pyx_L1_error)
-      __pyx_L6_unpacking_done:;
-    }
-    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 479, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 479, __pyx_L1_error)
-    __pyx_v_other_page_no = __pyx_t_9;
-    __Pyx_XDECREF_SET(__pyx_v_other_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_5));
-    __pyx_t_5 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_10 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_10 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 476, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 476, __pyx_L1_error)
+    __pyx_v_other_page_no = __pyx_t_10;
+    __Pyx_XDECREF_SET(__pyx_v_other_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":480
+    /* "cimpl/field.pyx":477
  * 
  *         for other_page_no, other_page in other.pages.items():
  *             if other_page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
  *                 continue
  *             self._ensure_page_exists(other_page_no)
  */
-    __pyx_t_10 = ((__pyx_v_other_page->page_state == 3) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_11 = ((__pyx_v_other_page->page_state == 3) != 0);
+    if (__pyx_t_11) {
 
-      /* "cimpl/field.pyx":481
+      /* "cimpl/field.pyx":478
  *         for other_page_no, other_page in other.pages.items():
  *             if other_page.page_state == PAGE_EMPTY:
  *                 continue             # <<<<<<<<<<<<<<
@@ -8665,7 +8421,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_update(struct __pyx_o
  */
       goto __pyx_L3_continue;
 
-      /* "cimpl/field.pyx":480
+      /* "cimpl/field.pyx":477
  * 
  *         for other_page_no, other_page in other.pages.items():
  *             if other_page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -8674,31 +8430,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_update(struct __pyx_o
  */
     }
 
-    /* "cimpl/field.pyx":482
+    /* "cimpl/field.pyx":479
  *             if other_page.page_state == PAGE_EMPTY:
  *                 continue
  *             self._ensure_page_exists(other_page_no)             # <<<<<<<<<<<<<<
  *             page = self.pages[other_page_no]
  *             page.update(other_page)
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_other_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 482, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_3 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_other_page_no); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 479, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":483
+    /* "cimpl/field.pyx":480
  *                 continue
  *             self._ensure_page_exists(other_page_no)
  *             page = self.pages[other_page_no]             # <<<<<<<<<<<<<<
  *             page.update(other_page)
  * 
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_other_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 483, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 483, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
-    __pyx_t_1 = 0;
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_other_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 480, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 480, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":484
+    /* "cimpl/field.pyx":481
  *             self._ensure_page_exists(other_page_no)
  *             page = self.pages[other_page_no]
  *             page.update(other_page)             # <<<<<<<<<<<<<<
@@ -8706,19 +8462,11 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_update(struct __pyx_o
  *     cpdef difference_update(self, SparseBitfield other):
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->update(__pyx_v_page, __pyx_v_other_page);
-
-    /* "cimpl/field.pyx":479
- *         cdef IdsPage other_page, page
- * 
- *         for other_page_no, other_page in other.pages.items():             # <<<<<<<<<<<<<<
- *             if other_page.page_state == PAGE_EMPTY:
- *                 continue
- */
     __pyx_L3_continue:;
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":474
+  /* "cimpl/field.pyx":471
  *         return self.intersection_update(other)
  * 
  *     cpdef update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8752,7 +8500,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_40update(PyObject *_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("update (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 474, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 471, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_39update(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -8770,7 +8518,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_39update(struct __py
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("update", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 474, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 471, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -8787,7 +8535,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_39update(struct __py
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":486
+/* "cimpl/field.pyx":483
  *             page.update(other_page)
  * 
  *     cpdef difference_update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -8808,16 +8556,17 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_difference_update(str
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  PyObject *(*__pyx_t_8)(PyObject *);
-  usize_t __pyx_t_9;
-  int __pyx_t_10;
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  usize_t __pyx_t_10;
+  int __pyx_t_11;
   __Pyx_RefNannySetupContext("difference_update", 0);
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_difference_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_difference_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 483, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_42difference_update)) {
       __Pyx_XDECREF(__pyx_r);
@@ -8833,13 +8582,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_difference_update(str
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 486, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 483, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 486, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 483, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -8847,19 +8596,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_difference_update(str
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 486, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 483, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 486, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 483, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 486, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 483, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -8873,137 +8622,47 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_difference_update(str
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":491
+  /* "cimpl/field.pyx":488
  *         cdef IdsPage other_page, page
  * 
  *         for other_page_no, other_page in other.pages.items():             # <<<<<<<<<<<<<<
  *             if other_page.page_state == PAGE_EMPTY:
  *                 continue
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_other->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 491, __pyx_L1_error)
+  __pyx_t_6 = 0;
+  if (unlikely(__pyx_v_other->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 488, __pyx_L1_error)
+  }
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_other->pages, 0, __pyx_n_s_items, (&__pyx_t_7), (&__pyx_t_8)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 488, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 491, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 491, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 491, __pyx_L1_error)
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  while (1) {
+    __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_7, &__pyx_t_6, &__pyx_t_2, &__pyx_t_3, NULL, __pyx_t_8);
+    if (unlikely(__pyx_t_9 == 0)) break;
+    if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 488, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 491, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 491, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 491, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 491, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 491, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_7(__pyx_t_2);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 491, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 491, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_5);
-      #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 491, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 491, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 491, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext;
-      index = 0; __pyx_t_3 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_5 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_5)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_5);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 491, __pyx_L1_error)
-      __pyx_t_8 = NULL;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      goto __pyx_L6_unpacking_done;
-      __pyx_L5_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 491, __pyx_L1_error)
-      __pyx_L6_unpacking_done:;
-    }
-    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 491, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 491, __pyx_L1_error)
-    __pyx_v_other_page_no = __pyx_t_9;
-    __Pyx_XDECREF_SET(__pyx_v_other_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_5));
-    __pyx_t_5 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_10 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_10 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 488, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 488, __pyx_L1_error)
+    __pyx_v_other_page_no = __pyx_t_10;
+    __Pyx_XDECREF_SET(__pyx_v_other_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":492
+    /* "cimpl/field.pyx":489
  * 
  *         for other_page_no, other_page in other.pages.items():
  *             if other_page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
  *                 continue
  *             self._ensure_page_exists(other_page_no)
  */
-    __pyx_t_10 = ((__pyx_v_other_page->page_state == 3) != 0);
-    if (__pyx_t_10) {
+    __pyx_t_11 = ((__pyx_v_other_page->page_state == 3) != 0);
+    if (__pyx_t_11) {
 
-      /* "cimpl/field.pyx":493
+      /* "cimpl/field.pyx":490
  *         for other_page_no, other_page in other.pages.items():
  *             if other_page.page_state == PAGE_EMPTY:
  *                 continue             # <<<<<<<<<<<<<<
@@ -9012,7 +8671,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_difference_update(str
  */
       goto __pyx_L3_continue;
 
-      /* "cimpl/field.pyx":492
+      /* "cimpl/field.pyx":489
  * 
  *         for other_page_no, other_page in other.pages.items():
  *             if other_page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -9021,31 +8680,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_difference_update(str
  */
     }
 
-    /* "cimpl/field.pyx":494
+    /* "cimpl/field.pyx":491
  *             if other_page.page_state == PAGE_EMPTY:
  *                 continue
  *             self._ensure_page_exists(other_page_no)             # <<<<<<<<<<<<<<
  *             page = self.pages[other_page_no]
  *             page.difference_update(other_page)
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_other_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 494, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_3 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_other_page_no); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 491, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":495
+    /* "cimpl/field.pyx":492
  *                 continue
  *             self._ensure_page_exists(other_page_no)
  *             page = self.pages[other_page_no]             # <<<<<<<<<<<<<<
  *             page.difference_update(other_page)
  * 
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_other_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 495, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 495, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
-    __pyx_t_1 = 0;
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_other_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 492, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 492, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":496
+    /* "cimpl/field.pyx":493
  *             self._ensure_page_exists(other_page_no)
  *             page = self.pages[other_page_no]
  *             page.difference_update(other_page)             # <<<<<<<<<<<<<<
@@ -9053,19 +8712,11 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_difference_update(str
  *     cpdef symmetric_difference_update(self, SparseBitfield other):
  */
     ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->difference_update(__pyx_v_page, __pyx_v_other_page);
-
-    /* "cimpl/field.pyx":491
- *         cdef IdsPage other_page, page
- * 
- *         for other_page_no, other_page in other.pages.items():             # <<<<<<<<<<<<<<
- *             if other_page.page_state == PAGE_EMPTY:
- *                 continue
- */
     __pyx_L3_continue:;
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":486
+  /* "cimpl/field.pyx":483
  *             page.update(other_page)
  * 
  *     cpdef difference_update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -9099,7 +8750,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_42difference_update(
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("difference_update (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 486, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 483, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_41difference_update(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -9117,7 +8768,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_41difference_update(
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("difference_update", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_difference_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 486, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_difference_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 483, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9134,7 +8785,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_41difference_update(
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":498
+/* "cimpl/field.pyx":495
  *             page.difference_update(other_page)
  * 
  *     cpdef symmetric_difference_update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -9154,17 +8805,18 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  PyObject *(*__pyx_t_8)(PyObject *);
-  usize_t __pyx_t_9;
-  int __pyx_t_10;
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  usize_t __pyx_t_10;
   int __pyx_t_11;
+  int __pyx_t_12;
   __Pyx_RefNannySetupContext("symmetric_difference_update", 0);
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_symmetric_difference_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_symmetric_difference_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 495, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_44symmetric_difference_update)) {
       __Pyx_XDECREF(__pyx_r);
@@ -9180,13 +8832,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 498, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 495, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 498, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 495, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -9194,19 +8846,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 498, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 495, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 498, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 495, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 498, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 495, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -9220,156 +8872,66 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":503
+  /* "cimpl/field.pyx":500
  *         cdef IdsPage page
  * 
  *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
  *             if page_no in other.pages:
  *                 page.symmetric_difference_update(other.pages[page_no])
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 503, __pyx_L1_error)
+  __pyx_t_6 = 0;
+  if (unlikely(__pyx_v_self->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 500, __pyx_L1_error)
+  }
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_self->pages, 0, __pyx_n_s_items, (&__pyx_t_7), (&__pyx_t_8)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 500, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 503, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 503, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 503, __pyx_L1_error)
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  while (1) {
+    __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_7, &__pyx_t_6, &__pyx_t_2, &__pyx_t_3, NULL, __pyx_t_8);
+    if (unlikely(__pyx_t_9 == 0)) break;
+    if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 500, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 503, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 503, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 503, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 503, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 503, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_7(__pyx_t_2);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 503, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 503, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_5);
-      #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 503, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 503, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 503, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext;
-      index = 0; __pyx_t_3 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_5 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_5)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_5);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 503, __pyx_L1_error)
-      __pyx_t_8 = NULL;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      goto __pyx_L6_unpacking_done;
-      __pyx_L5_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 503, __pyx_L1_error)
-      __pyx_L6_unpacking_done:;
-    }
-    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 503, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 503, __pyx_L1_error)
-    __pyx_v_page_no = __pyx_t_9;
-    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_5));
-    __pyx_t_5 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_10 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_10 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 500, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 500, __pyx_L1_error)
+    __pyx_v_page_no = __pyx_t_10;
+    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":504
+    /* "cimpl/field.pyx":501
  * 
  *         for page_no, page in self.pages.items():
  *             if page_no in other.pages:             # <<<<<<<<<<<<<<
  *                 page.symmetric_difference_update(other.pages[page_no])
  * 
  */
-    __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 504, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_v_other->pages, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 504, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_11 = (__pyx_t_10 != 0);
-    if (__pyx_t_11) {
+    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 501, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_v_other->pages, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 501, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_12 = (__pyx_t_11 != 0);
+    if (__pyx_t_12) {
 
-      /* "cimpl/field.pyx":505
+      /* "cimpl/field.pyx":502
  *         for page_no, page in self.pages.items():
  *             if page_no in other.pages:
  *                 page.symmetric_difference_update(other.pages[page_no])             # <<<<<<<<<<<<<<
  * 
  *         for page_no, page in other.pages.items():
  */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_other->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 505, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 505, __pyx_L1_error)
-      __pyx_t_5 = ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->symmetric_difference_update(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 505, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_other->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 502, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 502, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->symmetric_difference_update(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 502, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "cimpl/field.pyx":504
+      /* "cimpl/field.pyx":501
  * 
  *         for page_no, page in self.pages.items():
  *             if page_no in other.pages:             # <<<<<<<<<<<<<<
@@ -9377,164 +8939,66 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_
  * 
  */
     }
-
-    /* "cimpl/field.pyx":503
- *         cdef IdsPage page
- * 
- *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
- *             if page_no in other.pages:
- *                 page.symmetric_difference_update(other.pages[page_no])
- */
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":507
+  /* "cimpl/field.pyx":504
  *                 page.symmetric_difference_update(other.pages[page_no])
  * 
  *         for page_no, page in other.pages.items():             # <<<<<<<<<<<<<<
  *             if page_no not in self.pages:
  *                 self.pages[page_no] = page.clone()
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_other->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 507, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_1 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
-    }
+  __pyx_t_7 = 0;
+  if (unlikely(__pyx_v_other->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 504, __pyx_L1_error)
   }
-  if (__pyx_t_1) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 507, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 507, __pyx_L1_error)
-  }
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_other->pages, 0, __pyx_n_s_items, (&__pyx_t_6), (&__pyx_t_8)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 504, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
-    __pyx_t_5 = __pyx_t_2; __Pyx_INCREF(__pyx_t_5); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 507, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_7 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 507, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_5))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_5)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 507, __pyx_L1_error)
-        #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 507, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 507, __pyx_L1_error)
-        #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 507, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        #endif
-      }
-    } else {
-      __pyx_t_2 = __pyx_t_7(__pyx_t_5);
-      if (unlikely(!__pyx_t_2)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 507, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_2);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
-      PyObject* sequence = __pyx_t_2;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 507, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_1 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_3);
-      #else
-      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 507, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 507, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      #endif
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_4 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 507, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext;
-      index = 0; __pyx_t_1 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_1)) goto __pyx_L10_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_1);
-      index = 1; __pyx_t_3 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L10_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_3);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 507, __pyx_L1_error)
-      __pyx_t_8 = NULL;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      goto __pyx_L11_unpacking_done;
-      __pyx_L10_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 507, __pyx_L1_error)
-      __pyx_L11_unpacking_done:;
-    }
-    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 507, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 507, __pyx_L1_error)
-    __pyx_v_page_no = __pyx_t_9;
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  while (1) {
+    __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_6, &__pyx_t_7, &__pyx_t_2, &__pyx_t_3, NULL, __pyx_t_8);
+    if (unlikely(__pyx_t_9 == 0)) break;
+    if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 504, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_10 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_10 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 504, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 504, __pyx_L1_error)
+    __pyx_v_page_no = __pyx_t_10;
     __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":508
+    /* "cimpl/field.pyx":505
  * 
  *         for page_no, page in other.pages.items():
  *             if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *                 self.pages[page_no] = page.clone()
  * 
  */
-    __pyx_t_2 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 508, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_t_2, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 508, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_10 = (__pyx_t_11 != 0);
-    if (__pyx_t_10) {
+    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 505, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_12 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_v_self->pages, Py_NE)); if (unlikely(__pyx_t_12 < 0)) __PYX_ERR(0, 505, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_11 = (__pyx_t_12 != 0);
+    if (__pyx_t_11) {
 
-      /* "cimpl/field.pyx":509
+      /* "cimpl/field.pyx":506
  *         for page_no, page in other.pages.items():
  *             if page_no not in self.pages:
  *                 self.pages[page_no] = page.clone()             # <<<<<<<<<<<<<<
  * 
  *     cpdef symmetric_difference(self, SparseBitfield other):
  */
-      __pyx_t_2 = ((PyObject *)((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->clone(__pyx_v_page)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 509, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_self->pages, __pyx_v_page_no, __pyx_t_2, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 509, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->clone(__pyx_v_page)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 506, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      if (unlikely(__Pyx_SetItemInt(__pyx_v_self->pages, __pyx_v_page_no, __pyx_t_3, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 506, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "cimpl/field.pyx":508
+      /* "cimpl/field.pyx":505
  * 
  *         for page_no, page in other.pages.items():
  *             if page_no not in self.pages:             # <<<<<<<<<<<<<<
@@ -9542,18 +9006,10 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_
  * 
  */
     }
-
-    /* "cimpl/field.pyx":507
- *                 page.symmetric_difference_update(other.pages[page_no])
- * 
- *         for page_no, page in other.pages.items():             # <<<<<<<<<<<<<<
- *             if page_no not in self.pages:
- *                 self.pages[page_no] = page.clone()
- */
   }
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":498
+  /* "cimpl/field.pyx":495
  *             page.difference_update(other_page)
  * 
  *     cpdef symmetric_difference_update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -9586,7 +9042,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_44symmetric_differen
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("symmetric_difference_update (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 498, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 495, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_43symmetric_difference_update(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -9604,7 +9060,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_43symmetric_differen
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("symmetric_difference_update", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 498, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 495, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9621,7 +9077,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_43symmetric_differen
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":511
+/* "cimpl/field.pyx":508
  *                 self.pages[page_no] = page.clone()
  * 
  *     cpdef symmetric_difference(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -9644,7 +9100,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference(
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_symmetric_difference); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 511, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_symmetric_difference); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 508, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_46symmetric_difference)) {
       __Pyx_XDECREF(__pyx_r);
@@ -9660,13 +9116,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference(
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 511, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 508, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 511, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 508, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -9674,19 +9130,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference(
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 511, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 508, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 511, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 508, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 511, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 508, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -9700,31 +9156,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference(
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":512
+  /* "cimpl/field.pyx":509
  * 
  *     cpdef symmetric_difference(self, SparseBitfield other):
  *         cdef SparseBitfield new = self.clone()             # <<<<<<<<<<<<<<
  *         new.symmetric_difference_update(other)
  *         return new
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->clone(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 512, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->clone(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 509, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 512, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 509, __pyx_L1_error)
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":513
+  /* "cimpl/field.pyx":510
  *     cpdef symmetric_difference(self, SparseBitfield other):
  *         cdef SparseBitfield new = self.clone()
  *         new.symmetric_difference_update(other)             # <<<<<<<<<<<<<<
  *         return new
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->symmetric_difference_update(__pyx_v_new, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 513, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->symmetric_difference_update(__pyx_v_new, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 510, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":514
+  /* "cimpl/field.pyx":511
  *         cdef SparseBitfield new = self.clone()
  *         new.symmetric_difference_update(other)
  *         return new             # <<<<<<<<<<<<<<
@@ -9736,7 +9192,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference(
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":511
+  /* "cimpl/field.pyx":508
  *                 self.pages[page_no] = page.clone()
  * 
  *     cpdef symmetric_difference(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -9766,7 +9222,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_46symmetric_differen
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("symmetric_difference (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 511, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 508, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_45symmetric_difference(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -9784,7 +9240,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_45symmetric_differen
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("symmetric_difference", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 511, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_symmetric_difference(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 508, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -9801,7 +9257,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_45symmetric_differen
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":516
+/* "cimpl/field.pyx":513
  *         return new
  * 
  *     cpdef intersection_update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -9821,17 +9277,18 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection_update(s
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
   Py_ssize_t __pyx_t_6;
-  PyObject *(*__pyx_t_7)(PyObject *);
-  PyObject *(*__pyx_t_8)(PyObject *);
-  usize_t __pyx_t_9;
-  int __pyx_t_10;
+  Py_ssize_t __pyx_t_7;
+  int __pyx_t_8;
+  int __pyx_t_9;
+  usize_t __pyx_t_10;
   int __pyx_t_11;
+  int __pyx_t_12;
   __Pyx_RefNannySetupContext("intersection_update", 0);
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 516, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection_update); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 513, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_48intersection_update)) {
       __Pyx_XDECREF(__pyx_r);
@@ -9847,13 +9304,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection_update(s
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 516, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 513, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 516, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 513, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -9861,19 +9318,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection_update(s
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 516, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 513, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 516, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 513, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 516, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 513, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -9887,164 +9344,74 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection_update(s
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":521
+  /* "cimpl/field.pyx":518
  *         cdef IdsPage page
  * 
  *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
  *             if page_no in other.pages:
  *                 page.intersection_update(other.pages[page_no])
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 521, __pyx_L1_error)
+  __pyx_t_6 = 0;
+  if (unlikely(__pyx_v_self->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 518, __pyx_L1_error)
+  }
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_self->pages, 0, __pyx_n_s_items, (&__pyx_t_7), (&__pyx_t_8)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 518, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 521, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 521, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
-    __pyx_t_7 = NULL;
-  } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 521, __pyx_L1_error)
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  while (1) {
+    __pyx_t_9 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_7, &__pyx_t_6, &__pyx_t_2, &__pyx_t_3, NULL, __pyx_t_8);
+    if (unlikely(__pyx_t_9 == 0)) break;
+    if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 518, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 521, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_7)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 521, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 521, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 521, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 521, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_7(__pyx_t_2);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 521, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 521, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_5 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_5);
-      #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 521, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 521, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 521, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext;
-      index = 0; __pyx_t_3 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_5 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_5)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_5);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 521, __pyx_L1_error)
-      __pyx_t_8 = NULL;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      goto __pyx_L6_unpacking_done;
-      __pyx_L5_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_8 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 521, __pyx_L1_error)
-      __pyx_L6_unpacking_done:;
-    }
-    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 521, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_5) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_5, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 521, __pyx_L1_error)
-    __pyx_v_page_no = __pyx_t_9;
-    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_5));
-    __pyx_t_5 = 0;
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_10 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_10 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 518, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 518, __pyx_L1_error)
+    __pyx_v_page_no = __pyx_t_10;
+    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":522
+    /* "cimpl/field.pyx":519
  * 
  *         for page_no, page in self.pages.items():
  *             if page_no in other.pages:             # <<<<<<<<<<<<<<
  *                 page.intersection_update(other.pages[page_no])
  *             else:
  */
-    __pyx_t_1 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 522, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_t_1, __pyx_v_other->pages, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 522, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_11 = (__pyx_t_10 != 0);
-    if (__pyx_t_11) {
+    __pyx_t_3 = __Pyx_PyInt_From_usize_t(__pyx_v_page_no); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 519, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_t_3, __pyx_v_other->pages, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 519, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_12 = (__pyx_t_11 != 0);
+    if (__pyx_t_12) {
 
-      /* "cimpl/field.pyx":523
+      /* "cimpl/field.pyx":520
  *         for page_no, page in self.pages.items():
  *             if page_no in other.pages:
  *                 page.intersection_update(other.pages[page_no])             # <<<<<<<<<<<<<<
  *             else:
  *                 page.set_empty()
  */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_other->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 523, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 523, __pyx_L1_error)
-      ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->intersection_update(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_other->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 520, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 520, __pyx_L1_error)
+      ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->intersection_update(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-      /* "cimpl/field.pyx":522
+      /* "cimpl/field.pyx":519
  * 
  *         for page_no, page in self.pages.items():
  *             if page_no in other.pages:             # <<<<<<<<<<<<<<
  *                 page.intersection_update(other.pages[page_no])
  *             else:
  */
-      goto __pyx_L7;
+      goto __pyx_L5;
     }
 
-    /* "cimpl/field.pyx":525
+    /* "cimpl/field.pyx":522
  *                 page.intersection_update(other.pages[page_no])
  *             else:
  *                 page.set_empty()             # <<<<<<<<<<<<<<
@@ -10054,19 +9421,11 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection_update(s
     /*else*/ {
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->set_empty(__pyx_v_page);
     }
-    __pyx_L7:;
-
-    /* "cimpl/field.pyx":521
- *         cdef IdsPage page
- * 
- *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
- *             if page_no in other.pages:
- *                 page.intersection_update(other.pages[page_no])
- */
+    __pyx_L5:;
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":516
+  /* "cimpl/field.pyx":513
  *         return new
  * 
  *     cpdef intersection_update(self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -10099,7 +9458,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_48intersection_updat
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("intersection_update (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 516, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 513, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_47intersection_update(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -10117,7 +9476,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_47intersection_updat
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("intersection_update", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_intersection_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 516, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_intersection_update(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 513, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10134,7 +9493,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_47intersection_updat
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":527
+/* "cimpl/field.pyx":524
  *                 page.set_empty()
  * 
  *     cpdef intersection(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -10157,7 +9516,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection(struct _
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 527, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_intersection); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 524, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_50intersection)) {
       __Pyx_XDECREF(__pyx_r);
@@ -10173,13 +9532,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection(struct _
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 527, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 524, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 527, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 524, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -10187,19 +9546,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection(struct _
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 527, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 524, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 527, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 524, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 527, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 524, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -10213,31 +9572,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection(struct _
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":529
+  /* "cimpl/field.pyx":526
  *     cpdef intersection(SparseBitfield self, SparseBitfield other):
  *         """Return a new bitfield with integers common to both this field, and 'other'."""
  *         cdef SparseBitfield new = self.clone()             # <<<<<<<<<<<<<<
  *         new.intersection_update(other)
  *         return new
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->clone(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 529, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->clone(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 526, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 529, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_SparseBitfield))))) __PYX_ERR(0, 526, __pyx_L1_error)
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":530
+  /* "cimpl/field.pyx":527
  *         """Return a new bitfield with integers common to both this field, and 'other'."""
  *         cdef SparseBitfield new = self.clone()
  *         new.intersection_update(other)             # <<<<<<<<<<<<<<
  *         return new
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->intersection_update(__pyx_v_new, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 530, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->intersection_update(__pyx_v_new, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 527, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":531
+  /* "cimpl/field.pyx":528
  *         cdef SparseBitfield new = self.clone()
  *         new.intersection_update(other)
  *         return new             # <<<<<<<<<<<<<<
@@ -10249,7 +9608,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_intersection(struct _
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":527
+  /* "cimpl/field.pyx":524
  *                 page.set_empty()
  * 
  *     cpdef intersection(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -10280,7 +9639,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_50intersection(PyObj
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("intersection (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 527, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 524, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_49intersection(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -10298,7 +9657,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_49intersection(struc
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("intersection", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_intersection(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 527, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_intersection(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 524, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10315,7 +9674,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_49intersection(struc
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":533
+/* "cimpl/field.pyx":530
  *         return new
  * 
  *     cpdef isdisjoint(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -10338,7 +9697,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_isdisjoint(struct __p
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_isdisjoint); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 533, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_isdisjoint); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 530, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_52isdisjoint)) {
       __Pyx_XDECREF(__pyx_r);
@@ -10354,13 +9713,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_isdisjoint(struct __p
         }
       }
       if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 533, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 530, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
       } else {
         #if CYTHON_FAST_PYCALL
         if (PyFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 533, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 530, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
@@ -10368,19 +9727,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_isdisjoint(struct __p
         #if CYTHON_FAST_PYCCALL
         if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
           PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 533, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 530, __pyx_L1_error)
           __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
           __Pyx_GOTREF(__pyx_t_2);
         } else
         #endif
         {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 533, __pyx_L1_error)
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 530, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_5);
           __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
           __Pyx_INCREF(((PyObject *)__pyx_v_other));
           __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
           PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 533, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 530, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
         }
@@ -10394,7 +9753,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_isdisjoint(struct __p
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":536
+  /* "cimpl/field.pyx":533
  *         """Return True if the bitfield has no integers in common with other.
  *         SparseBitfields are disjoint if and only if their intersection is the empty set."""
  *         return len(self.intersection(other)) == 0             # <<<<<<<<<<<<<<
@@ -10402,17 +9761,17 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_isdisjoint(struct __p
  *     cpdef issubset(SparseBitfield self, SparseBitfield other):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->intersection(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 536, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->intersection(__pyx_v_self, __pyx_v_other, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 533, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 536, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 533, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_t_6 == 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 536, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_t_6 == 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 533, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":533
+  /* "cimpl/field.pyx":530
  *         return new
  * 
  *     cpdef isdisjoint(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -10442,7 +9801,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_52isdisjoint(PyObjec
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("isdisjoint (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 533, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 530, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_51isdisjoint(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -10460,7 +9819,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_51isdisjoint(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("isdisjoint", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_isdisjoint(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 533, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_isdisjoint(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 530, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10477,7 +9836,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_51isdisjoint(struct 
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":538
+/* "cimpl/field.pyx":535
  *         return len(self.intersection(other)) == 0
  * 
  *     cpdef issubset(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -10500,9 +9859,169 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_issubset(struct __pyx
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_issubset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 538, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_issubset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 535, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_54issubset)) {
+      __Pyx_XDECREF(__pyx_r);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_4)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_4);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      if (!__pyx_t_4) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 535, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        #if CYTHON_FAST_PYCALL
+        if (PyFunction_Check(__pyx_t_3)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 535, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+        } else
+        #endif
+        #if CYTHON_FAST_PYCCALL
+        if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 535, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+        } else
+        #endif
+        {
+          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 535, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_5);
+          __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+          __Pyx_INCREF(((PyObject *)__pyx_v_other));
+          __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
+          PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 535, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+        }
+      }
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_r = __pyx_t_2;
+      __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      goto __pyx_L0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+
+  /* "cimpl/field.pyx":536
+ * 
+ *     cpdef issubset(SparseBitfield self, SparseBitfield other):
+ *         return len(self - other) == 0             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef issuperset(SparseBitfield self, SparseBitfield other):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyNumber_Subtract(((PyObject *)__pyx_v_self), ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 536, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 536, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_t_6 == 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 536, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "cimpl/field.pyx":535
+ *         return len(self.intersection(other)) == 0
+ * 
+ *     cpdef issubset(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
+ *         return len(self - other) == 0
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("sparsebitfield.SparseBitfield.issubset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_54issubset(PyObject *__pyx_v_self, PyObject *__pyx_v_other); /*proto*/
+static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_54issubset(PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("issubset (wrapper)", 0);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_53issubset(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_53issubset(struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_self, struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_other) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("issubset", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_issubset(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 535, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("sparsebitfield.SparseBitfield.issubset", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "cimpl/field.pyx":538
+ *         return len(self - other) == 0
+ * 
+ *     cpdef issuperset(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
+ *         return other.issubset(self)
+ * 
+ */
+
+static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_56issuperset(PyObject *__pyx_v_self, PyObject *__pyx_v_other); /*proto*/
+static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_issuperset(struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_self, struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_other, int __pyx_skip_dispatch) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_RefNannySetupContext("issuperset", 0);
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_issuperset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 538, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_56issuperset)) {
       __Pyx_XDECREF(__pyx_r);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -10558,179 +10077,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_issubset(struct __pyx
 
   /* "cimpl/field.pyx":539
  * 
- *     cpdef issubset(SparseBitfield self, SparseBitfield other):
- *         return len(self - other) == 0             # <<<<<<<<<<<<<<
- * 
- *     cpdef issuperset(SparseBitfield self, SparseBitfield other):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Subtract(((PyObject *)__pyx_v_self), ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 539, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_Length(__pyx_t_1); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 539, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_t_6 == 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 539, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "cimpl/field.pyx":538
- *         return len(self.intersection(other)) == 0
- * 
- *     cpdef issubset(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
- *         return len(self - other) == 0
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("sparsebitfield.SparseBitfield.issubset", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = 0;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* Python wrapper */
-static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_54issubset(PyObject *__pyx_v_self, PyObject *__pyx_v_other); /*proto*/
-static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_54issubset(PyObject *__pyx_v_self, PyObject *__pyx_v_other) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("issubset (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 538, __pyx_L1_error)
-  __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_53issubset(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
-
-  /* function exit code */
-  goto __pyx_L0;
-  __pyx_L1_error:;
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_53issubset(struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_self, struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_other) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  __Pyx_RefNannySetupContext("issubset", 0);
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_issubset(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 538, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("sparsebitfield.SparseBitfield.issubset", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "cimpl/field.pyx":541
- *         return len(self - other) == 0
- * 
- *     cpdef issuperset(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
- *         return other.issubset(self)
- * 
- */
-
-static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_56issuperset(PyObject *__pyx_v_self, PyObject *__pyx_v_other); /*proto*/
-static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_issuperset(struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_self, struct __pyx_obj_14sparsebitfield_SparseBitfield *__pyx_v_other, int __pyx_skip_dispatch) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  __Pyx_RefNannySetupContext("issuperset", 0);
-  /* Check if called by wrapper */
-  if (unlikely(__pyx_skip_dispatch)) ;
-  /* Check if overridden in Python */
-  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_issuperset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_56issuperset)) {
-      __Pyx_XDECREF(__pyx_r);
-      __Pyx_INCREF(__pyx_t_1);
-      __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_4);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
-        }
-      }
-      if (!__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_other)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 541, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-      } else {
-        #if CYTHON_FAST_PYCALL
-        if (PyFunction_Check(__pyx_t_3)) {
-          PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 541, __pyx_L1_error)
-          __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __Pyx_GOTREF(__pyx_t_2);
-        } else
-        #endif
-        #if CYTHON_FAST_PYCCALL
-        if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-          PyObject *__pyx_temp[2] = {__pyx_t_4, ((PyObject *)__pyx_v_other)};
-          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 541, __pyx_L1_error)
-          __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-          __Pyx_GOTREF(__pyx_t_2);
-        } else
-        #endif
-        {
-          __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 541, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_5);
-          __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
-          __Pyx_INCREF(((PyObject *)__pyx_v_other));
-          __Pyx_GIVEREF(((PyObject *)__pyx_v_other));
-          PyTuple_SET_ITEM(__pyx_t_5, 0+1, ((PyObject *)__pyx_v_other));
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 541, __pyx_L1_error)
-          __Pyx_GOTREF(__pyx_t_2);
-          __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-        }
-      }
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_r = __pyx_t_2;
-      __pyx_t_2 = 0;
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      goto __pyx_L0;
-    }
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  }
-
-  /* "cimpl/field.pyx":542
- * 
  *     cpdef issuperset(SparseBitfield self, SparseBitfield other):
  *         return other.issubset(self)             # <<<<<<<<<<<<<<
  * 
  *     cpdef copy(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_other->__pyx_vtab)->issubset(__pyx_v_other, __pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 542, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_other->__pyx_vtab)->issubset(__pyx_v_other, __pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 539, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":541
+  /* "cimpl/field.pyx":538
  *         return len(self - other) == 0
  * 
  *     cpdef issuperset(SparseBitfield self, SparseBitfield other):             # <<<<<<<<<<<<<<
@@ -10759,7 +10118,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_56issuperset(PyObjec
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("issuperset (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 541, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_other), __pyx_ptype_14sparsebitfield_SparseBitfield, 1, "other", 0))) __PYX_ERR(0, 538, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_55issuperset(((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_self), ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_v_other));
 
   /* function exit code */
@@ -10777,7 +10136,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_55issuperset(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("issuperset", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_issuperset(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_issuperset(__pyx_v_self, __pyx_v_other, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 538, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10794,7 +10153,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_55issuperset(struct 
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":544
+/* "cimpl/field.pyx":541
  *         return other.issubset(self)
  * 
  *     cpdef copy(self):             # <<<<<<<<<<<<<<
@@ -10815,7 +10174,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_copy(struct __pyx_obj
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_copy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 544, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_copy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_58copy)) {
       __Pyx_XDECREF(__pyx_r);
@@ -10831,10 +10190,10 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_copy(struct __pyx_obj
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 544, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 541, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 544, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 541, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -10846,7 +10205,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_copy(struct __pyx_obj
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":546
+  /* "cimpl/field.pyx":543
  *     cpdef copy(self):
  *         """Create a copy of the bitfield"""
  *         return self.clone()             # <<<<<<<<<<<<<<
@@ -10854,13 +10213,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_copy(struct __pyx_obj
  *     cpdef clone(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->clone(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 546, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->clone(__pyx_v_self, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 543, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":544
+  /* "cimpl/field.pyx":541
  *         return other.issubset(self)
  * 
  *     cpdef copy(self):             # <<<<<<<<<<<<<<
@@ -10902,7 +10261,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_57copy(struct __pyx_
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("copy", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_copy(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 544, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_copy(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 541, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -10919,7 +10278,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_57copy(struct __pyx_
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":548
+/* "cimpl/field.pyx":545
  *         return self.clone()
  * 
  *     cpdef clone(self):             # <<<<<<<<<<<<<<
@@ -10939,9 +10298,9 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   Py_ssize_t __pyx_t_5;
-  PyObject *(*__pyx_t_6)(PyObject *);
-  PyObject *__pyx_t_7 = NULL;
-  PyObject *(*__pyx_t_8)(PyObject *);
+  Py_ssize_t __pyx_t_6;
+  int __pyx_t_7;
+  int __pyx_t_8;
   usize_t __pyx_t_9;
   int __pyx_t_10;
   __Pyx_RefNannySetupContext("clone", 0);
@@ -10949,7 +10308,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_clone); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 548, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_clone); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 545, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_14sparsebitfield_14SparseBitfield_60clone)) {
       __Pyx_XDECREF(__pyx_r);
@@ -10965,10 +10324,10 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
         }
       }
       if (__pyx_t_4) {
-        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 548, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 545, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       } else {
-        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 548, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 545, __pyx_L1_error)
       }
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -10980,139 +10339,49 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "cimpl/field.pyx":550
+  /* "cimpl/field.pyx":547
  *     cpdef clone(self):
  *         """Create a copy of the bitfield"""
  *         new = SparseBitfield()             # <<<<<<<<<<<<<<
  *         cdef usize_t page_no
  *         cdef IdsPage page
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 550, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 547, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":554
+  /* "cimpl/field.pyx":551
  *         cdef IdsPage page
  * 
  *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
  *             if page.page_state == PAGE_EMPTY:
  *                 continue
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 554, __pyx_L1_error)
+  __pyx_t_5 = 0;
+  if (unlikely(__pyx_v_self->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 551, __pyx_L1_error)
+  }
+  __pyx_t_2 = __Pyx_dict_iterator(__pyx_v_self->pages, 0, __pyx_n_s_items, (&__pyx_t_6), (&__pyx_t_7)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 551, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 554, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 554, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_5 = 0;
-    __pyx_t_6 = NULL;
-  } else {
-    __pyx_t_5 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 554, __pyx_L1_error)
+  __Pyx_XDECREF(__pyx_t_1);
+  __pyx_t_1 = __pyx_t_2;
+  __pyx_t_2 = 0;
+  while (1) {
+    __pyx_t_8 = __Pyx_dict_iter_next(__pyx_t_1, __pyx_t_6, &__pyx_t_5, &__pyx_t_2, &__pyx_t_3, NULL, __pyx_t_7);
+    if (unlikely(__pyx_t_8 == 0)) break;
+    if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 551, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 554, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_6)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 554, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 554, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      } else {
-        if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 554, __pyx_L1_error)
-        #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 554, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        #endif
-      }
-    } else {
-      __pyx_t_1 = __pyx_t_6(__pyx_t_2);
-      if (unlikely(!__pyx_t_1)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 554, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_1);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
-      PyObject* sequence = __pyx_t_1;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 554, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_3 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 554, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 554, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      #endif
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_7 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 554, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_8 = Py_TYPE(__pyx_t_7)->tp_iternext;
-      index = 0; __pyx_t_3 = __pyx_t_8(__pyx_t_7); if (unlikely(!__pyx_t_3)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_3);
-      index = 1; __pyx_t_4 = __pyx_t_8(__pyx_t_7); if (unlikely(!__pyx_t_4)) goto __pyx_L5_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_4);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_7), 2) < 0) __PYX_ERR(0, 554, __pyx_L1_error)
-      __pyx_t_8 = NULL;
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      goto __pyx_L6_unpacking_done;
-      __pyx_L5_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_8 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 554, __pyx_L1_error)
-      __pyx_L6_unpacking_done:;
-    }
-    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 554, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 554, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 551, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    if (!(likely(((__pyx_t_3) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_3, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 551, __pyx_L1_error)
     __pyx_v_page_no = __pyx_t_9;
-    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_4));
-    __pyx_t_4 = 0;
+    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_3));
+    __pyx_t_3 = 0;
 
-    /* "cimpl/field.pyx":555
+    /* "cimpl/field.pyx":552
  * 
  *         for page_no, page in self.pages.items():
  *             if page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -11122,7 +10391,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
     __pyx_t_10 = ((__pyx_v_page->page_state == 3) != 0);
     if (__pyx_t_10) {
 
-      /* "cimpl/field.pyx":556
+      /* "cimpl/field.pyx":553
  *         for page_no, page in self.pages.items():
  *             if page.page_state == PAGE_EMPTY:
  *                 continue             # <<<<<<<<<<<<<<
@@ -11131,7 +10400,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
  */
       goto __pyx_L3_continue;
 
-      /* "cimpl/field.pyx":555
+      /* "cimpl/field.pyx":552
  * 
  *         for page_no, page in self.pages.items():
  *             if page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -11140,30 +10409,22 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
  */
     }
 
-    /* "cimpl/field.pyx":557
+    /* "cimpl/field.pyx":554
  *             if page.page_state == PAGE_EMPTY:
  *                 continue
  *             new.pages[page_no] = page.clone()             # <<<<<<<<<<<<<<
  * 
  *         return new
  */
-    __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->clone(__pyx_v_page)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 557, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_new->pages, __pyx_v_page_no, __pyx_t_1, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 557, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
-    /* "cimpl/field.pyx":554
- *         cdef IdsPage page
- * 
- *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
- *             if page.page_state == PAGE_EMPTY:
- *                 continue
- */
+    __pyx_t_3 = ((PyObject *)((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->clone(__pyx_v_page)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 554, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_new->pages, __pyx_v_page_no, __pyx_t_3, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 554, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_L3_continue:;
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":559
+  /* "cimpl/field.pyx":556
  *             new.pages[page_no] = page.clone()
  * 
  *         return new             # <<<<<<<<<<<<<<
@@ -11175,7 +10436,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":548
+  /* "cimpl/field.pyx":545
  *         return self.clone()
  * 
  *     cpdef clone(self):             # <<<<<<<<<<<<<<
@@ -11189,7 +10450,6 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_clone(struct __pyx_ob
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("sparsebitfield.SparseBitfield.clone", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -11220,7 +10480,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_59clone(struct __pyx
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("clone", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_clone(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 548, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_14SparseBitfield_clone(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 545, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -11237,7 +10497,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_59clone(struct __pyx
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":561
+/* "cimpl/field.pyx":558
  *         return new
  * 
  *     def __getbuffer__(self, Py_buffer *view, int flags):             # <<<<<<<<<<<<<<
@@ -11268,16 +10528,14 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  Py_ssize_t __pyx_t_5;
-  PyObject *(*__pyx_t_6)(PyObject *);
-  Py_ssize_t __pyx_t_7;
+  Py_ssize_t __pyx_t_3;
+  Py_ssize_t __pyx_t_4;
+  int __pyx_t_5;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
   PyObject *__pyx_t_8 = NULL;
-  PyObject *__pyx_t_9 = NULL;
-  PyObject *(*__pyx_t_10)(PyObject *);
-  usize_t __pyx_t_11;
-  int __pyx_t_12;
+  usize_t __pyx_t_9;
+  int __pyx_t_10;
   if (__pyx_v_view == NULL) {
     PyErr_SetString(PyExc_BufferError, "PyObject_GetBuffer: view==NULL argument is obsolete");
     return -1;
@@ -11286,7 +10544,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
   __pyx_v_view->obj = Py_None; __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(__pyx_v_view->obj);
 
-  /* "cimpl/field.pyx":563
+  /* "cimpl/field.pyx":560
  *     def __getbuffer__(self, Py_buffer *view, int flags):
  *         cdef IdsPage page
  *         cdef size_t partial_page_count = 0             # <<<<<<<<<<<<<<
@@ -11295,7 +10553,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   __pyx_v_partial_page_count = 0;
 
-  /* "cimpl/field.pyx":566
+  /* "cimpl/field.pyx":563
  *         cdef size_t buffer_len
  *         cdef char * pointer
  *         cdef usize_t page_no = 0             # <<<<<<<<<<<<<<
@@ -11304,7 +10562,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   __pyx_v_page_no = 0;
 
-  /* "cimpl/field.pyx":568
+  /* "cimpl/field.pyx":565
  *         cdef usize_t page_no = 0
  * 
  *         if flags & pybuf.PyBUF_WRITABLE:             # <<<<<<<<<<<<<<
@@ -11314,20 +10572,20 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
   __pyx_t_1 = ((__pyx_v_flags & PyBUF_WRITABLE) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "cimpl/field.pyx":569
+    /* "cimpl/field.pyx":566
  * 
  *         if flags & pybuf.PyBUF_WRITABLE:
  *             raise ValueError("sparsebitfields do not provide writable buffers")             # <<<<<<<<<<<<<<
  * 
  *         if flags & pybuf.PyBUF_FORMAT:
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 569, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 566, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 569, __pyx_L1_error)
+    __PYX_ERR(0, 566, __pyx_L1_error)
 
-    /* "cimpl/field.pyx":568
+    /* "cimpl/field.pyx":565
  *         cdef usize_t page_no = 0
  * 
  *         if flags & pybuf.PyBUF_WRITABLE:             # <<<<<<<<<<<<<<
@@ -11336,7 +10594,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   }
 
-  /* "cimpl/field.pyx":571
+  /* "cimpl/field.pyx":568
  *             raise ValueError("sparsebitfields do not provide writable buffers")
  * 
  *         if flags & pybuf.PyBUF_FORMAT:             # <<<<<<<<<<<<<<
@@ -11346,7 +10604,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
   __pyx_t_1 = ((__pyx_v_flags & PyBUF_FORMAT) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":572
+    /* "cimpl/field.pyx":569
  * 
  *         if flags & pybuf.PyBUF_FORMAT:
  *             view.format = "B"             # <<<<<<<<<<<<<<
@@ -11355,7 +10613,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     __pyx_v_view->format = ((char *)"B");
 
-    /* "cimpl/field.pyx":571
+    /* "cimpl/field.pyx":568
  *             raise ValueError("sparsebitfields do not provide writable buffers")
  * 
  *         if flags & pybuf.PyBUF_FORMAT:             # <<<<<<<<<<<<<<
@@ -11364,7 +10622,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   }
 
-  /* "cimpl/field.pyx":574
+  /* "cimpl/field.pyx":571
  *             view.format = "B"
  * 
  *         view.readonly = True             # <<<<<<<<<<<<<<
@@ -11373,78 +10631,33 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   __pyx_v_view->readonly = 1;
 
-  /* "cimpl/field.pyx":575
+  /* "cimpl/field.pyx":572
  * 
  *         view.readonly = True
  *         for page in self.pages.values():             # <<<<<<<<<<<<<<
  *             if page.data:
  *                 partial_page_count += 1
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->pages, __pyx_n_s_values); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 575, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_3, function);
-    }
+  __pyx_t_3 = 0;
+  if (unlikely(__pyx_v_self->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "values");
+    __PYX_ERR(0, 572, __pyx_L1_error)
   }
-  if (__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 575, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 575, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
-    __pyx_t_3 = __pyx_t_2; __Pyx_INCREF(__pyx_t_3); __pyx_t_5 = 0;
-    __pyx_t_6 = NULL;
-  } else {
-    __pyx_t_5 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 575, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 575, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_6)) {
-      if (likely(PyList_CheckExact(__pyx_t_3))) {
-        if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 575, __pyx_L1_error)
-        #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 575, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        #endif
-      } else {
-        if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 575, __pyx_L1_error)
-        #else
-        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 575, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_2);
-        #endif
-      }
-    } else {
-      __pyx_t_2 = __pyx_t_6(__pyx_t_3);
-      if (unlikely(!__pyx_t_2)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 575, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_2);
-    }
-    if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 575, __pyx_L1_error)
-    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_2));
-    __pyx_t_2 = 0;
+  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_self->pages, 0, __pyx_n_s_values, (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 572, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_2);
+  __pyx_t_2 = __pyx_t_6;
+  __pyx_t_6 = 0;
+  while (1) {
+    __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_2, __pyx_t_4, &__pyx_t_3, NULL, &__pyx_t_6, NULL, __pyx_t_5);
+    if (unlikely(__pyx_t_7 == 0)) break;
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 572, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    if (!(likely(((__pyx_t_6) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_6, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 572, __pyx_L1_error)
+    __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_6));
+    __pyx_t_6 = 0;
 
-    /* "cimpl/field.pyx":576
+    /* "cimpl/field.pyx":573
  *         view.readonly = True
  *         for page in self.pages.values():
  *             if page.data:             # <<<<<<<<<<<<<<
@@ -11454,7 +10667,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
     __pyx_t_1 = (__pyx_v_page->data != 0);
     if (__pyx_t_1) {
 
-      /* "cimpl/field.pyx":577
+      /* "cimpl/field.pyx":574
  *         for page in self.pages.values():
  *             if page.data:
  *                 partial_page_count += 1             # <<<<<<<<<<<<<<
@@ -11463,7 +10676,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
       __pyx_v_partial_page_count = (__pyx_v_partial_page_count + 1);
 
-      /* "cimpl/field.pyx":576
+      /* "cimpl/field.pyx":573
  *         view.readonly = True
  *         for page in self.pages.values():
  *             if page.data:             # <<<<<<<<<<<<<<
@@ -11471,79 +10684,71 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  * 
  */
     }
-
-    /* "cimpl/field.pyx":575
- * 
- *         view.readonly = True
- *         for page in self.pages.values():             # <<<<<<<<<<<<<<
- *             if page.data:
- *                 partial_page_count += 1
- */
   }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":579
+  /* "cimpl/field.pyx":576
  *                 partial_page_count += 1
  * 
  *         buffer_len = len(self.pages) + (PAGE_BYTES * partial_page_count) + \             # <<<<<<<<<<<<<<
  *                         len(self.pages) * sizeof(page_no)
  *         view.len = buffer_len
  */
-  __pyx_t_3 = __pyx_v_self->pages;
-  __Pyx_INCREF(__pyx_t_3);
-  __pyx_t_5 = PyObject_Length(__pyx_t_3); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 579, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_2 = __pyx_v_self->pages;
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_4 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 576, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":580
+  /* "cimpl/field.pyx":577
  * 
  *         buffer_len = len(self.pages) + (PAGE_BYTES * partial_page_count) + \
  *                         len(self.pages) * sizeof(page_no)             # <<<<<<<<<<<<<<
  *         view.len = buffer_len
- *         view.buf = malloc(buffer_len)
+ *         view.buf = PyMem_Malloc(buffer_len)
  */
-  __pyx_t_3 = __pyx_v_self->pages;
-  __Pyx_INCREF(__pyx_t_3);
-  __pyx_t_7 = PyObject_Length(__pyx_t_3); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 580, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_2 = __pyx_v_self->pages;
+  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_3 = PyObject_Length(__pyx_t_2); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 577, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":579
+  /* "cimpl/field.pyx":576
  *                 partial_page_count += 1
  * 
  *         buffer_len = len(self.pages) + (PAGE_BYTES * partial_page_count) + \             # <<<<<<<<<<<<<<
  *                         len(self.pages) * sizeof(page_no)
  *         view.len = buffer_len
  */
-  __pyx_v_buffer_len = ((__pyx_t_5 + (PAGE_BYTES * __pyx_v_partial_page_count)) + (__pyx_t_7 * (sizeof(__pyx_v_page_no))));
+  __pyx_v_buffer_len = ((__pyx_t_4 + (PAGE_BYTES * __pyx_v_partial_page_count)) + (__pyx_t_3 * (sizeof(__pyx_v_page_no))));
 
-  /* "cimpl/field.pyx":581
+  /* "cimpl/field.pyx":578
  *         buffer_len = len(self.pages) + (PAGE_BYTES * partial_page_count) + \
  *                         len(self.pages) * sizeof(page_no)
  *         view.len = buffer_len             # <<<<<<<<<<<<<<
- *         view.buf = malloc(buffer_len)
+ *         view.buf = PyMem_Malloc(buffer_len)
  *         view.itemsize = 1
  */
   __pyx_v_view->len = __pyx_v_buffer_len;
 
-  /* "cimpl/field.pyx":582
+  /* "cimpl/field.pyx":579
  *                         len(self.pages) * sizeof(page_no)
  *         view.len = buffer_len
- *         view.buf = malloc(buffer_len)             # <<<<<<<<<<<<<<
+ *         view.buf = PyMem_Malloc(buffer_len)             # <<<<<<<<<<<<<<
  *         view.itemsize = 1
  *         view.suboffsets = NULL
  */
-  __pyx_v_view->buf = malloc(__pyx_v_buffer_len);
+  __pyx_v_view->buf = PyMem_Malloc(__pyx_v_buffer_len);
 
-  /* "cimpl/field.pyx":583
+  /* "cimpl/field.pyx":580
  *         view.len = buffer_len
- *         view.buf = malloc(buffer_len)
+ *         view.buf = PyMem_Malloc(buffer_len)
  *         view.itemsize = 1             # <<<<<<<<<<<<<<
  *         view.suboffsets = NULL
  *         pointer = <char *> view.buf
  */
   __pyx_v_view->itemsize = 1;
 
-  /* "cimpl/field.pyx":584
- *         view.buf = malloc(buffer_len)
+  /* "cimpl/field.pyx":581
+ *         view.buf = PyMem_Malloc(buffer_len)
  *         view.itemsize = 1
  *         view.suboffsets = NULL             # <<<<<<<<<<<<<<
  *         pointer = <char *> view.buf
@@ -11551,7 +10756,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   __pyx_v_view->suboffsets = NULL;
 
-  /* "cimpl/field.pyx":585
+  /* "cimpl/field.pyx":582
  *         view.itemsize = 1
  *         view.suboffsets = NULL
  *         pointer = <char *> view.buf             # <<<<<<<<<<<<<<
@@ -11560,127 +10765,37 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   __pyx_v_pointer = ((char *)__pyx_v_view->buf);
 
-  /* "cimpl/field.pyx":586
+  /* "cimpl/field.pyx":583
  *         view.suboffsets = NULL
  *         pointer = <char *> view.buf
  *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
  *             if page.page_state == PAGE_EMPTY:
  *                 continue
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_self->pages, __pyx_n_s_items); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 586, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
+  __pyx_t_3 = 0;
+  if (unlikely(__pyx_v_self->pages == Py_None)) {
+    PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "items");
+    __PYX_ERR(0, 583, __pyx_L1_error)
   }
-  if (__pyx_t_4) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 586, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 586, __pyx_L1_error)
-  }
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
-    __pyx_t_2 = __pyx_t_3; __Pyx_INCREF(__pyx_t_2); __pyx_t_7 = 0;
-    __pyx_t_6 = NULL;
-  } else {
-    __pyx_t_7 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 586, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 586, __pyx_L1_error)
-  }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  for (;;) {
-    if (likely(!__pyx_t_6)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_7 >= PyList_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 586, __pyx_L1_error)
-        #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 586, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        #endif
-      } else {
-        if (__pyx_t_7 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
-        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_7); __Pyx_INCREF(__pyx_t_3); __pyx_t_7++; if (unlikely(0 < 0)) __PYX_ERR(0, 586, __pyx_L1_error)
-        #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_7); __pyx_t_7++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 586, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_3);
-        #endif
-      }
-    } else {
-      __pyx_t_3 = __pyx_t_6(__pyx_t_2);
-      if (unlikely(!__pyx_t_3)) {
-        PyObject* exc_type = PyErr_Occurred();
-        if (exc_type) {
-          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 586, __pyx_L1_error)
-        }
-        break;
-      }
-      __Pyx_GOTREF(__pyx_t_3);
-    }
-    if ((likely(PyTuple_CheckExact(__pyx_t_3))) || (PyList_CheckExact(__pyx_t_3))) {
-      PyObject* sequence = __pyx_t_3;
-      Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-      if (unlikely(size != 2)) {
-        if (size > 2) __Pyx_RaiseTooManyValuesError(2);
-        else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 586, __pyx_L1_error)
-      }
-      #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-      if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_4 = PyTuple_GET_ITEM(sequence, 0); 
-        __pyx_t_8 = PyTuple_GET_ITEM(sequence, 1); 
-      } else {
-        __pyx_t_4 = PyList_GET_ITEM(sequence, 0); 
-        __pyx_t_8 = PyList_GET_ITEM(sequence, 1); 
-      }
-      __Pyx_INCREF(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_8);
-      #else
-      __pyx_t_4 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 586, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 586, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_8);
-      #endif
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    } else {
-      Py_ssize_t index = -1;
-      __pyx_t_9 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 586, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_9);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
-      index = 0; __pyx_t_4 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_4)) goto __pyx_L10_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_4);
-      index = 1; __pyx_t_8 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_8)) goto __pyx_L10_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_8);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 586, __pyx_L1_error)
-      __pyx_t_10 = NULL;
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      goto __pyx_L11_unpacking_done;
-      __pyx_L10_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-      __pyx_t_10 = NULL;
-      if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 586, __pyx_L1_error)
-      __pyx_L11_unpacking_done:;
-    }
-    __pyx_t_11 = __Pyx_PyInt_As_usize_t(__pyx_t_4); if (unlikely((__pyx_t_11 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 586, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 586, __pyx_L1_error)
-    __pyx_v_page_no = __pyx_t_11;
+  __pyx_t_6 = __Pyx_dict_iterator(__pyx_v_self->pages, 0, __pyx_n_s_items, (&__pyx_t_4), (&__pyx_t_5)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 583, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_2);
+  __pyx_t_2 = __pyx_t_6;
+  __pyx_t_6 = 0;
+  while (1) {
+    __pyx_t_7 = __Pyx_dict_iter_next(__pyx_t_2, __pyx_t_4, &__pyx_t_3, &__pyx_t_6, &__pyx_t_8, NULL, __pyx_t_5);
+    if (unlikely(__pyx_t_7 == 0)) break;
+    if (unlikely(__pyx_t_7 == -1)) __PYX_ERR(0, 583, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    __Pyx_GOTREF(__pyx_t_8);
+    __pyx_t_9 = __Pyx_PyInt_As_usize_t(__pyx_t_6); if (unlikely((__pyx_t_9 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 583, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+    if (!(likely(((__pyx_t_8) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_8, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 583, __pyx_L1_error)
+    __pyx_v_page_no = __pyx_t_9;
     __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_8));
     __pyx_t_8 = 0;
 
-    /* "cimpl/field.pyx":587
+    /* "cimpl/field.pyx":584
  *         pointer = <char *> view.buf
  *         for page_no, page in self.pages.items():
  *             if page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -11690,7 +10805,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
     __pyx_t_1 = ((__pyx_v_page->page_state == 3) != 0);
     if (__pyx_t_1) {
 
-      /* "cimpl/field.pyx":588
+      /* "cimpl/field.pyx":585
  *         for page_no, page in self.pages.items():
  *             if page.page_state == PAGE_EMPTY:
  *                 continue             # <<<<<<<<<<<<<<
@@ -11699,7 +10814,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
       goto __pyx_L8_continue;
 
-      /* "cimpl/field.pyx":587
+      /* "cimpl/field.pyx":584
  *         pointer = <char *> view.buf
  *         for page_no, page in self.pages.items():
  *             if page.page_state == PAGE_EMPTY:             # <<<<<<<<<<<<<<
@@ -11708,7 +10823,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     }
 
-    /* "cimpl/field.pyx":589
+    /* "cimpl/field.pyx":586
  *             if page.page_state == PAGE_EMPTY:
  *                 continue
  *             memcpy(<void *> pointer, <void *>&page_no, sizeof(page_no))             # <<<<<<<<<<<<<<
@@ -11717,7 +10832,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     (void)(memcpy(((void *)__pyx_v_pointer), ((void *)(&__pyx_v_page_no)), (sizeof(__pyx_v_page_no))));
 
-    /* "cimpl/field.pyx":590
+    /* "cimpl/field.pyx":587
  *                 continue
  *             memcpy(<void *> pointer, <void *>&page_no, sizeof(page_no))
  *             pointer += sizeof(page_no)             # <<<<<<<<<<<<<<
@@ -11726,7 +10841,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     __pyx_v_pointer = (__pyx_v_pointer + (sizeof(__pyx_v_page_no)));
 
-    /* "cimpl/field.pyx":591
+    /* "cimpl/field.pyx":588
  *             memcpy(<void *> pointer, <void *>&page_no, sizeof(page_no))
  *             pointer += sizeof(page_no)
  *             pointer[0] = <unsigned char>page.page_state             # <<<<<<<<<<<<<<
@@ -11735,7 +10850,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     (__pyx_v_pointer[0]) = ((unsigned char)__pyx_v_page->page_state);
 
-    /* "cimpl/field.pyx":592
+    /* "cimpl/field.pyx":589
  *             pointer += sizeof(page_no)
  *             pointer[0] = <unsigned char>page.page_state
  *             pointer += 1             # <<<<<<<<<<<<<<
@@ -11744,7 +10859,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     __pyx_v_pointer = (__pyx_v_pointer + 1);
 
-    /* "cimpl/field.pyx":593
+    /* "cimpl/field.pyx":590
  *             pointer[0] = <unsigned char>page.page_state
  *             pointer += 1
  *             if page.data != NULL:             # <<<<<<<<<<<<<<
@@ -11754,7 +10869,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
     __pyx_t_1 = ((__pyx_v_page->data != NULL) != 0);
     if (__pyx_t_1) {
 
-      /* "cimpl/field.pyx":594
+      /* "cimpl/field.pyx":591
  *             pointer += 1
  *             if page.data != NULL:
  *                 memcpy(<void *>pointer, <void*>page.data, PAGE_BYTES)             # <<<<<<<<<<<<<<
@@ -11763,7 +10878,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
       (void)(memcpy(((void *)__pyx_v_pointer), ((void *)__pyx_v_page->data), PAGE_BYTES));
 
-      /* "cimpl/field.pyx":595
+      /* "cimpl/field.pyx":592
  *             if page.data != NULL:
  *                 memcpy(<void *>pointer, <void*>page.data, PAGE_BYTES)
  *                 pointer += PAGE_BYTES             # <<<<<<<<<<<<<<
@@ -11772,7 +10887,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
       __pyx_v_pointer = (__pyx_v_pointer + PAGE_BYTES);
 
-      /* "cimpl/field.pyx":593
+      /* "cimpl/field.pyx":590
  *             pointer[0] = <unsigned char>page.page_state
  *             pointer += 1
  *             if page.data != NULL:             # <<<<<<<<<<<<<<
@@ -11780,37 +10895,29 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  *                 pointer += PAGE_BYTES
  */
     }
-
-    /* "cimpl/field.pyx":586
- *         view.suboffsets = NULL
- *         pointer = <char *> view.buf
- *         for page_no, page in self.pages.items():             # <<<<<<<<<<<<<<
- *             if page.page_state == PAGE_EMPTY:
- *                 continue
- */
     __pyx_L8_continue:;
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":597
+  /* "cimpl/field.pyx":594
  *                 pointer += PAGE_BYTES
  * 
  *         if flags & pybuf.PyBUF_ND or flags & pybuf.PyBUF_STRIDES:             # <<<<<<<<<<<<<<
  *             view.ndim = 0
  *             view.shape = NULL
  */
-  __pyx_t_12 = ((__pyx_v_flags & PyBUF_ND) != 0);
-  if (!__pyx_t_12) {
+  __pyx_t_10 = ((__pyx_v_flags & PyBUF_ND) != 0);
+  if (!__pyx_t_10) {
   } else {
-    __pyx_t_1 = __pyx_t_12;
-    goto __pyx_L15_bool_binop_done;
+    __pyx_t_1 = __pyx_t_10;
+    goto __pyx_L13_bool_binop_done;
   }
-  __pyx_t_12 = ((__pyx_v_flags & PyBUF_STRIDES) != 0);
-  __pyx_t_1 = __pyx_t_12;
-  __pyx_L15_bool_binop_done:;
+  __pyx_t_10 = ((__pyx_v_flags & PyBUF_STRIDES) != 0);
+  __pyx_t_1 = __pyx_t_10;
+  __pyx_L13_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":598
+    /* "cimpl/field.pyx":595
  * 
  *         if flags & pybuf.PyBUF_ND or flags & pybuf.PyBUF_STRIDES:
  *             view.ndim = 0             # <<<<<<<<<<<<<<
@@ -11819,7 +10926,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     __pyx_v_view->ndim = 0;
 
-    /* "cimpl/field.pyx":599
+    /* "cimpl/field.pyx":596
  *         if flags & pybuf.PyBUF_ND or flags & pybuf.PyBUF_STRIDES:
  *             view.ndim = 0
  *             view.shape = NULL             # <<<<<<<<<<<<<<
@@ -11828,7 +10935,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     __pyx_v_view->shape = NULL;
 
-    /* "cimpl/field.pyx":600
+    /* "cimpl/field.pyx":597
  *             view.ndim = 0
  *             view.shape = NULL
  *             view.strides = NULL             # <<<<<<<<<<<<<<
@@ -11837,7 +10944,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
     __pyx_v_view->strides = NULL;
 
-    /* "cimpl/field.pyx":597
+    /* "cimpl/field.pyx":594
  *                 pointer += PAGE_BYTES
  * 
  *         if flags & pybuf.PyBUF_ND or flags & pybuf.PyBUF_STRIDES:             # <<<<<<<<<<<<<<
@@ -11846,7 +10953,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
  */
   }
 
-  /* "cimpl/field.pyx":561
+  /* "cimpl/field.pyx":558
  *         return new
  * 
  *     def __getbuffer__(self, Py_buffer *view, int flags):             # <<<<<<<<<<<<<<
@@ -11859,10 +10966,8 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_XDECREF(__pyx_t_9);
   __Pyx_AddTraceback("sparsebitfield.SparseBitfield.__getbuffer__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   if (__pyx_v_view->obj != NULL) {
@@ -11881,7 +10986,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_61__getbuffer__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":602
+/* "cimpl/field.pyx":599
  *             view.strides = NULL
  * 
  *     def __releasebuffer__(self, Py_buffer *view):             # <<<<<<<<<<<<<<
@@ -11905,44 +11010,44 @@ static void __pyx_pf_14sparsebitfield_14SparseBitfield_63__releasebuffer__(CYTHO
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "cimpl/field.pyx":603
+  /* "cimpl/field.pyx":600
  * 
  *     def __releasebuffer__(self, Py_buffer *view):
  *         if view.buf == NULL:             # <<<<<<<<<<<<<<
  *             return
- *         free(view.buf)
+ *         PyMem_Free(view.buf)
  */
   __pyx_t_1 = ((__pyx_v_view->buf == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "cimpl/field.pyx":604
+    /* "cimpl/field.pyx":601
  *     def __releasebuffer__(self, Py_buffer *view):
  *         if view.buf == NULL:
  *             return             # <<<<<<<<<<<<<<
- *         free(view.buf)
+ *         PyMem_Free(view.buf)
  * 
  */
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":603
+    /* "cimpl/field.pyx":600
  * 
  *     def __releasebuffer__(self, Py_buffer *view):
  *         if view.buf == NULL:             # <<<<<<<<<<<<<<
  *             return
- *         free(view.buf)
+ *         PyMem_Free(view.buf)
  */
   }
 
-  /* "cimpl/field.pyx":605
+  /* "cimpl/field.pyx":602
  *         if view.buf == NULL:
  *             return
- *         free(view.buf)             # <<<<<<<<<<<<<<
+ *         PyMem_Free(view.buf)             # <<<<<<<<<<<<<<
  * 
  *     def pickle(self, compress=True):
  */
-  free(__pyx_v_view->buf);
+  PyMem_Free(__pyx_v_view->buf);
 
-  /* "cimpl/field.pyx":602
+  /* "cimpl/field.pyx":599
  *             view.strides = NULL
  * 
  *     def __releasebuffer__(self, Py_buffer *view):             # <<<<<<<<<<<<<<
@@ -11955,8 +11060,8 @@ static void __pyx_pf_14sparsebitfield_14SparseBitfield_63__releasebuffer__(CYTHO
   __Pyx_RefNannyFinishContext();
 }
 
-/* "cimpl/field.pyx":607
- *         free(view.buf)
+/* "cimpl/field.pyx":604
+ *         PyMem_Free(view.buf)
  * 
  *     def pickle(self, compress=True):             # <<<<<<<<<<<<<<
  *         """Return a string representation of the bitfield"""
@@ -11993,7 +11098,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_66pickle(PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pickle") < 0)) __PYX_ERR(0, 607, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "pickle") < 0)) __PYX_ERR(0, 604, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -12007,7 +11112,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_66pickle(PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("pickle", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 607, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("pickle", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 604, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("sparsebitfield.SparseBitfield.pickle", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -12032,7 +11137,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("pickle", 0);
 
-  /* "cimpl/field.pyx":609
+  /* "cimpl/field.pyx":606
  *     def pickle(self, compress=True):
  *         """Return a string representation of the bitfield"""
  *         cdef bytes marker = PICKLE_MARKER             # <<<<<<<<<<<<<<
@@ -12042,19 +11147,19 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
   __Pyx_INCREF(__pyx_v_14sparsebitfield_PICKLE_MARKER);
   __pyx_v_marker = __pyx_v_14sparsebitfield_PICKLE_MARKER;
 
-  /* "cimpl/field.pyx":610
+  /* "cimpl/field.pyx":607
  *         """Return a string representation of the bitfield"""
  *         cdef bytes marker = PICKLE_MARKER
  *         cdef bytes base = memoryview(self).tobytes()             # <<<<<<<<<<<<<<
  *         if compress:
  *             base = zlib.compress(base)
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 610, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_memoryview); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 607, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_2, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 610, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_2, ((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 607, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 610, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_tobytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 607, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -12068,37 +11173,37 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
     }
   }
   if (__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 610, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 607, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else {
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 610, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 607, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 610, __pyx_L1_error)
+  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 607, __pyx_L1_error)
   __pyx_v_base = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":611
+  /* "cimpl/field.pyx":608
  *         cdef bytes marker = PICKLE_MARKER
  *         cdef bytes base = memoryview(self).tobytes()
  *         if compress:             # <<<<<<<<<<<<<<
  *             base = zlib.compress(base)
  *             marker = PICKLE_MARKER_zlib
  */
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_compress); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 611, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_compress); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 608, __pyx_L1_error)
   if (__pyx_t_4) {
 
-    /* "cimpl/field.pyx":612
+    /* "cimpl/field.pyx":609
  *         cdef bytes base = memoryview(self).tobytes()
  *         if compress:
  *             base = zlib.compress(base)             # <<<<<<<<<<<<<<
  *             marker = PICKLE_MARKER_zlib
  *         return marker + base
  */
-    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_zlib); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 612, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_zlib); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 609, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_compress); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 612, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_compress); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 609, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __pyx_t_2 = NULL;
@@ -12112,13 +11217,13 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
       }
     }
     if (!__pyx_t_2) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_base); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 612, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_base); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 609, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_base};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 612, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 609, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
@@ -12126,29 +11231,29 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
         PyObject *__pyx_temp[2] = {__pyx_t_2, __pyx_v_base};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 612, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 609, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
         __Pyx_GOTREF(__pyx_t_1);
       } else
       #endif
       {
-        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 612, __pyx_L1_error)
+        __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 609, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_5);
         __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_2); __pyx_t_2 = NULL;
         __Pyx_INCREF(__pyx_v_base);
         __Pyx_GIVEREF(__pyx_v_base);
         PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_base);
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 612, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 609, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 612, __pyx_L1_error)
+    if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 609, __pyx_L1_error)
     __Pyx_DECREF_SET(__pyx_v_base, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":613
+    /* "cimpl/field.pyx":610
  *         if compress:
  *             base = zlib.compress(base)
  *             marker = PICKLE_MARKER_zlib             # <<<<<<<<<<<<<<
@@ -12158,7 +11263,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
     __Pyx_INCREF(__pyx_v_14sparsebitfield_PICKLE_MARKER_zlib);
     __Pyx_DECREF_SET(__pyx_v_marker, __pyx_v_14sparsebitfield_PICKLE_MARKER_zlib);
 
-    /* "cimpl/field.pyx":611
+    /* "cimpl/field.pyx":608
  *         cdef bytes marker = PICKLE_MARKER
  *         cdef bytes base = memoryview(self).tobytes()
  *         if compress:             # <<<<<<<<<<<<<<
@@ -12167,7 +11272,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
  */
   }
 
-  /* "cimpl/field.pyx":614
+  /* "cimpl/field.pyx":611
  *             base = zlib.compress(base)
  *             marker = PICKLE_MARKER_zlib
  *         return marker + base             # <<<<<<<<<<<<<<
@@ -12175,14 +11280,14 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
  *     @classmethod
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Add(__pyx_v_marker, __pyx_v_base); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 614, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_v_marker, __pyx_v_base); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 611, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":607
- *         free(view.buf)
+  /* "cimpl/field.pyx":604
+ *         PyMem_Free(view.buf)
  * 
  *     def pickle(self, compress=True):             # <<<<<<<<<<<<<<
  *         """Return a string representation of the bitfield"""
@@ -12205,7 +11310,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_65pickle(struct __py
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":617
+/* "cimpl/field.pyx":614
  * 
  *     @classmethod
  *     def unpickle(cls, bytes data):             # <<<<<<<<<<<<<<
@@ -12220,7 +11325,7 @@ static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_68unpickle(PyObject 
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("unpickle (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) __PYX_ERR(0, 617, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) __PYX_ERR(0, 614, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_14SparseBitfield_67unpickle(((PyTypeObject*)__pyx_v_cls), ((PyObject*)__pyx_v_data));
 
   /* function exit code */
@@ -12239,30 +11344,30 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_67unpickle(CYTHON_UN
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("unpickle", 0);
 
-  /* "cimpl/field.pyx":619
+  /* "cimpl/field.pyx":616
  *     def unpickle(cls, bytes data):
  *         """Read a bitfield object from a string created by SparseBitfield.piclke"""
  *         cdef SparseBitfield new = SparseBitfield()             # <<<<<<<<<<<<<<
  *         new.load_from_bytes(data)
  *         return new
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 619, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 616, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":620
+  /* "cimpl/field.pyx":617
  *         """Read a bitfield object from a string created by SparseBitfield.piclke"""
  *         cdef SparseBitfield new = SparseBitfield()
  *         new.load_from_bytes(data)             # <<<<<<<<<<<<<<
  *         return new
  * 
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->load_from_bytes(__pyx_v_new, __pyx_v_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 620, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->load_from_bytes(__pyx_v_new, __pyx_v_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 617, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":621
+  /* "cimpl/field.pyx":618
  *         cdef SparseBitfield new = SparseBitfield()
  *         new.load_from_bytes(data)
  *         return new             # <<<<<<<<<<<<<<
@@ -12274,7 +11379,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_67unpickle(CYTHON_UN
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":617
+  /* "cimpl/field.pyx":614
  * 
  *     @classmethod
  *     def unpickle(cls, bytes data):             # <<<<<<<<<<<<<<
@@ -12294,7 +11399,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_67unpickle(CYTHON_UN
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":623
+/* "cimpl/field.pyx":620
  *         return new
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -12324,7 +11429,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_69__reduce__(struct 
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__reduce__", 0);
 
-  /* "cimpl/field.pyx":624
+  /* "cimpl/field.pyx":621
  * 
  *     def __reduce__(self):
  *         return (unpickle_sparsebitfield, (self.pickle(), ))             # <<<<<<<<<<<<<<
@@ -12332,9 +11437,9 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_69__reduce__(struct 
  *     cdef load(SparseBitfield self, data):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_unpickle_sparsebitfield); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 624, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_unpickle_sparsebitfield); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 621, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_pickle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 624, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_pickle); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 621, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -12347,19 +11452,19 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_69__reduce__(struct 
     }
   }
   if (__pyx_t_4) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 624, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 621, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 624, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 621, __pyx_L1_error)
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 624, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 621, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 624, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 621, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -12371,7 +11476,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_69__reduce__(struct 
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":623
+  /* "cimpl/field.pyx":620
  *         return new
  * 
  *     def __reduce__(self):             # <<<<<<<<<<<<<<
@@ -12393,7 +11498,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_69__reduce__(struct 
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":626
+/* "cimpl/field.pyx":623
  *         return (unpickle_sparsebitfield, (self.pickle(), ))
  * 
  *     cdef load(SparseBitfield self, data):             # <<<<<<<<<<<<<<
@@ -12419,7 +11524,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
   PyObject *(*__pyx_t_10)(PyObject *);
   __Pyx_RefNannySetupContext("load", 0);
 
-  /* "cimpl/field.pyx":627
+  /* "cimpl/field.pyx":624
  * 
  *     cdef load(SparseBitfield self, data):
  *         if isinstance(data, bytes):             # <<<<<<<<<<<<<<
@@ -12430,7 +11535,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":628
+    /* "cimpl/field.pyx":625
  *     cdef load(SparseBitfield self, data):
  *         if isinstance(data, bytes):
  *             return self.load_from_bytes(data)             # <<<<<<<<<<<<<<
@@ -12438,14 +11543,14 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
  *             if isinstance(item, (int, long)):
  */
     __Pyx_XDECREF(__pyx_r);
-    if (!(likely(PyBytes_CheckExact(__pyx_v_data))||((__pyx_v_data) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_v_data)->tp_name), 0))) __PYX_ERR(0, 628, __pyx_L1_error)
-    __pyx_t_3 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->load_from_bytes(__pyx_v_self, ((PyObject*)__pyx_v_data)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 628, __pyx_L1_error)
+    if (!(likely(PyBytes_CheckExact(__pyx_v_data))||((__pyx_v_data) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_v_data)->tp_name), 0))) __PYX_ERR(0, 625, __pyx_L1_error)
+    __pyx_t_3 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->load_from_bytes(__pyx_v_self, ((PyObject*)__pyx_v_data)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 625, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_r = __pyx_t_3;
     __pyx_t_3 = 0;
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":627
+    /* "cimpl/field.pyx":624
  * 
  *     cdef load(SparseBitfield self, data):
  *         if isinstance(data, bytes):             # <<<<<<<<<<<<<<
@@ -12454,7 +11559,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
  */
   }
 
-  /* "cimpl/field.pyx":629
+  /* "cimpl/field.pyx":626
  *         if isinstance(data, bytes):
  *             return self.load_from_bytes(data)
  *         for item in data:             # <<<<<<<<<<<<<<
@@ -12465,26 +11570,26 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
     __pyx_t_3 = __pyx_v_data; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_v_data); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 629, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_v_data); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 626, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 629, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 626, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_5)) {
       if (likely(PyList_CheckExact(__pyx_t_3))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 629, __pyx_L1_error)
+        __pyx_t_6 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 626, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 629, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 626, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 629, __pyx_L1_error)
+        __pyx_t_6 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_6); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 626, __pyx_L1_error)
         #else
-        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 629, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 626, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         #endif
       }
@@ -12494,7 +11599,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 629, __pyx_L1_error)
+          else __PYX_ERR(0, 626, __pyx_L1_error)
         }
         break;
       }
@@ -12503,7 +11608,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
     __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "cimpl/field.pyx":630
+    /* "cimpl/field.pyx":627
  *             return self.load_from_bytes(data)
  *         for item in data:
  *             if isinstance(item, (int, long)):             # <<<<<<<<<<<<<<
@@ -12524,18 +11629,18 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
     __pyx_t_1 = (__pyx_t_2 != 0);
     if (__pyx_t_1) {
 
-      /* "cimpl/field.pyx":631
+      /* "cimpl/field.pyx":628
  *         for item in data:
  *             if isinstance(item, (int, long)):
  *                 self.add(item)             # <<<<<<<<<<<<<<
  *             else:
  *                 low, high = item
  */
-      __pyx_t_6 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->add(__pyx_v_self, __pyx_v_item, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 631, __pyx_L1_error)
+      __pyx_t_6 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->add(__pyx_v_self, __pyx_v_item, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 628, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "cimpl/field.pyx":630
+      /* "cimpl/field.pyx":627
  *             return self.load_from_bytes(data)
  *         for item in data:
  *             if isinstance(item, (int, long)):             # <<<<<<<<<<<<<<
@@ -12545,7 +11650,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
       goto __pyx_L6;
     }
 
-    /* "cimpl/field.pyx":633
+    /* "cimpl/field.pyx":630
  *                 self.add(item)
  *             else:
  *                 low, high = item             # <<<<<<<<<<<<<<
@@ -12559,7 +11664,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 633, __pyx_L1_error)
+          __PYX_ERR(0, 630, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         if (likely(PyTuple_CheckExact(sequence))) {
@@ -12572,21 +11677,21 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
         __Pyx_INCREF(__pyx_t_6);
         __Pyx_INCREF(__pyx_t_8);
         #else
-        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 633, __pyx_L1_error)
+        __pyx_t_6 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 630, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 633, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 630, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         #endif
       } else {
         Py_ssize_t index = -1;
-        __pyx_t_9 = PyObject_GetIter(__pyx_v_item); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 633, __pyx_L1_error)
+        __pyx_t_9 = PyObject_GetIter(__pyx_v_item); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 630, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __pyx_t_10 = Py_TYPE(__pyx_t_9)->tp_iternext;
         index = 0; __pyx_t_6 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_6)) goto __pyx_L9_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_6);
         index = 1; __pyx_t_8 = __pyx_t_10(__pyx_t_9); if (unlikely(!__pyx_t_8)) goto __pyx_L9_unpacking_failed;
         __Pyx_GOTREF(__pyx_t_8);
-        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 633, __pyx_L1_error)
+        if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_9), 2) < 0) __PYX_ERR(0, 630, __pyx_L1_error)
         __pyx_t_10 = NULL;
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         goto __pyx_L10_unpacking_done;
@@ -12594,7 +11699,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __pyx_t_10 = NULL;
         if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-        __PYX_ERR(0, 633, __pyx_L1_error)
+        __PYX_ERR(0, 630, __pyx_L1_error)
         __pyx_L10_unpacking_done:;
       }
       __Pyx_XDECREF_SET(__pyx_v_low, __pyx_t_6);
@@ -12602,20 +11707,20 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
       __Pyx_XDECREF_SET(__pyx_v_high, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "cimpl/field.pyx":634
+      /* "cimpl/field.pyx":631
  *             else:
  *                 low, high = item
  *                 self.fill_range(low, high)             # <<<<<<<<<<<<<<
  * 
  *     cdef load_from_bytes(self, bytes data):
  */
-      __pyx_t_8 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->fill_range(__pyx_v_self, __pyx_v_low, __pyx_v_high); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 634, __pyx_L1_error)
+      __pyx_t_8 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->fill_range(__pyx_v_self, __pyx_v_low, __pyx_v_high); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 631, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     }
     __pyx_L6:;
 
-    /* "cimpl/field.pyx":629
+    /* "cimpl/field.pyx":626
  *         if isinstance(data, bytes):
  *             return self.load_from_bytes(data)
  *         for item in data:             # <<<<<<<<<<<<<<
@@ -12625,7 +11730,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "cimpl/field.pyx":626
+  /* "cimpl/field.pyx":623
  *         return (unpickle_sparsebitfield, (self.pickle(), ))
  * 
  *     cdef load(SparseBitfield self, data):             # <<<<<<<<<<<<<<
@@ -12652,7 +11757,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load(struct __pyx_obj
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":636
+/* "cimpl/field.pyx":633
  *                 self.fill_range(low, high)
  * 
  *     cdef load_from_bytes(self, bytes data):             # <<<<<<<<<<<<<<
@@ -12685,7 +11790,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
   __Pyx_RefNannySetupContext("load_from_bytes", 0);
   __Pyx_INCREF(__pyx_v_data);
 
-  /* "cimpl/field.pyx":637
+  /* "cimpl/field.pyx":634
  * 
  *     cdef load_from_bytes(self, bytes data):
  *         cdef usize_t marker_len = len(PICKLE_MARKER)             # <<<<<<<<<<<<<<
@@ -12696,13 +11801,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
   __Pyx_INCREF(__pyx_t_1);
   if (unlikely(__pyx_t_1 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 637, __pyx_L1_error)
+    __PYX_ERR(0, 634, __pyx_L1_error)
   }
-  __pyx_t_2 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 637, __pyx_L1_error)
+  __pyx_t_2 = PyBytes_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 634, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_marker_len = __pyx_t_2;
 
-  /* "cimpl/field.pyx":638
+  /* "cimpl/field.pyx":635
  *     cdef load_from_bytes(self, bytes data):
  *         cdef usize_t marker_len = len(PICKLE_MARKER)
  *         cdef bytes marker = data[:marker_len]             # <<<<<<<<<<<<<<
@@ -12711,47 +11816,47 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 638, __pyx_L1_error)
+    __PYX_ERR(0, 635, __pyx_L1_error)
   }
-  __pyx_t_1 = PySequence_GetSlice(__pyx_v_data, 0, __pyx_v_marker_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 638, __pyx_L1_error)
+  __pyx_t_1 = PySequence_GetSlice(__pyx_v_data, 0, __pyx_v_marker_len); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 635, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_marker = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":639
+  /* "cimpl/field.pyx":636
  *         cdef usize_t marker_len = len(PICKLE_MARKER)
  *         cdef bytes marker = data[:marker_len]
  *         if marker != PICKLE_MARKER and marker != PICKLE_MARKER_zlib:             # <<<<<<<<<<<<<<
  *             raise ValueError("Could not unpickle data")
  *         if marker == PICKLE_MARKER_zlib:
  */
-  __pyx_t_4 = (__Pyx_PyBytes_Equals(__pyx_v_marker, __pyx_v_14sparsebitfield_PICKLE_MARKER, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 639, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PyBytes_Equals(__pyx_v_marker, __pyx_v_14sparsebitfield_PICKLE_MARKER, Py_NE)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 636, __pyx_L1_error)
   __pyx_t_5 = (__pyx_t_4 != 0);
   if (__pyx_t_5) {
   } else {
     __pyx_t_3 = __pyx_t_5;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_5 = (__Pyx_PyBytes_Equals(__pyx_v_marker, __pyx_v_14sparsebitfield_PICKLE_MARKER_zlib, Py_NE)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 639, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyBytes_Equals(__pyx_v_marker, __pyx_v_14sparsebitfield_PICKLE_MARKER_zlib, Py_NE)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 636, __pyx_L1_error)
   __pyx_t_4 = (__pyx_t_5 != 0);
   __pyx_t_3 = __pyx_t_4;
   __pyx_L4_bool_binop_done:;
   if (unlikely(__pyx_t_3)) {
 
-    /* "cimpl/field.pyx":640
+    /* "cimpl/field.pyx":637
  *         cdef bytes marker = data[:marker_len]
  *         if marker != PICKLE_MARKER and marker != PICKLE_MARKER_zlib:
  *             raise ValueError("Could not unpickle data")             # <<<<<<<<<<<<<<
  *         if marker == PICKLE_MARKER_zlib:
  *             data = zlib.decompress(data[marker_len:])
  */
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 640, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 637, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_Raise(__pyx_t_1, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 640, __pyx_L1_error)
+    __PYX_ERR(0, 637, __pyx_L1_error)
 
-    /* "cimpl/field.pyx":639
+    /* "cimpl/field.pyx":636
  *         cdef usize_t marker_len = len(PICKLE_MARKER)
  *         cdef bytes marker = data[:marker_len]
  *         if marker != PICKLE_MARKER and marker != PICKLE_MARKER_zlib:             # <<<<<<<<<<<<<<
@@ -12760,34 +11865,34 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
   }
 
-  /* "cimpl/field.pyx":641
+  /* "cimpl/field.pyx":638
  *         if marker != PICKLE_MARKER and marker != PICKLE_MARKER_zlib:
  *             raise ValueError("Could not unpickle data")
  *         if marker == PICKLE_MARKER_zlib:             # <<<<<<<<<<<<<<
  *             data = zlib.decompress(data[marker_len:])
  *         cdef usize_t length = len(data)
  */
-  __pyx_t_3 = (__Pyx_PyBytes_Equals(__pyx_v_marker, __pyx_v_14sparsebitfield_PICKLE_MARKER_zlib, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 641, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyBytes_Equals(__pyx_v_marker, __pyx_v_14sparsebitfield_PICKLE_MARKER_zlib, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 638, __pyx_L1_error)
   __pyx_t_4 = (__pyx_t_3 != 0);
   if (__pyx_t_4) {
 
-    /* "cimpl/field.pyx":642
+    /* "cimpl/field.pyx":639
  *             raise ValueError("Could not unpickle data")
  *         if marker == PICKLE_MARKER_zlib:
  *             data = zlib.decompress(data[marker_len:])             # <<<<<<<<<<<<<<
  *         cdef usize_t length = len(data)
  * 
  */
-    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_zlib); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 642, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetModuleGlobalName(__pyx_n_s_zlib); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 639, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_decompress); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 642, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_decompress); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 639, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     if (unlikely(__pyx_v_data == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 642, __pyx_L1_error)
+      __PYX_ERR(0, 639, __pyx_L1_error)
     }
-    __pyx_t_6 = PySequence_GetSlice(__pyx_v_data, __pyx_v_marker_len, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 642, __pyx_L1_error)
+    __pyx_t_6 = PySequence_GetSlice(__pyx_v_data, __pyx_v_marker_len, PY_SSIZE_T_MAX); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 639, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_t_8 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
@@ -12800,14 +11905,14 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
       }
     }
     if (!__pyx_t_8) {
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 642, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else {
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_7)) {
         PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_6};
-        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 642, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
@@ -12816,30 +11921,30 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_7)) {
         PyObject *__pyx_temp[2] = {__pyx_t_8, __pyx_t_6};
-        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 642, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_7, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
       } else
       #endif
       {
-        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 642, __pyx_L1_error)
+        __pyx_t_9 = PyTuple_New(1+1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 639, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8); __pyx_t_8 = NULL;
         __Pyx_GIVEREF(__pyx_t_6);
         PyTuple_SET_ITEM(__pyx_t_9, 0+1, __pyx_t_6);
         __pyx_t_6 = 0;
-        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 642, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_7, __pyx_t_9, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 639, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       }
     }
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 642, __pyx_L1_error)
+    if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 639, __pyx_L1_error)
     __Pyx_DECREF_SET(__pyx_v_data, ((PyObject*)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":641
+    /* "cimpl/field.pyx":638
  *         if marker != PICKLE_MARKER and marker != PICKLE_MARKER_zlib:
  *             raise ValueError("Could not unpickle data")
  *         if marker == PICKLE_MARKER_zlib:             # <<<<<<<<<<<<<<
@@ -12848,7 +11953,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
   }
 
-  /* "cimpl/field.pyx":643
+  /* "cimpl/field.pyx":640
  *         if marker == PICKLE_MARKER_zlib:
  *             data = zlib.decompress(data[marker_len:])
  *         cdef usize_t length = len(data)             # <<<<<<<<<<<<<<
@@ -12857,12 +11962,12 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 643, __pyx_L1_error)
+    __PYX_ERR(0, 640, __pyx_L1_error)
   }
-  __pyx_t_2 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 643, __pyx_L1_error)
+  __pyx_t_2 = PyBytes_GET_SIZE(__pyx_v_data); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 640, __pyx_L1_error)
   __pyx_v_length = __pyx_t_2;
 
-  /* "cimpl/field.pyx":645
+  /* "cimpl/field.pyx":642
  *         cdef usize_t length = len(data)
  * 
  *         cdef char *buf = data             # <<<<<<<<<<<<<<
@@ -12871,12 +11976,12 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
   if (unlikely(__pyx_v_data == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 645, __pyx_L1_error)
+    __PYX_ERR(0, 642, __pyx_L1_error)
   }
-  __pyx_t_10 = __Pyx_PyBytes_AsWritableString(__pyx_v_data); if (unlikely((!__pyx_t_10) && PyErr_Occurred())) __PYX_ERR(0, 645, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyBytes_AsWritableString(__pyx_v_data); if (unlikely((!__pyx_t_10) && PyErr_Occurred())) __PYX_ERR(0, 642, __pyx_L1_error)
   __pyx_v_buf = __pyx_t_10;
 
-  /* "cimpl/field.pyx":647
+  /* "cimpl/field.pyx":644
  *         cdef char *buf = data
  *         cdef IdsPage page
  *         cdef usize_t position = 0             # <<<<<<<<<<<<<<
@@ -12885,7 +11990,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
   __pyx_v_position = 0;
 
-  /* "cimpl/field.pyx":651
+  /* "cimpl/field.pyx":648
  *         cdef char *write_position
  *         cdef usize_t page_no
  *         while position < length:             # <<<<<<<<<<<<<<
@@ -12896,7 +12001,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
     __pyx_t_4 = ((__pyx_v_position < __pyx_v_length) != 0);
     if (!__pyx_t_4) break;
 
-    /* "cimpl/field.pyx":652
+    /* "cimpl/field.pyx":649
  *         cdef usize_t page_no
  *         while position < length:
  *             memcpy(<void *>&page_no, <void *>buf + position, sizeof(page_no))             # <<<<<<<<<<<<<<
@@ -12905,7 +12010,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
     (void)(memcpy(((void *)(&__pyx_v_page_no)), (((void *)__pyx_v_buf) + __pyx_v_position), (sizeof(__pyx_v_page_no))));
 
-    /* "cimpl/field.pyx":653
+    /* "cimpl/field.pyx":650
  *         while position < length:
  *             memcpy(<void *>&page_no, <void *>buf + position, sizeof(page_no))
  *             position += sizeof(page_no)             # <<<<<<<<<<<<<<
@@ -12914,7 +12019,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
     __pyx_v_position = (__pyx_v_position + (sizeof(__pyx_v_page_no)));
 
-    /* "cimpl/field.pyx":654
+    /* "cimpl/field.pyx":651
  *             memcpy(<void *>&page_no, <void *>buf + position, sizeof(page_no))
  *             position += sizeof(page_no)
  *             page_state = buf[position]             # <<<<<<<<<<<<<<
@@ -12923,7 +12028,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
     __pyx_v_page_state = (__pyx_v_buf[__pyx_v_position]);
 
-    /* "cimpl/field.pyx":655
+    /* "cimpl/field.pyx":652
  *             position += sizeof(page_no)
  *             page_state = buf[position]
  *             position += 1             # <<<<<<<<<<<<<<
@@ -12932,19 +12037,19 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
     __pyx_v_position = (__pyx_v_position + 1);
 
-    /* "cimpl/field.pyx":656
+    /* "cimpl/field.pyx":653
  *             page_state = buf[position]
  *             position += 1
  *             page = IdsPage()             # <<<<<<<<<<<<<<
  *             if page_state == PAGE_FULL:
  *                 page.set_full()
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_IdsPage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 656, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_IdsPage)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 653, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":657
+    /* "cimpl/field.pyx":654
  *             position += 1
  *             page = IdsPage()
  *             if page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -12954,7 +12059,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
     switch (__pyx_v_page_state) {
       case 2:
 
-      /* "cimpl/field.pyx":658
+      /* "cimpl/field.pyx":655
  *             page = IdsPage()
  *             if page_state == PAGE_FULL:
  *                 page.set_full()             # <<<<<<<<<<<<<<
@@ -12963,7 +12068,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->set_full(__pyx_v_page);
 
-      /* "cimpl/field.pyx":657
+      /* "cimpl/field.pyx":654
  *             position += 1
  *             page = IdsPage()
  *             if page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
@@ -12972,7 +12077,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
       break;
 
-      /* "cimpl/field.pyx":659
+      /* "cimpl/field.pyx":656
  *             if page_state == PAGE_FULL:
  *                 page.set_full()
  *             elif page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -12981,7 +12086,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
       case 1:
 
-      /* "cimpl/field.pyx":660
+      /* "cimpl/field.pyx":657
  *                 page.set_full()
  *             elif page_state == PAGE_PARTIAL:
  *                 write_position = page.set_bits(buf + position, buf + position + PAGE_BYTES)             # <<<<<<<<<<<<<<
@@ -12990,7 +12095,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
       __pyx_v_write_position = ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->set_bits(__pyx_v_page, (__pyx_v_buf + __pyx_v_position), ((__pyx_v_buf + __pyx_v_position) + PAGE_BYTES));
 
-      /* "cimpl/field.pyx":661
+      /* "cimpl/field.pyx":658
  *             elif page_state == PAGE_PARTIAL:
  *                 write_position = page.set_bits(buf + position, buf + position + PAGE_BYTES)
  *                 assert write_position == buf + (position + PAGE_BYTES)             # <<<<<<<<<<<<<<
@@ -13001,12 +12106,12 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
       if (unlikely(!Py_OptimizeFlag)) {
         if (unlikely(!((__pyx_v_write_position == (__pyx_v_buf + (__pyx_v_position + PAGE_BYTES))) != 0))) {
           PyErr_SetNone(PyExc_AssertionError);
-          __PYX_ERR(0, 661, __pyx_L1_error)
+          __PYX_ERR(0, 658, __pyx_L1_error)
         }
       }
       #endif
 
-      /* "cimpl/field.pyx":662
+      /* "cimpl/field.pyx":659
  *                 write_position = page.set_bits(buf + position, buf + position + PAGE_BYTES)
  *                 assert write_position == buf + (position + PAGE_BYTES)
  *                 position += PAGE_BYTES             # <<<<<<<<<<<<<<
@@ -13015,7 +12120,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
  */
       __pyx_v_position = (__pyx_v_position + PAGE_BYTES);
 
-      /* "cimpl/field.pyx":659
+      /* "cimpl/field.pyx":656
  *             if page_state == PAGE_FULL:
  *                 page.set_full()
  *             elif page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
@@ -13025,38 +12130,38 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
       break;
       default:
 
-      /* "cimpl/field.pyx":664
+      /* "cimpl/field.pyx":661
  *                 position += PAGE_BYTES
  *             else:
  *                 raise ValueError("Could not unpickle data. Invalid page state: %s" % page_state)             # <<<<<<<<<<<<<<
  *             self.pages[page_no] = page
  * 
  */
-      __pyx_t_1 = __Pyx_PyInt_From_char(__pyx_v_page_state); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 664, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_From_char(__pyx_v_page_state); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 661, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_7 = __Pyx_PyString_Format(__pyx_kp_s_Could_not_unpickle_data_Invalid, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 664, __pyx_L1_error)
+      __pyx_t_7 = PyUnicode_Format(__pyx_kp_u_Could_not_unpickle_data_Invalid, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 661, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 664, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_builtin_ValueError, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 661, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_Raise(__pyx_t_1, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 664, __pyx_L1_error)
+      __PYX_ERR(0, 661, __pyx_L1_error)
       break;
     }
 
-    /* "cimpl/field.pyx":665
+    /* "cimpl/field.pyx":662
  *             else:
  *                 raise ValueError("Could not unpickle data. Invalid page state: %s" % page_state)
  *             self.pages[page_no] = page             # <<<<<<<<<<<<<<
  * 
  *     cdef fill_range(self, object low, object high):
  */
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->pages, __pyx_v_page_no, ((PyObject *)__pyx_v_page), usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 665, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->pages, __pyx_v_page_no, ((PyObject *)__pyx_v_page), usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1) < 0)) __PYX_ERR(0, 662, __pyx_L1_error)
   }
 
-  /* "cimpl/field.pyx":636
+  /* "cimpl/field.pyx":633
  *                 self.fill_range(low, high)
  * 
  *     cdef load_from_bytes(self, bytes data):             # <<<<<<<<<<<<<<
@@ -13084,7 +12189,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes(struc
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":667
+/* "cimpl/field.pyx":664
  *             self.pages[page_no] = page
  * 
  *     cdef fill_range(self, object low, object high):             # <<<<<<<<<<<<<<
@@ -13113,7 +12218,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   __Pyx_RefNannySetupContext("fill_range", 0);
   __Pyx_INCREF(__pyx_v_high);
 
-  /* "cimpl/field.pyx":670
+  /* "cimpl/field.pyx":667
  *         """Add all numbers in range(low, high) to the bitfield, optimising the case where large
  *         ranges are supplied"""
  *         cdef IdsPage page = None             # <<<<<<<<<<<<<<
@@ -13123,7 +12228,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   __Pyx_INCREF(Py_None);
   __pyx_v_page = ((struct __pyx_obj_14sparsebitfield_IdsPage *)Py_None);
 
-  /* "cimpl/field.pyx":672
+  /* "cimpl/field.pyx":669
  *         cdef IdsPage page = None
  * 
  *         assert low < high             # <<<<<<<<<<<<<<
@@ -13132,93 +12237,93 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(!Py_OptimizeFlag)) {
-    __pyx_t_1 = PyObject_RichCompare(__pyx_v_low, __pyx_v_high, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 672, __pyx_L1_error)
-    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 672, __pyx_L1_error)
+    __pyx_t_1 = PyObject_RichCompare(__pyx_v_low, __pyx_v_high, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 669, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 669, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(!__pyx_t_2)) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 672, __pyx_L1_error)
+      __PYX_ERR(0, 669, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "cimpl/field.pyx":674
+  /* "cimpl/field.pyx":671
  *         assert low < high
  *         # Adjust high so that it represents the last bit to set
  *         high -= 1             # <<<<<<<<<<<<<<
  *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
  */
-  __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_high, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 674, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_high, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 671, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF_SET(__pyx_v_high, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":675
+  /* "cimpl/field.pyx":672
  *         # Adjust high so that it represents the last bit to set
  *         high -= 1
  *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
  *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 675, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 672, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_low, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 675, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_low, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 672, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 675, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 672, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_lower_page_boundary = __pyx_t_4;
 
-  /* "cimpl/field.pyx":676
+  /* "cimpl/field.pyx":673
  *         high -= 1
  *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
  *         cdef usize_t upper_page_index = high % PAGE_FULL_COUNT
  */
-  __pyx_t_3 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 676, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 673, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyNumber_Remainder(__pyx_v_low, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 676, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Remainder(__pyx_v_low, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 673, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 676, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 673, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_lower_page_index = __pyx_t_4;
 
-  /* "cimpl/field.pyx":677
+  /* "cimpl/field.pyx":674
  *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
  *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t upper_page_index = high % PAGE_FULL_COUNT
  *         cdef usize_t num, page_no
  */
-  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 677, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 674, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_high, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 677, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_high, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 674, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 677, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 674, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_upper_page_boundary = __pyx_t_4;
 
-  /* "cimpl/field.pyx":678
+  /* "cimpl/field.pyx":675
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
  *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
  *         cdef usize_t upper_page_index = high % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t num, page_no
  * 
  */
-  __pyx_t_3 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 678, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 675, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyNumber_Remainder(__pyx_v_high, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 678, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Remainder(__pyx_v_high, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 675, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 678, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_1); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 675, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_upper_page_index = __pyx_t_4;
 
-  /* "cimpl/field.pyx":682
+  /* "cimpl/field.pyx":679
  * 
  *         # All bits are within one page
  *         if lower_page_boundary == upper_page_boundary:             # <<<<<<<<<<<<<<
@@ -13228,31 +12333,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   __pyx_t_2 = ((__pyx_v_lower_page_boundary == __pyx_v_upper_page_boundary) != 0);
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":683
+    /* "cimpl/field.pyx":680
  *         # All bits are within one page
  *         if lower_page_boundary == upper_page_boundary:
  *             self._ensure_page_exists(lower_page_boundary)             # <<<<<<<<<<<<<<
  *             page = self.pages[lower_page_boundary]
  *             for num in range(lower_page_index, upper_page_index + 1):
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_lower_page_boundary); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 683, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_lower_page_boundary); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 680, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":684
+    /* "cimpl/field.pyx":681
  *         if lower_page_boundary == upper_page_boundary:
  *             self._ensure_page_exists(lower_page_boundary)
  *             page = self.pages[lower_page_boundary]             # <<<<<<<<<<<<<<
  *             for num in range(lower_page_index, upper_page_index + 1):
  *                 page.add(num)
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_lower_page_boundary, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 684, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_lower_page_boundary, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 681, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 684, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 681, __pyx_L1_error)
     __Pyx_DECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":685
+    /* "cimpl/field.pyx":682
  *             self._ensure_page_exists(lower_page_boundary)
  *             page = self.pages[lower_page_boundary]
  *             for num in range(lower_page_index, upper_page_index + 1):             # <<<<<<<<<<<<<<
@@ -13264,7 +12369,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
     for (__pyx_t_4 = __pyx_v_lower_page_index; __pyx_t_4 < __pyx_t_6; __pyx_t_4+=1) {
       __pyx_v_num = __pyx_t_4;
 
-      /* "cimpl/field.pyx":686
+      /* "cimpl/field.pyx":683
  *             page = self.pages[lower_page_boundary]
  *             for num in range(lower_page_index, upper_page_index + 1):
  *                 page.add(num)             # <<<<<<<<<<<<<<
@@ -13274,7 +12379,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->add(__pyx_v_page, __pyx_v_num);
     }
 
-    /* "cimpl/field.pyx":687
+    /* "cimpl/field.pyx":684
  *             for num in range(lower_page_index, upper_page_index + 1):
  *                 page.add(num)
  *             return             # <<<<<<<<<<<<<<
@@ -13285,7 +12390,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
     __pyx_r = Py_None; __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
-    /* "cimpl/field.pyx":682
+    /* "cimpl/field.pyx":679
  * 
  *         # All bits are within one page
  *         if lower_page_boundary == upper_page_boundary:             # <<<<<<<<<<<<<<
@@ -13294,7 +12399,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  */
   }
 
-  /* "cimpl/field.pyx":690
+  /* "cimpl/field.pyx":687
  * 
  *         # Fill the lower partial page (if any)
  *         if lower_page_index != 0:             # <<<<<<<<<<<<<<
@@ -13304,31 +12409,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   __pyx_t_2 = ((__pyx_v_lower_page_index != 0) != 0);
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":691
+    /* "cimpl/field.pyx":688
  *         # Fill the lower partial page (if any)
  *         if lower_page_index != 0:
  *             self._ensure_page_exists(lower_page_boundary)             # <<<<<<<<<<<<<<
  *             page = self.pages[lower_page_boundary]
  *             for num in range(lower_page_index, PAGE_FULL_COUNT):
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_lower_page_boundary); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 691, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_lower_page_boundary); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 688, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":692
+    /* "cimpl/field.pyx":689
  *         if lower_page_index != 0:
  *             self._ensure_page_exists(lower_page_boundary)
  *             page = self.pages[lower_page_boundary]             # <<<<<<<<<<<<<<
  *             for num in range(lower_page_index, PAGE_FULL_COUNT):
  *                 page.add(num)
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_lower_page_boundary, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 692, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_lower_page_boundary, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 689, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 692, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 689, __pyx_L1_error)
     __Pyx_DECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":693
+    /* "cimpl/field.pyx":690
  *             self._ensure_page_exists(lower_page_boundary)
  *             page = self.pages[lower_page_boundary]
  *             for num in range(lower_page_index, PAGE_FULL_COUNT):             # <<<<<<<<<<<<<<
@@ -13340,7 +12445,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
     for (__pyx_t_8 = __pyx_v_lower_page_index; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
       __pyx_v_num = __pyx_t_8;
 
-      /* "cimpl/field.pyx":694
+      /* "cimpl/field.pyx":691
  *             page = self.pages[lower_page_boundary]
  *             for num in range(lower_page_index, PAGE_FULL_COUNT):
  *                 page.add(num)             # <<<<<<<<<<<<<<
@@ -13350,7 +12455,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->add(__pyx_v_page, __pyx_v_num);
     }
 
-    /* "cimpl/field.pyx":695
+    /* "cimpl/field.pyx":692
  *             for num in range(lower_page_index, PAGE_FULL_COUNT):
  *                 page.add(num)
  *             lower_page_boundary += 1             # <<<<<<<<<<<<<<
@@ -13359,7 +12464,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  */
     __pyx_v_lower_page_boundary = (__pyx_v_lower_page_boundary + 1);
 
-    /* "cimpl/field.pyx":690
+    /* "cimpl/field.pyx":687
  * 
  *         # Fill the lower partial page (if any)
  *         if lower_page_index != 0:             # <<<<<<<<<<<<<<
@@ -13368,7 +12473,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  */
   }
 
-  /* "cimpl/field.pyx":698
+  /* "cimpl/field.pyx":695
  * 
  *         # Fill the upper partial page (if any)
  *         if upper_page_index != 0:             # <<<<<<<<<<<<<<
@@ -13378,31 +12483,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   __pyx_t_2 = ((__pyx_v_upper_page_index != 0) != 0);
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":699
+    /* "cimpl/field.pyx":696
  *         # Fill the upper partial page (if any)
  *         if upper_page_index != 0:
  *             self._ensure_page_exists(upper_page_boundary)             # <<<<<<<<<<<<<<
  *             page = self.pages[upper_page_boundary]
  *             for num in range(0, upper_page_index + 1):
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_upper_page_boundary); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 699, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_upper_page_boundary); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 696, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":700
+    /* "cimpl/field.pyx":697
  *         if upper_page_index != 0:
  *             self._ensure_page_exists(upper_page_boundary)
  *             page = self.pages[upper_page_boundary]             # <<<<<<<<<<<<<<
  *             for num in range(0, upper_page_index + 1):
  *                 page.add(num)
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_upper_page_boundary, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 700, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_upper_page_boundary, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 697, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 700, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 697, __pyx_L1_error)
     __Pyx_DECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "cimpl/field.pyx":701
+    /* "cimpl/field.pyx":698
  *             self._ensure_page_exists(upper_page_boundary)
  *             page = self.pages[upper_page_boundary]
  *             for num in range(0, upper_page_index + 1):             # <<<<<<<<<<<<<<
@@ -13414,7 +12519,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_6; __pyx_t_4+=1) {
       __pyx_v_num = __pyx_t_4;
 
-      /* "cimpl/field.pyx":702
+      /* "cimpl/field.pyx":699
  *             page = self.pages[upper_page_boundary]
  *             for num in range(0, upper_page_index + 1):
  *                 page.add(num)             # <<<<<<<<<<<<<<
@@ -13424,7 +12529,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->add(__pyx_v_page, __pyx_v_num);
     }
 
-    /* "cimpl/field.pyx":703
+    /* "cimpl/field.pyx":700
  *             for num in range(0, upper_page_index + 1):
  *                 page.add(num)
  *             upper_page_boundary -= 1             # <<<<<<<<<<<<<<
@@ -13433,7 +12538,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  */
     __pyx_v_upper_page_boundary = (__pyx_v_upper_page_boundary - 1);
 
-    /* "cimpl/field.pyx":698
+    /* "cimpl/field.pyx":695
  * 
  *         # Fill the upper partial page (if any)
  *         if upper_page_index != 0:             # <<<<<<<<<<<<<<
@@ -13442,7 +12547,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  */
   }
 
-  /* "cimpl/field.pyx":706
+  /* "cimpl/field.pyx":703
  * 
  *         # Fill whole pages inbetween (if any)
  *         if lower_page_boundary <= upper_page_boundary:             # <<<<<<<<<<<<<<
@@ -13452,7 +12557,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   __pyx_t_2 = ((__pyx_v_lower_page_boundary <= __pyx_v_upper_page_boundary) != 0);
   if (__pyx_t_2) {
 
-    /* "cimpl/field.pyx":707
+    /* "cimpl/field.pyx":704
  *         # Fill whole pages inbetween (if any)
  *         if lower_page_boundary <= upper_page_boundary:
  *             for page_no in range(lower_page_boundary, upper_page_boundary + 1):             # <<<<<<<<<<<<<<
@@ -13464,31 +12569,31 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
     for (__pyx_t_4 = __pyx_v_lower_page_boundary; __pyx_t_4 < __pyx_t_6; __pyx_t_4+=1) {
       __pyx_v_page_no = __pyx_t_4;
 
-      /* "cimpl/field.pyx":708
+      /* "cimpl/field.pyx":705
  *         if lower_page_boundary <= upper_page_boundary:
  *             for page_no in range(lower_page_boundary, upper_page_boundary + 1):
  *                 self._ensure_page_exists(page_no)             # <<<<<<<<<<<<<<
  *                 page = self.pages[page_no]
  *                 page.set_full()
  */
-      __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 708, __pyx_L1_error)
+      __pyx_t_1 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_self->__pyx_vtab)->_ensure_page_exists(__pyx_v_self, __pyx_v_page_no); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 705, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "cimpl/field.pyx":709
+      /* "cimpl/field.pyx":706
  *             for page_no in range(lower_page_boundary, upper_page_boundary + 1):
  *                 self._ensure_page_exists(page_no)
  *                 page = self.pages[page_no]             # <<<<<<<<<<<<<<
  *                 page.set_full()
  * 
  */
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 709, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_self->pages, __pyx_v_page_no, usize_t, 0, __Pyx_PyInt_From_usize_t, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 706, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 709, __pyx_L1_error)
+      if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_14sparsebitfield_IdsPage))))) __PYX_ERR(0, 706, __pyx_L1_error)
       __Pyx_DECREF_SET(__pyx_v_page, ((struct __pyx_obj_14sparsebitfield_IdsPage *)__pyx_t_1));
       __pyx_t_1 = 0;
 
-      /* "cimpl/field.pyx":710
+      /* "cimpl/field.pyx":707
  *                 self._ensure_page_exists(page_no)
  *                 page = self.pages[page_no]
  *                 page.set_full()             # <<<<<<<<<<<<<<
@@ -13498,7 +12603,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_page->__pyx_vtab)->set_full(__pyx_v_page);
     }
 
-    /* "cimpl/field.pyx":706
+    /* "cimpl/field.pyx":703
  * 
  *         # Fill whole pages inbetween (if any)
  *         if lower_page_boundary <= upper_page_boundary:             # <<<<<<<<<<<<<<
@@ -13507,7 +12612,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  */
   }
 
-  /* "cimpl/field.pyx":667
+  /* "cimpl/field.pyx":664
  *             self.pages[page_no] = page
  * 
  *     cdef fill_range(self, object low, object high):             # <<<<<<<<<<<<<<
@@ -13531,7 +12636,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":713
+/* "cimpl/field.pyx":710
  * 
  *     @classmethod
  *     def from_intervals(type cls, interval_list):             # <<<<<<<<<<<<<<
@@ -13569,19 +12674,19 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
   PyObject *(*__pyx_t_8)(PyObject *);
   __Pyx_RefNannySetupContext("from_intervals", 0);
 
-  /* "cimpl/field.pyx":716
+  /* "cimpl/field.pyx":713
  *         """Given a list of ranges in the form:  [[low1, high1], [low2, high2], ...]
  *         Construct a bitfield in which every integer in each range is present"""
  *         cdef SparseBitfield new = SparseBitfield()             # <<<<<<<<<<<<<<
  *         for (low, high) in interval_list:
  *             new.fill_range(low, high)
  */
-  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 716, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallNoArg(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 713, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_new = ((struct __pyx_obj_14sparsebitfield_SparseBitfield *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":717
+  /* "cimpl/field.pyx":714
  *         Construct a bitfield in which every integer in each range is present"""
  *         cdef SparseBitfield new = SparseBitfield()
  *         for (low, high) in interval_list:             # <<<<<<<<<<<<<<
@@ -13592,26 +12697,26 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
     __pyx_t_1 = __pyx_v_interval_list; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_interval_list); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 717, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_interval_list); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 714, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 717, __pyx_L1_error)
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 714, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 717, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 714, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 717, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 714, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 717, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 714, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 717, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 714, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -13621,7 +12726,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 717, __pyx_L1_error)
+          else __PYX_ERR(0, 714, __pyx_L1_error)
         }
         break;
       }
@@ -13633,7 +12738,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 717, __pyx_L1_error)
+        __PYX_ERR(0, 714, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -13646,15 +12751,15 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_6);
       #else
-      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 717, __pyx_L1_error)
+      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 714, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 717, __pyx_L1_error)
+      __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 714, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
       #endif
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_7 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 717, __pyx_L1_error)
+      __pyx_t_7 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 714, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_8 = Py_TYPE(__pyx_t_7)->tp_iternext;
@@ -13662,7 +12767,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
       __Pyx_GOTREF(__pyx_t_5);
       index = 1; __pyx_t_6 = __pyx_t_8(__pyx_t_7); if (unlikely(!__pyx_t_6)) goto __pyx_L5_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_6);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_7), 2) < 0) __PYX_ERR(0, 717, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_7), 2) < 0) __PYX_ERR(0, 714, __pyx_L1_error)
       __pyx_t_8 = NULL;
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       goto __pyx_L6_unpacking_done;
@@ -13670,7 +12775,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __pyx_t_8 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 717, __pyx_L1_error)
+      __PYX_ERR(0, 714, __pyx_L1_error)
       __pyx_L6_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_low, __pyx_t_5);
@@ -13678,18 +12783,18 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
     __Pyx_XDECREF_SET(__pyx_v_high, __pyx_t_6);
     __pyx_t_6 = 0;
 
-    /* "cimpl/field.pyx":718
+    /* "cimpl/field.pyx":715
  *         cdef SparseBitfield new = SparseBitfield()
  *         for (low, high) in interval_list:
  *             new.fill_range(low, high)             # <<<<<<<<<<<<<<
  *         return new
  * 
  */
-    __pyx_t_4 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->fill_range(__pyx_v_new, __pyx_v_low, __pyx_v_high); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 718, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_14sparsebitfield_SparseBitfield *)__pyx_v_new->__pyx_vtab)->fill_range(__pyx_v_new, __pyx_v_low, __pyx_v_high); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 715, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "cimpl/field.pyx":717
+    /* "cimpl/field.pyx":714
  *         Construct a bitfield in which every integer in each range is present"""
  *         cdef SparseBitfield new = SparseBitfield()
  *         for (low, high) in interval_list:             # <<<<<<<<<<<<<<
@@ -13699,7 +12804,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":719
+  /* "cimpl/field.pyx":716
  *         for (low, high) in interval_list:
  *             new.fill_range(low, high)
  *         return new             # <<<<<<<<<<<<<<
@@ -13711,7 +12816,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
   __pyx_r = ((PyObject *)__pyx_v_new);
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":713
+  /* "cimpl/field.pyx":710
  * 
  *     @classmethod
  *     def from_intervals(type cls, interval_list):             # <<<<<<<<<<<<<<
@@ -13737,7 +12842,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_71from_intervals(CYT
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":721
+/* "cimpl/field.pyx":718
  *         return new
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -13766,7 +12871,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_73__str__(struct __p
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("__str__", 0);
 
-  /* "cimpl/field.pyx":722
+  /* "cimpl/field.pyx":719
  * 
  *     def __str__(self):
  *         return "SparseBitfield(len=%i)" % (len(self))             # <<<<<<<<<<<<<<
@@ -13774,17 +12879,17 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_73__str__(struct __p
  *     def __repr__(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyObject_Length(((PyObject *)__pyx_v_self)); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 722, __pyx_L1_error)
-  __pyx_t_2 = PyInt_FromSsize_t(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 722, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(((PyObject *)__pyx_v_self)); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 719, __pyx_L1_error)
+  __pyx_t_2 = PyInt_FromSsize_t(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 719, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_SparseBitfield_len_i, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 722, __pyx_L1_error)
+  __pyx_t_3 = PyUnicode_Format(__pyx_kp_u_SparseBitfield_len_i, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 719, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":721
+  /* "cimpl/field.pyx":718
  *         return new
  * 
  *     def __str__(self):             # <<<<<<<<<<<<<<
@@ -13804,7 +12909,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_73__str__(struct __p
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":724
+/* "cimpl/field.pyx":721
  *         return "SparseBitfield(len=%i)" % (len(self))
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -13830,13 +12935,14 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_75__repr__(struct __
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
+  Py_ssize_t __pyx_t_2;
+  Py_UCS4 __pyx_t_3;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("__repr__", 0);
 
-  /* "cimpl/field.pyx":725
+  /* "cimpl/field.pyx":722
  * 
  *     def __repr__(self):
  *         cls = type(self)             # <<<<<<<<<<<<<<
@@ -13846,7 +12952,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_75__repr__(struct __
   __Pyx_INCREF(((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
   __pyx_v_cls = ((PyTypeObject*)((PyObject *)Py_TYPE(((PyObject *)__pyx_v_self))));
 
-  /* "cimpl/field.pyx":726
+  /* "cimpl/field.pyx":723
  *     def __repr__(self):
  *         cls = type(self)
  *         return "%s.%s(%r)" % (cls.__module__, cls.__name__, self.pickle())             # <<<<<<<<<<<<<<
@@ -13854,49 +12960,78 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_75__repr__(struct __
  *     def clear(self):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_module); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 726, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 723, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_name); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 726, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_pickle); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 726, __pyx_L1_error)
+  __pyx_t_2 = 0;
+  __pyx_t_3 = 127;
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_module); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 723, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-      __Pyx_INCREF(__pyx_t_5);
+  __pyx_t_5 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Unicode(__pyx_t_4), __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 723, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __Pyx_INCREF(__pyx_kp_u__7);
+  __pyx_t_2 += 1;
+  __Pyx_GIVEREF(__pyx_kp_u__7);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_kp_u__7);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_cls), __pyx_n_s_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 723, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Unicode(__pyx_t_5), __pyx_empty_unicode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 723, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_4) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_t_4);
+  __pyx_t_4 = 0;
+  __Pyx_INCREF(__pyx_kp_u__8);
+  __pyx_t_2 += 1;
+  __Pyx_GIVEREF(__pyx_kp_u__8);
+  PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_kp_u__8);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_pickle); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 723, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+    if (likely(__pyx_t_6)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+      __Pyx_INCREF(__pyx_t_6);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_4, function);
+      __Pyx_DECREF_SET(__pyx_t_5, function);
     }
   }
-  if (__pyx_t_5) {
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 726, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (__pyx_t_6) {
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 723, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   } else {
-    __pyx_t_3 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 726, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 723, __pyx_L1_error)
   }
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 726, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_4, 2, __pyx_t_3);
-  __pyx_t_1 = 0;
-  __pyx_t_2 = 0;
-  __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyString_Format(__pyx_kp_s_s_s_r, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 726, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyObject_FormatSimpleAndDecref(PyObject_Repr(__pyx_t_4), __pyx_empty_unicode); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 723, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __pyx_t_3 = (__Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) > __pyx_t_3) ? __Pyx_PyUnicode_MAX_CHAR_VALUE(__pyx_t_5) : __pyx_t_3;
+  __pyx_t_2 += __Pyx_PyUnicode_GET_LENGTH(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __Pyx_INCREF(__pyx_kp_u__9);
+  __pyx_t_2 += 1;
+  __Pyx_GIVEREF(__pyx_kp_u__9);
+  PyTuple_SET_ITEM(__pyx_t_1, 5, __pyx_kp_u__9);
+  __pyx_t_5 = __Pyx_PyUnicode_Join(__pyx_t_1, 6, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 723, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_r = __pyx_t_5;
+  __pyx_t_5 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":724
+  /* "cimpl/field.pyx":721
  *         return "SparseBitfield(len=%i)" % (len(self))
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -13907,10 +13042,9 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_75__repr__(struct __
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
   __Pyx_AddTraceback("sparsebitfield.SparseBitfield.__repr__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -13920,7 +13054,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_75__repr__(struct __
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":728
+/* "cimpl/field.pyx":725
  *         return "%s.%s(%r)" % (cls.__module__, cls.__name__, self.pickle())
  * 
  *     def clear(self):             # <<<<<<<<<<<<<<
@@ -13951,16 +13085,16 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_77clear(struct __pyx
   PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("clear", 0);
 
-  /* "cimpl/field.pyx":729
+  /* "cimpl/field.pyx":726
  * 
  *     def clear(self):
  *         self.pages = SortedDict({})             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_SortedDict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 729, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_SortedDict); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 726, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 729, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 726, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -13973,14 +13107,14 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_77clear(struct __pyx
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 729, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 726, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 729, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 726, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -13989,20 +13123,20 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_77clear(struct __pyx
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_4, __pyx_t_3};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 729, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 726, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     } else
     #endif
     {
-      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 729, __pyx_L1_error)
+      __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 726, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
       __Pyx_GIVEREF(__pyx_t_3);
       PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_3);
       __pyx_t_3 = 0;
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 729, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 726, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
@@ -14014,7 +13148,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_77clear(struct __pyx
   __pyx_v_self->pages = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":728
+  /* "cimpl/field.pyx":725
  *         return "%s.%s(%r)" % (cls.__module__, cls.__name__, self.pickle())
  * 
  *     def clear(self):             # <<<<<<<<<<<<<<
@@ -14039,7 +13173,7 @@ static PyObject *__pyx_pf_14sparsebitfield_14SparseBitfield_77clear(struct __pyx
   return __pyx_r;
 }
 
-/* "cimpl/field.pyx":732
+/* "cimpl/field.pyx":729
  * 
  * 
  * cpdef unpickle_sparsebitfield(bytes data):             # <<<<<<<<<<<<<<
@@ -14056,13 +13190,13 @@ static PyObject *__pyx_f_14sparsebitfield_unpickle_sparsebitfield(PyObject *__py
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("unpickle_sparsebitfield", 0);
 
-  /* "cimpl/field.pyx":733
+  /* "cimpl/field.pyx":730
  * 
  * cpdef unpickle_sparsebitfield(bytes data):
  *     return SparseBitfield.unpickle(data)             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield), __pyx_n_s_unpickle); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 733, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield), __pyx_n_s_unpickle); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 730, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -14075,13 +13209,13 @@ static PyObject *__pyx_f_14sparsebitfield_unpickle_sparsebitfield(PyObject *__py
     }
   }
   if (!__pyx_t_3) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 733, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_data); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 730, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_data};
-      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 733, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 730, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
@@ -14089,19 +13223,19 @@ static PyObject *__pyx_f_14sparsebitfield_unpickle_sparsebitfield(PyObject *__py
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
       PyObject *__pyx_temp[2] = {__pyx_t_3, __pyx_v_data};
-      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 733, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 730, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_GOTREF(__pyx_t_1);
     } else
     #endif
     {
-      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 733, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 730, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3); __pyx_t_3 = NULL;
       __Pyx_INCREF(__pyx_v_data);
       __Pyx_GIVEREF(__pyx_v_data);
       PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_v_data);
-      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 733, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 730, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     }
@@ -14111,7 +13245,7 @@ static PyObject *__pyx_f_14sparsebitfield_unpickle_sparsebitfield(PyObject *__py
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "cimpl/field.pyx":732
+  /* "cimpl/field.pyx":729
  * 
  * 
  * cpdef unpickle_sparsebitfield(bytes data):             # <<<<<<<<<<<<<<
@@ -14138,7 +13272,7 @@ static PyObject *__pyx_pw_14sparsebitfield_3unpickle_sparsebitfield(PyObject *__
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("unpickle_sparsebitfield (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) __PYX_ERR(0, 732, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_data), (&PyBytes_Type), 1, "data", 1))) __PYX_ERR(0, 729, __pyx_L1_error)
   __pyx_r = __pyx_pf_14sparsebitfield_2unpickle_sparsebitfield(__pyx_self, ((PyObject*)__pyx_v_data));
 
   /* function exit code */
@@ -14156,7 +13290,7 @@ static PyObject *__pyx_pf_14sparsebitfield_2unpickle_sparsebitfield(CYTHON_UNUSE
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("unpickle_sparsebitfield", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_14sparsebitfield_unpickle_sparsebitfield(__pyx_v_data, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 732, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_14sparsebitfield_unpickle_sparsebitfield(__pyx_v_data, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 729, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -14652,7 +13786,7 @@ static void __pyx_tp_dealloc_14sparsebitfield___pyx_scope_struct_1___iter__(PyOb
   Py_CLEAR(p->__pyx_v_page);
   Py_CLEAR(p->__pyx_v_self);
   Py_CLEAR(p->__pyx_t_0);
-  Py_CLEAR(p->__pyx_t_1);
+  Py_CLEAR(p->__pyx_t_4);
   if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_14sparsebitfield___pyx_scope_struct_1___iter__ < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_14sparsebitfield___pyx_scope_struct_1___iter__)))) {
     __pyx_freelist_14sparsebitfield___pyx_scope_struct_1___iter__[__pyx_freecount_14sparsebitfield___pyx_scope_struct_1___iter__++] = ((struct __pyx_obj_14sparsebitfield___pyx_scope_struct_1___iter__ *)o);
   } else {
@@ -14672,8 +13806,8 @@ static int __pyx_tp_traverse_14sparsebitfield___pyx_scope_struct_1___iter__(PyOb
   if (p->__pyx_t_0) {
     e = (*v)(p->__pyx_t_0, a); if (e) return e;
   }
-  if (p->__pyx_t_1) {
-    e = (*v)(p->__pyx_t_1, a); if (e) return e;
+  if (p->__pyx_t_4) {
+    e = (*v)(p->__pyx_t_4, a); if (e) return e;
   }
   return 0;
 }
@@ -14781,13 +13915,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_CHUNK_FULL_COUNT, __pyx_k_CHUNK_FULL_COUNT, sizeof(__pyx_k_CHUNK_FULL_COUNT), 0, 0, 1, 1},
   {&__pyx_n_s_CHUNK_MASK, __pyx_k_CHUNK_MASK, sizeof(__pyx_k_CHUNK_MASK), 0, 0, 1, 1},
   {&__pyx_n_s_CHUNK_SHIFT, __pyx_k_CHUNK_SHIFT, sizeof(__pyx_k_CHUNK_SHIFT), 0, 0, 1, 1},
-  {&__pyx_kp_s_Cannot_add_i_to_a_page_overflow, __pyx_k_Cannot_add_i_to_a_page_overflow, sizeof(__pyx_k_Cannot_add_i_to_a_page_overflow), 0, 0, 1, 0},
-  {&__pyx_kp_s_Cannot_remove_i_from_a_page_over, __pyx_k_Cannot_remove_i_from_a_page_over, sizeof(__pyx_k_Cannot_remove_i_from_a_page_over), 0, 0, 1, 0},
-  {&__pyx_kp_s_Cannot_test_for_i_in_a_page_over, __pyx_k_Cannot_test_for_i_in_a_page_over, sizeof(__pyx_k_Cannot_test_for_i_in_a_page_over), 0, 0, 1, 0},
-  {&__pyx_kp_s_Could_not_unpickle_data, __pyx_k_Could_not_unpickle_data, sizeof(__pyx_k_Could_not_unpickle_data), 0, 0, 1, 0},
-  {&__pyx_kp_s_Could_not_unpickle_data_Invalid, __pyx_k_Could_not_unpickle_data_Invalid, sizeof(__pyx_k_Could_not_unpickle_data_Invalid), 0, 0, 1, 0},
+  {&__pyx_kp_u_Cannot_add_i_to_a_page_overflow, __pyx_k_Cannot_add_i_to_a_page_overflow, sizeof(__pyx_k_Cannot_add_i_to_a_page_overflow), 0, 1, 0, 0},
+  {&__pyx_kp_u_Cannot_remove_i_from_a_page_over, __pyx_k_Cannot_remove_i_from_a_page_over, sizeof(__pyx_k_Cannot_remove_i_from_a_page_over), 0, 1, 0, 0},
+  {&__pyx_kp_u_Cannot_test_for_i_in_a_page_over, __pyx_k_Cannot_test_for_i_in_a_page_over, sizeof(__pyx_k_Cannot_test_for_i_in_a_page_over), 0, 1, 0, 0},
+  {&__pyx_kp_u_Could_not_unpickle_data, __pyx_k_Could_not_unpickle_data, sizeof(__pyx_k_Could_not_unpickle_data), 0, 1, 0, 0},
+  {&__pyx_kp_u_Could_not_unpickle_data_Invalid, __pyx_k_Could_not_unpickle_data_Invalid, sizeof(__pyx_k_Could_not_unpickle_data_Invalid), 0, 1, 0, 0},
   {&__pyx_n_s_IdsPage___iter, __pyx_k_IdsPage___iter, sizeof(__pyx_k_IdsPage___iter), 0, 0, 1, 1},
-  {&__pyx_kp_s_Invalid_page_state, __pyx_k_Invalid_page_state, sizeof(__pyx_k_Invalid_page_state), 0, 0, 1, 0},
+  {&__pyx_kp_u_Invalid_page_state, __pyx_k_Invalid_page_state, sizeof(__pyx_k_Invalid_page_state), 0, 1, 0, 0},
   {&__pyx_n_s_KeyError, __pyx_k_KeyError, sizeof(__pyx_k_KeyError), 0, 0, 1, 1},
   {&__pyx_n_s_NotImplementedError, __pyx_k_NotImplementedError, sizeof(__pyx_k_NotImplementedError), 0, 0, 1, 1},
   {&__pyx_n_s_PAGE_BYTES, __pyx_k_PAGE_BYTES, sizeof(__pyx_k_PAGE_BYTES), 0, 0, 1, 1},
@@ -14796,9 +13930,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_PAGE_MAX, __pyx_k_PAGE_MAX, sizeof(__pyx_k_PAGE_MAX), 0, 0, 1, 1},
   {&__pyx_n_s_SortedDict, __pyx_k_SortedDict, sizeof(__pyx_k_SortedDict), 0, 0, 1, 1},
   {&__pyx_n_s_SparseBitfield___iter, __pyx_k_SparseBitfield___iter, sizeof(__pyx_k_SparseBitfield___iter), 0, 0, 1, 1},
-  {&__pyx_kp_s_SparseBitfield_len_i, __pyx_k_SparseBitfield_len_i, sizeof(__pyx_k_SparseBitfield_len_i), 0, 0, 1, 0},
+  {&__pyx_kp_u_SparseBitfield_len_i, __pyx_k_SparseBitfield_len_i, sizeof(__pyx_k_SparseBitfield_len_i), 0, 1, 0, 0},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
+  {&__pyx_kp_u__7, __pyx_k__7, sizeof(__pyx_k__7), 0, 1, 0, 0},
+  {&__pyx_kp_u__8, __pyx_k__8, sizeof(__pyx_k__8), 0, 1, 0, 0},
+  {&__pyx_kp_u__9, __pyx_k__9, sizeof(__pyx_k__9), 0, 1, 0, 0},
   {&__pyx_n_s_add, __pyx_k_add, sizeof(__pyx_k_add), 0, 0, 1, 1},
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
   {&__pyx_n_s_bin, __pyx_k_bin, sizeof(__pyx_k_bin), 0, 0, 1, 1},
@@ -14837,16 +13974,16 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
   {&__pyx_n_s_remove, __pyx_k_remove, sizeof(__pyx_k_remove), 0, 0, 1, 1},
-  {&__pyx_kp_s_s_s_r, __pyx_k_s_s_r, sizeof(__pyx_k_s_s_r), 0, 0, 1, 0},
   {&__pyx_n_s_send, __pyx_k_send, sizeof(__pyx_k_send), 0, 0, 1, 1},
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_s_slots, __pyx_k_slots, sizeof(__pyx_k_slots), 0, 0, 1, 1},
   {&__pyx_n_s_sortedcontainers, __pyx_k_sortedcontainers, sizeof(__pyx_k_sortedcontainers), 0, 0, 1, 1},
   {&__pyx_n_s_sparsebitfield, __pyx_k_sparsebitfield, sizeof(__pyx_k_sparsebitfield), 0, 0, 1, 1},
-  {&__pyx_kp_s_sparsebitfields_do_not_provide_w, __pyx_k_sparsebitfields_do_not_provide_w, sizeof(__pyx_k_sparsebitfields_do_not_provide_w), 0, 0, 1, 0},
+  {&__pyx_kp_u_sparsebitfields_do_not_provide_w, __pyx_k_sparsebitfields_do_not_provide_w, sizeof(__pyx_k_sparsebitfields_do_not_provide_w), 0, 1, 0, 0},
   {&__pyx_n_s_symmetric_difference, __pyx_k_symmetric_difference, sizeof(__pyx_k_symmetric_difference), 0, 0, 1, 1},
   {&__pyx_n_s_symmetric_difference_update, __pyx_k_symmetric_difference_update, sizeof(__pyx_k_symmetric_difference_update), 0, 0, 1, 1},
+  {&__pyx_n_s_sys, __pyx_k_sys, sizeof(__pyx_k_sys), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_throw, __pyx_k_throw, sizeof(__pyx_k_throw), 0, 0, 1, 1},
   {&__pyx_n_s_tobytes, __pyx_k_tobytes, sizeof(__pyx_k_tobytes), 0, 0, 1, 1},
@@ -14858,13 +13995,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_bin = __Pyx_GetBuiltinName(__pyx_n_s_bin); if (!__pyx_builtin_bin) __PYX_ERR(0, 49, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 75, __pyx_L1_error)
-  __pyx_builtin_AssertionError = __Pyx_GetBuiltinName(__pyx_n_s_AssertionError); if (!__pyx_builtin_AssertionError) __PYX_ERR(0, 155, __pyx_L1_error)
-  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 311, __pyx_L1_error)
+  __pyx_builtin_bin = __Pyx_GetBuiltinName(__pyx_n_s_bin); if (!__pyx_builtin_bin) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_builtin_AssertionError = __Pyx_GetBuiltinName(__pyx_n_s_AssertionError); if (!__pyx_builtin_AssertionError) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_builtin_NotImplementedError = __Pyx_GetBuiltinName(__pyx_n_s_NotImplementedError); if (!__pyx_builtin_NotImplementedError) __PYX_ERR(0, 308, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
-  __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 356, __pyx_L1_error)
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 569, __pyx_L1_error)
+  __pyx_builtin_KeyError = __Pyx_GetBuiltinName(__pyx_n_s_KeyError); if (!__pyx_builtin_KeyError) __PYX_ERR(0, 353, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 566, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -14874,25 +14011,25 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "cimpl/field.pyx":236
+  /* "cimpl/field.pyx":233
  *                 self.calc_length()
  *             else:
  *                 raise AssertionError("Invalid page state")             # <<<<<<<<<<<<<<
  *         else:
  *             raise AssertionError("Invalid page state")
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Invalid_page_state); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 236, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Invalid_page_state); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 233, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "cimpl/field.pyx":238
+  /* "cimpl/field.pyx":235
  *                 raise AssertionError("Invalid page state")
  *         else:
  *             raise AssertionError("Invalid page state")             # <<<<<<<<<<<<<<
  * 
  *     cdef void difference_update(self, IdsPage other):
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Invalid_page_state); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 238, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_Invalid_page_state); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 235, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
@@ -14915,36 +14052,36 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "cimpl/field.pyx":569
+  /* "cimpl/field.pyx":566
  * 
  *         if flags & pybuf.PyBUF_WRITABLE:
  *             raise ValueError("sparsebitfields do not provide writable buffers")             # <<<<<<<<<<<<<<
  * 
  *         if flags & pybuf.PyBUF_FORMAT:
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_sparsebitfields_do_not_provide_w); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 569, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_u_sparsebitfields_do_not_provide_w); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 566, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "cimpl/field.pyx":640
+  /* "cimpl/field.pyx":637
  *         cdef bytes marker = data[:marker_len]
  *         if marker != PICKLE_MARKER and marker != PICKLE_MARKER_zlib:
  *             raise ValueError("Could not unpickle data")             # <<<<<<<<<<<<<<
  *         if marker == PICKLE_MARKER_zlib:
  *             data = zlib.decompress(data[marker_len:])
  */
-  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_Could_not_unpickle_data); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 640, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_u_Could_not_unpickle_data); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 637, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "cimpl/field.pyx":45
+  /* "cimpl/field.pyx":42
  * 
  * 
  * def get_all_sizes():             # <<<<<<<<<<<<<<
  *     return dict(
  *         CHUNK_BYTES=CHUNK_BYTES,
  */
-  __pyx_codeobj__7 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cimpl_field_pyx, __pyx_n_s_get_all_sizes, 45, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__7)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cimpl_field_pyx, __pyx_n_s_get_all_sizes, 42, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -15018,14 +14155,14 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_14sparsebitfield_IdsPage.symmetric_difference_update = (PyObject *(*)(struct __pyx_obj_14sparsebitfield_IdsPage *, struct __pyx_obj_14sparsebitfield_IdsPage *))__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update;
   __pyx_vtable_14sparsebitfield_IdsPage.clone = (struct __pyx_obj_14sparsebitfield_IdsPage *(*)(struct __pyx_obj_14sparsebitfield_IdsPage *))__pyx_f_14sparsebitfield_7IdsPage_clone;
   __pyx_vtable_14sparsebitfield_IdsPage.set_bits = (char *(*)(struct __pyx_obj_14sparsebitfield_IdsPage *, char *, char *))__pyx_f_14sparsebitfield_7IdsPage_set_bits;
-  if (PyType_Ready(&__pyx_type_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
   __pyx_type_14sparsebitfield_IdsPage.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_14sparsebitfield_IdsPage.tp_dictoffset && __pyx_type_14sparsebitfield_IdsPage.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_14sparsebitfield_IdsPage.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_14sparsebitfield_IdsPage.tp_dict, __pyx_vtabptr_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "IdsPage", (PyObject *)&__pyx_type_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_14sparsebitfield_IdsPage.tp_dict, __pyx_vtabptr_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "IdsPage", (PyObject *)&__pyx_type_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_14sparsebitfield_IdsPage) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
   __pyx_ptype_14sparsebitfield_IdsPage = &__pyx_type_14sparsebitfield_IdsPage;
   __pyx_vtabptr_14sparsebitfield_SparseBitfield = &__pyx_vtable_14sparsebitfield_SparseBitfield;
   __pyx_vtable_14sparsebitfield_SparseBitfield._ensure_page_exists = (PyObject *(*)(struct __pyx_obj_14sparsebitfield_SparseBitfield *, usize_t))__pyx_f_14sparsebitfield_14SparseBitfield__ensure_page_exists;
@@ -15046,14 +14183,14 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_14sparsebitfield_SparseBitfield.load = (PyObject *(*)(struct __pyx_obj_14sparsebitfield_SparseBitfield *, PyObject *))__pyx_f_14sparsebitfield_14SparseBitfield_load;
   __pyx_vtable_14sparsebitfield_SparseBitfield.load_from_bytes = (PyObject *(*)(struct __pyx_obj_14sparsebitfield_SparseBitfield *, PyObject *))__pyx_f_14sparsebitfield_14SparseBitfield_load_from_bytes;
   __pyx_vtable_14sparsebitfield_SparseBitfield.fill_range = (PyObject *(*)(struct __pyx_obj_14sparsebitfield_SparseBitfield *, PyObject *, PyObject *))__pyx_f_14sparsebitfield_14SparseBitfield_fill_range;
-  if (PyType_Ready(&__pyx_type_14sparsebitfield_SparseBitfield) < 0) __PYX_ERR(0, 326, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_14sparsebitfield_SparseBitfield) < 0) __PYX_ERR(0, 323, __pyx_L1_error)
   __pyx_type_14sparsebitfield_SparseBitfield.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_14sparsebitfield_SparseBitfield.tp_dictoffset && __pyx_type_14sparsebitfield_SparseBitfield.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_14sparsebitfield_SparseBitfield.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__len__"); if (unlikely(!wrapper)) __PYX_ERR(0, 326, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__len__"); if (unlikely(!wrapper)) __PYX_ERR(0, 323, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_8__len__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_8__len__.doc = __pyx_doc_14sparsebitfield_14SparseBitfield_8__len__;
@@ -15063,7 +14200,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__contains__"); if (unlikely(!wrapper)) __PYX_ERR(0, 326, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__contains__"); if (unlikely(!wrapper)) __PYX_ERR(0, 323, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_10__contains__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_10__contains__.doc = __pyx_doc_14sparsebitfield_14SparseBitfield_10__contains__;
@@ -15073,7 +14210,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__iter__"); if (unlikely(!wrapper)) __PYX_ERR(0, 326, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__iter__"); if (unlikely(!wrapper)) __PYX_ERR(0, 323, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_12__iter__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_12__iter__.doc = __pyx_doc_14sparsebitfield_14SparseBitfield_12__iter__;
@@ -15083,7 +14220,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__or__"); if (unlikely(!wrapper)) __PYX_ERR(0, 326, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__or__"); if (unlikely(!wrapper)) __PYX_ERR(0, 323, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_17__or__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_17__or__.doc = __pyx_doc_14sparsebitfield_14SparseBitfield_17__or__;
@@ -15093,7 +14230,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__add__"); if (unlikely(!wrapper)) __PYX_ERR(0, 326, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__add__"); if (unlikely(!wrapper)) __PYX_ERR(0, 323, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_23__add__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_23__add__.doc = __pyx_doc_14sparsebitfield_14SparseBitfield_23__add__;
@@ -15103,7 +14240,7 @@ static int __Pyx_modinit_type_init_code(void) {
   #endif
   #if CYTHON_COMPILING_IN_CPYTHON
   {
-    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__iadd__"); if (unlikely(!wrapper)) __PYX_ERR(0, 326, __pyx_L1_error)
+    PyObject *wrapper = PyObject_GetAttrString((PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield, "__iadd__"); if (unlikely(!wrapper)) __PYX_ERR(0, 323, __pyx_L1_error)
     if (Py_TYPE(wrapper) == &PyWrapperDescr_Type) {
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_25__iadd__ = *((PyWrapperDescrObject *)wrapper)->d_base;
       __pyx_wrapperbase_14sparsebitfield_14SparseBitfield_25__iadd__.doc = __pyx_doc_14sparsebitfield_14SparseBitfield_25__iadd__;
@@ -15111,16 +14248,16 @@ static int __Pyx_modinit_type_init_code(void) {
     }
   }
   #endif
-  if (__Pyx_SetVtable(__pyx_type_14sparsebitfield_SparseBitfield.tp_dict, __pyx_vtabptr_14sparsebitfield_SparseBitfield) < 0) __PYX_ERR(0, 326, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "SparseBitfield", (PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield) < 0) __PYX_ERR(0, 326, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_14sparsebitfield_SparseBitfield.tp_dict, __pyx_vtabptr_14sparsebitfield_SparseBitfield) < 0) __PYX_ERR(0, 323, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "SparseBitfield", (PyObject *)&__pyx_type_14sparsebitfield_SparseBitfield) < 0) __PYX_ERR(0, 323, __pyx_L1_error)
   __pyx_ptype_14sparsebitfield_SparseBitfield = &__pyx_type_14sparsebitfield_SparseBitfield;
-  if (PyType_Ready(&__pyx_type_14sparsebitfield___pyx_scope_struct____iter__) < 0) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_14sparsebitfield___pyx_scope_struct____iter__) < 0) __PYX_ERR(0, 100, __pyx_L1_error)
   __pyx_type_14sparsebitfield___pyx_scope_struct____iter__.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_14sparsebitfield___pyx_scope_struct____iter__.tp_dictoffset && __pyx_type_14sparsebitfield___pyx_scope_struct____iter__.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_14sparsebitfield___pyx_scope_struct____iter__.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_14sparsebitfield___pyx_scope_struct____iter__ = &__pyx_type_14sparsebitfield___pyx_scope_struct____iter__;
-  if (PyType_Ready(&__pyx_type_14sparsebitfield___pyx_scope_struct_1___iter__) < 0) __PYX_ERR(0, 395, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_14sparsebitfield___pyx_scope_struct_1___iter__) < 0) __PYX_ERR(0, 392, __pyx_L1_error)
   __pyx_type_14sparsebitfield___pyx_scope_struct_1___iter__.tp_print = 0;
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_14sparsebitfield___pyx_scope_struct_1___iter__.tp_dictoffset && __pyx_type_14sparsebitfield___pyx_scope_struct_1___iter__.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_14sparsebitfield___pyx_scope_struct_1___iter__.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
@@ -15332,137 +14469,149 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "cimpl/field.pyx":1
+ * import sys             # <<<<<<<<<<<<<<
+ * import zlib
+ * from sortedcontainers import SortedDict
+ */
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_sys, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sys, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "cimpl/field.pyx":2
+ * import sys
  * import zlib             # <<<<<<<<<<<<<<
  * from sortedcontainers import SortedDict
  * 
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_zlib, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_zlib, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_zlib, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_zlib, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "cimpl/field.pyx":2
+  /* "cimpl/field.pyx":3
+ * import sys
  * import zlib
  * from sortedcontainers import SortedDict             # <<<<<<<<<<<<<<
  * 
  * cimport cpython.buffer as pybuf
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_SortedDict);
   __Pyx_GIVEREF(__pyx_n_s_SortedDict);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_SortedDict);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sortedcontainers, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_sortedcontainers, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_SortedDict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_SortedDict); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SortedDict, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_SortedDict, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":45
+  /* "cimpl/field.pyx":42
  * 
  * 
  * def get_all_sizes():             # <<<<<<<<<<<<<<
  *     return dict(
  *         CHUNK_BYTES=CHUNK_BYTES,
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_14sparsebitfield_1get_all_sizes, NULL, __pyx_n_s_sparsebitfield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_14sparsebitfield_1get_all_sizes, NULL, __pyx_n_s_sparsebitfield); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_all_sizes, __pyx_t_2) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_all_sizes, __pyx_t_2) < 0) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":322
+  /* "cimpl/field.pyx":319
  * 
  * # Markers must be the same length
  * cdef bytes PICKLE_MARKER = <char *>"BF:"             # <<<<<<<<<<<<<<
  * cdef bytes PICKLE_MARKER_zlib = <char *>"BZ:"
  * 
  */
-  __pyx_t_2 = __Pyx_PyBytes_FromString(((char *)((char *)"BF:"))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 322, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromString(((char *)((char *)"BF:"))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 319, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(__pyx_v_14sparsebitfield_PICKLE_MARKER);
   __Pyx_DECREF_SET(__pyx_v_14sparsebitfield_PICKLE_MARKER, ((PyObject*)__pyx_t_2));
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":323
+  /* "cimpl/field.pyx":320
  * # Markers must be the same length
  * cdef bytes PICKLE_MARKER = <char *>"BF:"
  * cdef bytes PICKLE_MARKER_zlib = <char *>"BZ:"             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_2 = __Pyx_PyBytes_FromString(((char *)((char *)"BZ:"))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 323, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBytes_FromString(((char *)((char *)"BZ:"))); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 320, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_XGOTREF(__pyx_v_14sparsebitfield_PICKLE_MARKER_zlib);
   __Pyx_DECREF_SET(__pyx_v_14sparsebitfield_PICKLE_MARKER_zlib, ((PyObject*)__pyx_t_2));
   __Pyx_GIVEREF(__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "cimpl/field.pyx":332
+  /* "cimpl/field.pyx":329
  * 
  *     cdef object pages
  *     __slots__ = ()             # <<<<<<<<<<<<<<
  * 
  *     def __cinit__(self, _data=None):
  */
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield->tp_dict, __pyx_n_s_slots, __pyx_empty_tuple) < 0) __PYX_ERR(0, 332, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield->tp_dict, __pyx_n_s_slots, __pyx_empty_tuple) < 0) __PYX_ERR(0, 329, __pyx_L1_error)
   PyType_Modified(__pyx_ptype_14sparsebitfield_SparseBitfield);
 
-  /* "cimpl/field.pyx":617
+  /* "cimpl/field.pyx":614
  * 
  *     @classmethod
  *     def unpickle(cls, bytes data):             # <<<<<<<<<<<<<<
  *         """Read a bitfield object from a string created by SparseBitfield.piclke"""
  *         cdef SparseBitfield new = SparseBitfield()
  */
-  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield, __pyx_n_s_unpickle); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 617, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield, __pyx_n_s_unpickle); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 614, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
 
-  /* "cimpl/field.pyx":616
+  /* "cimpl/field.pyx":613
  *         return marker + base
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def unpickle(cls, bytes data):
  *         """Read a bitfield object from a string created by SparseBitfield.piclke"""
  */
-  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 616, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Method_ClassMethod(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 613, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield->tp_dict, __pyx_n_s_unpickle, __pyx_t_1) < 0) __PYX_ERR(0, 617, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield->tp_dict, __pyx_n_s_unpickle, __pyx_t_1) < 0) __PYX_ERR(0, 614, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_14sparsebitfield_SparseBitfield);
 
-  /* "cimpl/field.pyx":713
+  /* "cimpl/field.pyx":710
  * 
  *     @classmethod
  *     def from_intervals(type cls, interval_list):             # <<<<<<<<<<<<<<
  *         """Given a list of ranges in the form:  [[low1, high1], [low2, high2], ...]
  *         Construct a bitfield in which every integer in each range is present"""
  */
-  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield, __pyx_n_s_from_intervals); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 713, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetNameInClass((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield, __pyx_n_s_from_intervals); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
 
-  /* "cimpl/field.pyx":712
+  /* "cimpl/field.pyx":709
  *                 page.set_full()
  * 
  *     @classmethod             # <<<<<<<<<<<<<<
  *     def from_intervals(type cls, interval_list):
  *         """Given a list of ranges in the form:  [[low1, high1], [low2, high2], ...]
  */
-  __pyx_t_2 = __Pyx_Method_ClassMethod(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 712, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Method_ClassMethod(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 709, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield->tp_dict, __pyx_n_s_from_intervals, __pyx_t_2) < 0) __PYX_ERR(0, 713, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_14sparsebitfield_SparseBitfield->tp_dict, __pyx_n_s_from_intervals, __pyx_t_2) < 0) __PYX_ERR(0, 710, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_14sparsebitfield_SparseBitfield);
 
   /* "cimpl/field.pyx":1
- * import zlib             # <<<<<<<<<<<<<<
+ * import sys             # <<<<<<<<<<<<<<
+ * import zlib
  * from sortedcontainers import SortedDict
- * 
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -16478,19 +15627,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
     return 0;
 }
 
-/* RaiseTooManyValuesToUnpack */
-        static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
-    PyErr_Format(PyExc_ValueError,
-                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
-}
-
-/* RaiseNeedMoreValuesToUnpack */
-        static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
-    PyErr_Format(PyExc_ValueError,
-                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
-                 index, (index == 1) ? "" : "s");
-}
-
 /* IterFinish */
         static CYTHON_INLINE int __Pyx_IterFinish(void) {
 #if CYTHON_FAST_THREAD_STATE
@@ -16526,6 +15662,41 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
 #endif
 }
 
+/* PyObjectCallMethod0 */
+        static PyObject* __Pyx_PyObject_CallMethod0(PyObject* obj, PyObject* method_name) {
+    PyObject *method, *result = NULL;
+    method = __Pyx_PyObject_GetAttrStr(obj, method_name);
+    if (unlikely(!method)) goto bad;
+#if CYTHON_UNPACK_METHODS
+    if (likely(PyMethod_Check(method))) {
+        PyObject *self = PyMethod_GET_SELF(method);
+        if (likely(self)) {
+            PyObject *function = PyMethod_GET_FUNCTION(method);
+            result = __Pyx_PyObject_CallOneArg(function, self);
+            Py_DECREF(method);
+            return result;
+        }
+    }
+#endif
+    result = __Pyx_PyObject_CallNoArg(method);
+    Py_DECREF(method);
+bad:
+    return result;
+}
+
+/* RaiseNeedMoreValuesToUnpack */
+        static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+    PyErr_Format(PyExc_ValueError,
+                 "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
+                 index, (index == 1) ? "" : "s");
+}
+
+/* RaiseTooManyValuesToUnpack */
+        static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+    PyErr_Format(PyExc_ValueError,
+                 "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
+}
+
 /* UnpackItemEndCheck */
         static int __Pyx_IternextUnpackEndCheck(PyObject *retval, Py_ssize_t expected) {
     if (unlikely(retval)) {
@@ -16536,6 +15707,187 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
         return __Pyx_IterFinish();
     }
     return 0;
+}
+
+/* RaiseNoneIterError */
+        static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
+    PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
+}
+
+/* UnpackTupleError */
+        static void __Pyx_UnpackTupleError(PyObject *t, Py_ssize_t index) {
+    if (t == Py_None) {
+      __Pyx_RaiseNoneNotIterableError();
+    } else if (PyTuple_GET_SIZE(t) < index) {
+      __Pyx_RaiseNeedMoreValuesError(PyTuple_GET_SIZE(t));
+    } else {
+      __Pyx_RaiseTooManyValuesError(index);
+    }
+}
+
+/* UnpackTuple2 */
+        static CYTHON_INLINE int __Pyx_unpack_tuple2_exact(
+        PyObject* tuple, PyObject** pvalue1, PyObject** pvalue2, int decref_tuple) {
+    PyObject *value1 = NULL, *value2 = NULL;
+#if CYTHON_COMPILING_IN_PYPY
+    value1 = PySequence_ITEM(tuple, 0);  if (unlikely(!value1)) goto bad;
+    value2 = PySequence_ITEM(tuple, 1);  if (unlikely(!value2)) goto bad;
+#else
+    value1 = PyTuple_GET_ITEM(tuple, 0);  Py_INCREF(value1);
+    value2 = PyTuple_GET_ITEM(tuple, 1);  Py_INCREF(value2);
+#endif
+    if (decref_tuple) {
+        Py_DECREF(tuple);
+    }
+    *pvalue1 = value1;
+    *pvalue2 = value2;
+    return 0;
+#if CYTHON_COMPILING_IN_PYPY
+bad:
+    Py_XDECREF(value1);
+    Py_XDECREF(value2);
+    if (decref_tuple) { Py_XDECREF(tuple); }
+    return -1;
+#endif
+}
+static int __Pyx_unpack_tuple2_generic(PyObject* tuple, PyObject** pvalue1, PyObject** pvalue2,
+                                       int has_known_size, int decref_tuple) {
+    Py_ssize_t index;
+    PyObject *value1 = NULL, *value2 = NULL, *iter = NULL;
+    iternextfunc iternext;
+    iter = PyObject_GetIter(tuple);
+    if (unlikely(!iter)) goto bad;
+    if (decref_tuple) { Py_DECREF(tuple); tuple = NULL; }
+    iternext = Py_TYPE(iter)->tp_iternext;
+    value1 = iternext(iter); if (unlikely(!value1)) { index = 0; goto unpacking_failed; }
+    value2 = iternext(iter); if (unlikely(!value2)) { index = 1; goto unpacking_failed; }
+    if (!has_known_size && unlikely(__Pyx_IternextUnpackEndCheck(iternext(iter), 2))) goto bad;
+    Py_DECREF(iter);
+    *pvalue1 = value1;
+    *pvalue2 = value2;
+    return 0;
+unpacking_failed:
+    if (!has_known_size && __Pyx_IterFinish() == 0)
+        __Pyx_RaiseNeedMoreValuesError(index);
+bad:
+    Py_XDECREF(iter);
+    Py_XDECREF(value1);
+    Py_XDECREF(value2);
+    if (decref_tuple) { Py_XDECREF(tuple); }
+    return -1;
+}
+
+/* dict_iter */
+        static CYTHON_INLINE PyObject* __Pyx_dict_iterator(PyObject* iterable, int is_dict, PyObject* method_name,
+                                                   Py_ssize_t* p_orig_length, int* p_source_is_dict) {
+    is_dict = is_dict || likely(PyDict_CheckExact(iterable));
+    *p_source_is_dict = is_dict;
+    if (is_dict) {
+#if !CYTHON_COMPILING_IN_PYPY
+        *p_orig_length = PyDict_Size(iterable);
+        Py_INCREF(iterable);
+        return iterable;
+#elif PY_MAJOR_VERSION >= 3
+        static PyObject *py_items = NULL, *py_keys = NULL, *py_values = NULL;
+        PyObject **pp = NULL;
+        if (method_name) {
+            const char *name = PyUnicode_AsUTF8(method_name);
+            if (strcmp(name, "iteritems") == 0) pp = &py_items;
+            else if (strcmp(name, "iterkeys") == 0) pp = &py_keys;
+            else if (strcmp(name, "itervalues") == 0) pp = &py_values;
+            if (pp) {
+                if (!*pp) {
+                    *pp = PyUnicode_FromString(name + 4);
+                    if (!*pp)
+                        return NULL;
+                }
+                method_name = *pp;
+            }
+        }
+#endif
+    }
+    *p_orig_length = 0;
+    if (method_name) {
+        PyObject* iter;
+        iterable = __Pyx_PyObject_CallMethod0(iterable, method_name);
+        if (!iterable)
+            return NULL;
+#if !CYTHON_COMPILING_IN_PYPY
+        if (PyTuple_CheckExact(iterable) || PyList_CheckExact(iterable))
+            return iterable;
+#endif
+        iter = PyObject_GetIter(iterable);
+        Py_DECREF(iterable);
+        return iter;
+    }
+    return PyObject_GetIter(iterable);
+}
+static CYTHON_INLINE int __Pyx_dict_iter_next(
+        PyObject* iter_obj, CYTHON_NCP_UNUSED Py_ssize_t orig_length, CYTHON_NCP_UNUSED Py_ssize_t* ppos,
+        PyObject** pkey, PyObject** pvalue, PyObject** pitem, int source_is_dict) {
+    PyObject* next_item;
+#if !CYTHON_COMPILING_IN_PYPY
+    if (source_is_dict) {
+        PyObject *key, *value;
+        if (unlikely(orig_length != PyDict_Size(iter_obj))) {
+            PyErr_SetString(PyExc_RuntimeError, "dictionary changed size during iteration");
+            return -1;
+        }
+        if (unlikely(!PyDict_Next(iter_obj, ppos, &key, &value))) {
+            return 0;
+        }
+        if (pitem) {
+            PyObject* tuple = PyTuple_New(2);
+            if (unlikely(!tuple)) {
+                return -1;
+            }
+            Py_INCREF(key);
+            Py_INCREF(value);
+            PyTuple_SET_ITEM(tuple, 0, key);
+            PyTuple_SET_ITEM(tuple, 1, value);
+            *pitem = tuple;
+        } else {
+            if (pkey) {
+                Py_INCREF(key);
+                *pkey = key;
+            }
+            if (pvalue) {
+                Py_INCREF(value);
+                *pvalue = value;
+            }
+        }
+        return 1;
+    } else if (PyTuple_CheckExact(iter_obj)) {
+        Py_ssize_t pos = *ppos;
+        if (unlikely(pos >= PyTuple_GET_SIZE(iter_obj))) return 0;
+        *ppos = pos + 1;
+        next_item = PyTuple_GET_ITEM(iter_obj, pos);
+        Py_INCREF(next_item);
+    } else if (PyList_CheckExact(iter_obj)) {
+        Py_ssize_t pos = *ppos;
+        if (unlikely(pos >= PyList_GET_SIZE(iter_obj))) return 0;
+        *ppos = pos + 1;
+        next_item = PyList_GET_ITEM(iter_obj, pos);
+        Py_INCREF(next_item);
+    } else
+#endif
+    {
+        next_item = PyIter_Next(iter_obj);
+        if (unlikely(!next_item)) {
+            return __Pyx_IterFinish();
+        }
+    }
+    if (pitem) {
+        *pitem = next_item;
+    } else if (pkey && pvalue) {
+        if (__Pyx_unpack_tuple2(next_item, pkey, pvalue, source_is_dict, source_is_dict, 1))
+            return -1;
+    } else if (pkey) {
+        *pkey = next_item;
+    } else {
+        *pvalue = next_item;
+    }
+    return 1;
 }
 
 /* BytesEquals */
@@ -16706,6 +16058,87 @@ static PyObject* __Pyx_PyInt_SubtractObjC(PyObject *op1, PyObject *op2, CYTHON_U
     return (inplace ? PyNumber_InPlaceSubtract : PyNumber_Subtract)(op1, op2);
 }
 #endif
+
+/* PyObjectFormatAndDecref */
+        static CYTHON_INLINE PyObject* __Pyx_PyObject_FormatSimpleAndDecref(PyObject* s, PyObject* f) {
+    if (unlikely(!s)) return NULL;
+    if (likely(PyUnicode_CheckExact(s))) return s;
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyString_CheckExact(s))) {
+        PyObject *result = PyUnicode_FromEncodedObject(s, NULL, "strict");
+        Py_DECREF(s);
+        return result;
+    }
+    #endif
+    return __Pyx_PyObject_FormatAndDecref(s, f);
+}
+static CYTHON_INLINE PyObject* __Pyx_PyObject_FormatAndDecref(PyObject* s, PyObject* f) {
+    PyObject *result = PyObject_Format(s, f);
+    Py_DECREF(s);
+    return result;
+}
+
+/* JoinPyUnicode */
+        static PyObject* __Pyx_PyUnicode_Join(PyObject* value_tuple, Py_ssize_t value_count, Py_ssize_t result_ulength,
+                                      CYTHON_UNUSED Py_UCS4 max_char) {
+#if CYTHON_USE_UNICODE_INTERNALS && CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    PyObject *result_uval;
+    int result_ukind;
+    Py_ssize_t i, char_pos;
+    void *result_udata;
+#if CYTHON_PEP393_ENABLED
+    result_uval = PyUnicode_New(result_ulength, max_char);
+    if (unlikely(!result_uval)) return NULL;
+    result_ukind = (max_char <= 255) ? PyUnicode_1BYTE_KIND : (max_char <= 65535) ? PyUnicode_2BYTE_KIND : PyUnicode_4BYTE_KIND;
+    result_udata = PyUnicode_DATA(result_uval);
+#else
+    result_uval = PyUnicode_FromUnicode(NULL, result_ulength);
+    if (unlikely(!result_uval)) return NULL;
+    result_ukind = sizeof(Py_UNICODE);
+    result_udata = PyUnicode_AS_UNICODE(result_uval);
+#endif
+    char_pos = 0;
+    for (i=0; i < value_count; i++) {
+        int ukind;
+        Py_ssize_t ulength;
+        void *udata;
+        PyObject *uval = PyTuple_GET_ITEM(value_tuple, i);
+        if (unlikely(__Pyx_PyUnicode_READY(uval)))
+            goto bad;
+        ulength = __Pyx_PyUnicode_GET_LENGTH(uval);
+        if (unlikely(!ulength))
+            continue;
+        if (unlikely(char_pos + ulength < 0))
+            goto overflow;
+        ukind = __Pyx_PyUnicode_KIND(uval);
+        udata = __Pyx_PyUnicode_DATA(uval);
+        if (!CYTHON_PEP393_ENABLED || ukind == result_ukind) {
+            memcpy((char *)result_udata + char_pos * result_ukind, udata, (size_t) (ulength * result_ukind));
+        } else {
+            #if CYTHON_COMPILING_IN_CPYTHON && PY_VERSION_HEX >= 0x030300F0 || defined(_PyUnicode_FastCopyCharacters)
+            _PyUnicode_FastCopyCharacters(result_uval, char_pos, uval, 0, ulength);
+            #else
+            Py_ssize_t j;
+            for (j=0; j < ulength; j++) {
+                Py_UCS4 uchar = __Pyx_PyUnicode_READ(ukind, udata, j);
+                __Pyx_PyUnicode_WRITE(result_ukind, result_udata, char_pos+j, uchar);
+            }
+            #endif
+        }
+        char_pos += ulength;
+    }
+    return result_uval;
+overflow:
+    PyErr_SetString(PyExc_OverflowError, "join() result is too long for a Python string");
+bad:
+    Py_DECREF(result_uval);
+    return NULL;
+#else
+    result_ulength++;
+    value_count++;
+    return PyUnicode_Join(__pyx_empty_unicode, value_tuple);
+#endif
+}
 
 /* PyObject_GenericGetAttrNoDict */
         #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000

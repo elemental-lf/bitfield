@@ -1,7 +1,9 @@
+import sys
 import zlib
 from sortedcontainers import SortedDict
 
 cimport cpython.buffer as pybuf
+from cpython.mem cimport PyMem_Malloc, PyMem_Free
 
 ctypedef Py_ssize_t size_t
 
@@ -15,11 +17,6 @@ IF UNAME_SYSNAME == "Windows":
 ELSE:
     cdef extern:
         int __builtin_popcountl(size_t)
-
-
-cdef extern from "stdlib.h":
-    void *malloc(size_t)
-    void free(void*)
 
 
 cdef extern from "field.h":
@@ -84,7 +81,7 @@ cdef class IdsPage:
     cdef void _alloc(self, int fill=0):
         assert(self.data == NULL)
         self.page_state = PAGE_PARTIAL
-        self.data = <CHUNK *>malloc(sizeof(CHUNK) * PAGE_CHUNKS)
+        self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
         if fill:
             self._count = PAGE_FULL_COUNT
             self._fill(CHUNK_BITS)
@@ -97,7 +94,7 @@ cdef class IdsPage:
         self.page_state = new_state
         self._count = 0 if new_state == PAGE_EMPTY else PAGE_FULL_COUNT
         if self.data != NULL:
-            free(self.data)
+            PyMem_Free(self.data)
             self.data = NULL
 
     def __iter__(self):
@@ -579,7 +576,7 @@ cdef class SparseBitfield:
         buffer_len = len(self.pages) + (PAGE_BYTES * partial_page_count) + \
                         len(self.pages) * sizeof(page_no)
         view.len = buffer_len
-        view.buf = malloc(buffer_len)
+        view.buf = PyMem_Malloc(buffer_len)
         view.itemsize = 1
         view.suboffsets = NULL
         pointer = <char *> view.buf
@@ -602,7 +599,7 @@ cdef class SparseBitfield:
     def __releasebuffer__(self, Py_buffer *view):
         if view.buf == NULL:
             return
-        free(view.buf)
+        PyMem_Free(view.buf)
 
     def pickle(self, compress=True):
         """Return a string representation of the bitfield"""
