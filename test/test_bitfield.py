@@ -141,7 +141,7 @@ class BitfieldTest(unittest.TestCase):
         self.assertEqual(min(a), 0)
 
     def test_large_numbers(self):
-        size = 79
+        size = 78
         field1 = sparsebitfield.SparseBitfield()
         field2 = sparsebitfield.SparseBitfield()
         for p in range(1, size + 1):
