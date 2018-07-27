@@ -1,2 +1,3 @@
 include cimpl/*.h
 include cimpl/*.c
+include cimpl/*.pyx
