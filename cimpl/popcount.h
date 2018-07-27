@@ -2,7 +2,7 @@
 #if defined(__MINGW32__)
 #else
 
-typedef unsigned int usize_t;
+typedef unsigned long usize_t;
 
 int __builtin_popcountl(usize_t v) {
 	v = v - ((v >> 1) & (usize_t)~(usize_t)0/3);                           // temp

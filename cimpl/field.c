@@ -809,7 +809,7 @@ struct __pyx_opt_args_14sparsebitfield_7IdsPage__alloc;
 /* "cimpl/field.pyx":81
  *         self._dealloc(PAGE_EMPTY)
  * 
- *     cdef void _alloc(self, int fill=0):             # <<<<<<<<<<<<<<
+ *     cdef void _alloc(self, bint fill=0):             # <<<<<<<<<<<<<<
  *         assert(self.data == NULL)
  *         self.page_state = PAGE_PARTIAL
  */
@@ -1316,9 +1316,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_usize_t(usize_t value);
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_char(char value);
 
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE usize_t __Pyx_PyInt_As_usize_t(PyObject *);
 
@@ -1327,6 +1324,9 @@ static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE size_t __Pyx_PyInt_As_size_t(PyObject *);
+
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
@@ -2138,7 +2138,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_empty(struct __pyx_obj_14spars
  *     cdef void set_empty(self):
  *         self._dealloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
  * 
- *     cdef void _alloc(self, int fill=0):
+ *     cdef void _alloc(self, bint fill=0):
  */
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_dealloc(__pyx_v_self, 3);
 
@@ -2157,7 +2157,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage_set_empty(struct __pyx_obj_14spars
 /* "cimpl/field.pyx":81
  *         self._dealloc(PAGE_EMPTY)
  * 
- *     cdef void _alloc(self, int fill=0):             # <<<<<<<<<<<<<<
+ *     cdef void _alloc(self, bint fill=0):             # <<<<<<<<<<<<<<
  *         assert(self.data == NULL)
  *         self.page_state = PAGE_PARTIAL
  */
@@ -2175,7 +2175,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
 
   /* "cimpl/field.pyx":82
  * 
- *     cdef void _alloc(self, int fill=0):
+ *     cdef void _alloc(self, bint fill=0):
  *         assert(self.data == NULL)             # <<<<<<<<<<<<<<
  *         self.page_state = PAGE_PARTIAL
  *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
@@ -2190,7 +2190,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
   #endif
 
   /* "cimpl/field.pyx":83
- *     cdef void _alloc(self, int fill=0):
+ *     cdef void _alloc(self, bint fill=0):
  *         assert(self.data == NULL)
  *         self.page_state = PAGE_PARTIAL             # <<<<<<<<<<<<<<
  *         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
@@ -2269,7 +2269,7 @@ static void __pyx_f_14sparsebitfield_7IdsPage__alloc(struct __pyx_obj_14sparsebi
   /* "cimpl/field.pyx":81
  *         self._dealloc(PAGE_EMPTY)
  * 
- *     cdef void _alloc(self, int fill=0):             # <<<<<<<<<<<<<<
+ *     cdef void _alloc(self, bint fill=0):             # <<<<<<<<<<<<<<
  *         assert(self.data == NULL)
  *         self.page_state = PAGE_PARTIAL
  */
@@ -4404,7 +4404,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  *                 self._dealloc(PAGE_FULL)
  *                 return             # <<<<<<<<<<<<<<
  *             elif other.page_state == PAGE_PARTIAL:
- *                 self._alloc(PAGE_EMPTY)
+ *                 self._alloc()
  */
       __Pyx_XDECREF(__pyx_r);
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
@@ -4423,7 +4423,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  *                 self._dealloc(PAGE_FULL)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
- *                 self._alloc(PAGE_EMPTY)
+ *                 self._alloc()
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  */
       case 1:
@@ -4431,17 +4431,15 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       /* "cimpl/field.pyx":260
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:
- *                 self._alloc(PAGE_EMPTY)             # <<<<<<<<<<<<<<
+ *                 self._alloc()             # <<<<<<<<<<<<<<
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         elif self.page_state == PAGE_FULL:
  */
-      __pyx_t_1.__pyx_n = 1;
-      __pyx_t_1.fill = 3;
-      ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, &__pyx_t_1); 
+      ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, NULL);
 
       /* "cimpl/field.pyx":261
  *             elif other.page_state == PAGE_PARTIAL:
- *                 self._alloc(PAGE_EMPTY)
+ *                 self._alloc()
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)             # <<<<<<<<<<<<<<
  *         elif self.page_state == PAGE_FULL:
  *             if other.page_state == PAGE_EMPTY:
@@ -4452,7 +4450,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  *                 self._dealloc(PAGE_FULL)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
- *                 self._alloc(PAGE_EMPTY)
+ *                 self._alloc()
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  */
       break;
@@ -4469,7 +4467,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
     break;
 
     /* "cimpl/field.pyx":262
- *                 self._alloc(PAGE_EMPTY)
+ *                 self._alloc()
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
  *             if other.page_state == PAGE_EMPTY:
@@ -4530,7 +4528,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  *                 self._dealloc(PAGE_EMPTY)
  *                 return             # <<<<<<<<<<<<<<
  *             elif other.page_state == PAGE_PARTIAL:
- *                 self._alloc(PAGE_FULL)
+ *                 self._alloc(True)
  */
       __Pyx_XDECREF(__pyx_r);
       __pyx_r = Py_None; __Pyx_INCREF(Py_None);
@@ -4549,7 +4547,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  *                 self._dealloc(PAGE_EMPTY)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
- *                 self._alloc(PAGE_FULL)
+ *                 self._alloc(True)
  *                 for chunk_index in range(PAGE_CHUNKS):
  */
       case 1:
@@ -4557,17 +4555,17 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
       /* "cimpl/field.pyx":269
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:
- *                 self._alloc(PAGE_FULL)             # <<<<<<<<<<<<<<
+ *                 self._alloc(True)             # <<<<<<<<<<<<<<
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~other.data[chunk_index]
  */
       __pyx_t_1.__pyx_n = 1;
-      __pyx_t_1.fill = 2;
+      __pyx_t_1.fill = 1;
       ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, &__pyx_t_1); 
 
       /* "cimpl/field.pyx":270
  *             elif other.page_state == PAGE_PARTIAL:
- *                 self._alloc(PAGE_FULL)
+ *                 self._alloc(True)
  *                 for chunk_index in range(PAGE_CHUNKS):             # <<<<<<<<<<<<<<
  *                     self.data[chunk_index] = ~other.data[chunk_index]
  *         elif self.page_state == PAGE_PARTIAL:
@@ -4578,7 +4576,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
         __pyx_v_chunk_index = __pyx_t_4;
 
         /* "cimpl/field.pyx":271
- *                 self._alloc(PAGE_FULL)
+ *                 self._alloc(True)
  *                 for chunk_index in range(PAGE_CHUNKS):
  *                     self.data[chunk_index] = ~other.data[chunk_index]             # <<<<<<<<<<<<<<
  *         elif self.page_state == PAGE_PARTIAL:
@@ -4591,7 +4589,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
  *                 self._dealloc(PAGE_EMPTY)
  *                 return
  *             elif other.page_state == PAGE_PARTIAL:             # <<<<<<<<<<<<<<
- *                 self._alloc(PAGE_FULL)
+ *                 self._alloc(True)
  *                 for chunk_index in range(PAGE_CHUNKS):
  */
       break;
@@ -4599,7 +4597,7 @@ static PyObject *__pyx_f_14sparsebitfield_7IdsPage_symmetric_difference_update(s
     }
 
     /* "cimpl/field.pyx":262
- *                 self._alloc(PAGE_EMPTY)
+ *                 self._alloc()
  *                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
  *         elif self.page_state == PAGE_FULL:             # <<<<<<<<<<<<<<
  *             if other.page_state == PAGE_EMPTY:
@@ -5189,7 +5187,7 @@ static PyObject *__pyx_pf_14sparsebitfield_7IdsPage_9__richcmp__(struct __pyx_ob
  *         raise NotImplementedError()
  * 
  *     cdef char *set_bits(self, char *start, char *end):             # <<<<<<<<<<<<<<
- *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)
+ *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start) + 1)
  *         self._alloc()
  */
 
@@ -5205,7 +5203,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
   /* "cimpl/field.pyx":311
  * 
  *     cdef char *set_bits(self, char *start, char *end):
- *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)             # <<<<<<<<<<<<<<
+ *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start) + 1)             # <<<<<<<<<<<<<<
  *         self._alloc()
  *         memcpy(self.data, start, bytes_to_read)
  */
@@ -5220,7 +5218,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
 
   /* "cimpl/field.pyx":312
  *     cdef char *set_bits(self, char *start, char *end):
- *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)
+ *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start) + 1)
  *         self._alloc()             # <<<<<<<<<<<<<<
  *         memcpy(self.data, start, bytes_to_read)
  *         self.calc_length()
@@ -5228,7 +5226,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
   ((struct __pyx_vtabstruct_14sparsebitfield_IdsPage *)__pyx_v_self->__pyx_vtab)->_alloc(__pyx_v_self, NULL);
 
   /* "cimpl/field.pyx":313
- *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)
+ *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start) + 1)
  *         self._alloc()
  *         memcpy(self.data, start, bytes_to_read)             # <<<<<<<<<<<<<<
  *         self.calc_length()
@@ -5259,7 +5257,7 @@ static char *__pyx_f_14sparsebitfield_7IdsPage_set_bits(struct __pyx_obj_14spars
  *         raise NotImplementedError()
  * 
  *     cdef char *set_bits(self, char *start, char *end):             # <<<<<<<<<<<<<<
- *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)
+ *         cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start) + 1)
  *         self._alloc()
  */
 
@@ -5647,7 +5645,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield__ensure_page_exists(s
  * 
  *     cpdef add(self, object number):             # <<<<<<<<<<<<<<
  *         """Add a positive integer to the bitfield"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  */
 
 static PyObject *__pyx_pw_14sparsebitfield_14SparseBitfield_3add(PyObject *__pyx_v_self, PyObject *__pyx_v_number); /*proto*/
@@ -5727,13 +5725,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
   /* "cimpl/field.pyx":342
  *     cpdef add(self, object number):
  *         """Add a positive integer to the bitfield"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         self._ensure_page_exists(page_no)
  */
   __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 342, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_FloorDivide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 342, __pyx_L1_error)
@@ -5742,7 +5740,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
 
   /* "cimpl/field.pyx":343
  *         """Add a positive integer to the bitfield"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         self._ensure_page_exists(page_no)
  *         cdef IdsPage page = self.pages[page_no]
@@ -5757,7 +5755,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
   __pyx_v_page_index = __pyx_t_6;
 
   /* "cimpl/field.pyx":344
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
  *         self._ensure_page_exists(page_no)             # <<<<<<<<<<<<<<
  *         cdef IdsPage page = self.pages[page_no]
@@ -5794,7 +5792,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_add(struct __pyx_obj_
  * 
  *     cpdef add(self, object number):             # <<<<<<<<<<<<<<
  *         """Add a positive integer to the bitfield"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  */
 
   /* function exit code */
@@ -5942,13 +5940,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
   /* "cimpl/field.pyx":351
  *         """Remove a positive integer from the bitfield
  *         If the integer does not exist in the field, raise a KeyError"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         if page_no not in self.pages:
  *             raise KeyError()
  */
   __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_FloorDivide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 351, __pyx_L1_error)
@@ -5957,7 +5955,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
 
   /* "cimpl/field.pyx":352
  *         If the integer does not exist in the field, raise a KeyError"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             raise KeyError()
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -5970,7 +5968,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
   if (unlikely(__pyx_t_8)) {
 
     /* "cimpl/field.pyx":353
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:
  *             raise KeyError()             # <<<<<<<<<<<<<<
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -5984,7 +5982,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_remove(struct __pyx_o
 
     /* "cimpl/field.pyx":352
  *         If the integer does not exist in the field, raise a KeyError"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             raise KeyError()
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -6237,13 +6235,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
   /* "cimpl/field.pyx":365
  *         """Remove a positive integer from the bitfield if it is a member.
  *         If the element is not a member, do nothing."""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         if page_no not in self.pages:
  *             return
  */
   __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 365, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_FloorDivide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_6 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_6 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 365, __pyx_L1_error)
@@ -6252,7 +6250,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
 
   /* "cimpl/field.pyx":366
  *         If the element is not a member, do nothing."""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             return
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -6265,7 +6263,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
   if (__pyx_t_8) {
 
     /* "cimpl/field.pyx":367
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:
  *             return             # <<<<<<<<<<<<<<
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -6277,7 +6275,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_discard(struct __pyx_
 
     /* "cimpl/field.pyx":366
  *         If the element is not a member, do nothing."""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             return
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -6576,7 +6574,7 @@ static Py_ssize_t __pyx_pf_14sparsebitfield_14SparseBitfield_8__len__(struct __p
  * 
  *     def __contains__(self, number):             # <<<<<<<<<<<<<<
  *         """Returns true if number is present in the field"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  */
 
 /* Python wrapper */
@@ -6611,13 +6609,13 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
   /* "cimpl/field.pyx":386
  *     def __contains__(self, number):
  *         """Returns true if number is present in the field"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         if page_no not in self.pages:
  *             return False
  */
   __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 386, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_FloorDivide(__pyx_v_number, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 386, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_3 = __Pyx_PyInt_As_usize_t(__pyx_t_2); if (unlikely((__pyx_t_3 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 386, __pyx_L1_error)
@@ -6626,7 +6624,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
 
   /* "cimpl/field.pyx":387
  *         """Returns true if number is present in the field"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             return False
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -6639,7 +6637,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
   if (__pyx_t_5) {
 
     /* "cimpl/field.pyx":388
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:
  *             return False             # <<<<<<<<<<<<<<
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -6650,7 +6648,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
 
     /* "cimpl/field.pyx":387
  *         """Returns true if number is present in the field"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  *         if page_no not in self.pages:             # <<<<<<<<<<<<<<
  *             return False
  *         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -6695,7 +6693,7 @@ static int __pyx_pf_14sparsebitfield_14SparseBitfield_10__contains__(struct __py
  * 
  *     def __contains__(self, number):             # <<<<<<<<<<<<<<
  *         """Returns true if number is present in the field"""
- *         cdef usize_t page_no = number / PAGE_FULL_COUNT
+ *         cdef usize_t page_no = number // PAGE_FULL_COUNT
  */
 
   /* function exit code */
@@ -12211,10 +12209,8 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   int __pyx_t_2;
   PyObject *__pyx_t_3 = NULL;
   usize_t __pyx_t_4;
-  long __pyx_t_5;
-  long __pyx_t_6;
-  usize_t __pyx_t_7;
-  usize_t __pyx_t_8;
+  usize_t __pyx_t_5;
+  usize_t __pyx_t_6;
   __Pyx_RefNannySetupContext("fill_range", 0);
   __Pyx_INCREF(__pyx_v_high);
 
@@ -12251,7 +12247,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  *         assert low < high
  *         # Adjust high so that it represents the last bit to set
  *         high -= 1             # <<<<<<<<<<<<<<
- *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
+ *         cdef usize_t lower_page_boundary = low // PAGE_FULL_COUNT
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
  */
   __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_high, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 671, __pyx_L1_error)
@@ -12262,13 +12258,13 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   /* "cimpl/field.pyx":672
  *         # Adjust high so that it represents the last bit to set
  *         high -= 1
- *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
+ *         cdef usize_t lower_page_boundary = low // PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
- *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
+ *         cdef usize_t upper_page_boundary = high // PAGE_FULL_COUNT
  */
   __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 672, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_low, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 672, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_FloorDivide(__pyx_v_low, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 672, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 672, __pyx_L1_error)
@@ -12277,9 +12273,9 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
 
   /* "cimpl/field.pyx":673
  *         high -= 1
- *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
+ *         cdef usize_t lower_page_boundary = low // PAGE_FULL_COUNT
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
- *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
+ *         cdef usize_t upper_page_boundary = high // PAGE_FULL_COUNT
  *         cdef usize_t upper_page_index = high % PAGE_FULL_COUNT
  */
   __pyx_t_3 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 673, __pyx_L1_error)
@@ -12292,15 +12288,15 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
   __pyx_v_lower_page_index = __pyx_t_4;
 
   /* "cimpl/field.pyx":674
- *         cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
+ *         cdef usize_t lower_page_boundary = low // PAGE_FULL_COUNT
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
- *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
+ *         cdef usize_t upper_page_boundary = high // PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t upper_page_index = high % PAGE_FULL_COUNT
  *         cdef usize_t num, page_no
  */
   __pyx_t_1 = __Pyx_PyInt_From_usize_t(PAGE_FULL_COUNT); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 674, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_v_high, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 674, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_FloorDivide(__pyx_v_high, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 674, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_4 = __Pyx_PyInt_As_usize_t(__pyx_t_3); if (unlikely((__pyx_t_4 == ((usize_t)-1)) && PyErr_Occurred())) __PYX_ERR(0, 674, __pyx_L1_error)
@@ -12309,7 +12305,7 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
 
   /* "cimpl/field.pyx":675
  *         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
- *         cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
+ *         cdef usize_t upper_page_boundary = high // PAGE_FULL_COUNT
  *         cdef usize_t upper_page_index = high % PAGE_FULL_COUNT             # <<<<<<<<<<<<<<
  *         cdef usize_t num, page_no
  * 
@@ -12364,10 +12360,10 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  *                 page.add(num)
  *             return
  */
-    __pyx_t_5 = (__pyx_v_upper_page_index + 1);
-    __pyx_t_6 = __pyx_t_5;
-    for (__pyx_t_4 = __pyx_v_lower_page_index; __pyx_t_4 < __pyx_t_6; __pyx_t_4+=1) {
-      __pyx_v_num = __pyx_t_4;
+    __pyx_t_4 = (__pyx_v_upper_page_index + 1);
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = __pyx_v_lower_page_index; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_num = __pyx_t_6;
 
       /* "cimpl/field.pyx":683
  *             page = self.pages[lower_page_boundary]
@@ -12441,9 +12437,9 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  *             lower_page_boundary += 1
  */
     __pyx_t_4 = PAGE_FULL_COUNT;
-    __pyx_t_7 = __pyx_t_4;
-    for (__pyx_t_8 = __pyx_v_lower_page_index; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_num = __pyx_t_8;
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = __pyx_v_lower_page_index; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_num = __pyx_t_6;
 
       /* "cimpl/field.pyx":691
  *             page = self.pages[lower_page_boundary]
@@ -12514,10 +12510,10 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  *                 page.add(num)
  *             upper_page_boundary -= 1
  */
-    __pyx_t_5 = (__pyx_v_upper_page_index + 1);
-    __pyx_t_6 = __pyx_t_5;
-    for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_6; __pyx_t_4+=1) {
-      __pyx_v_num = __pyx_t_4;
+    __pyx_t_4 = (__pyx_v_upper_page_index + 1);
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_num = __pyx_t_6;
 
       /* "cimpl/field.pyx":699
  *             page = self.pages[upper_page_boundary]
@@ -12564,10 +12560,10 @@ static PyObject *__pyx_f_14sparsebitfield_14SparseBitfield_fill_range(struct __p
  *                 self._ensure_page_exists(page_no)
  *                 page = self.pages[page_no]
  */
-    __pyx_t_5 = (__pyx_v_upper_page_boundary + 1);
-    __pyx_t_6 = __pyx_t_5;
-    for (__pyx_t_4 = __pyx_v_lower_page_boundary; __pyx_t_4 < __pyx_t_6; __pyx_t_4+=1) {
-      __pyx_v_page_no = __pyx_t_4;
+    __pyx_t_4 = (__pyx_v_upper_page_boundary + 1);
+    __pyx_t_5 = __pyx_t_4;
+    for (__pyx_t_6 = __pyx_v_lower_page_boundary; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+      __pyx_v_page_no = __pyx_t_6;
 
       /* "cimpl/field.pyx":705
  *         if lower_page_boundary <= upper_page_boundary:
@@ -16771,37 +16767,6 @@ bad:
     }
 }
 
-/* CIntToPy */
-          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
-    const long neg_one = (long) -1, const_zero = (long) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(long) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(long) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(long) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
-}
-
 /* CIntFromPy */
           static CYTHON_INLINE usize_t __Pyx_PyInt_As_usize_t(PyObject *x) {
     const usize_t neg_one = (usize_t) -1, const_zero = (usize_t) 0;
@@ -17367,6 +17332,37 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to size_t");
     return (size_t) -1;
+}
+
+/* CIntToPy */
+          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+    const long neg_one = (long) -1, const_zero = (long) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(long) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(long) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(long) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(long) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
 }
 
 /* CIntFromPy */

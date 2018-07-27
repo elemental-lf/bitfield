@@ -20,8 +20,8 @@ ELSE:
 
 
 cdef extern from "field.h":
-    ctypedef unsigned int usize_t
-    ctypedef unsigned int CHUNK
+    ctypedef unsigned long usize_t
+    ctypedef unsigned long CHUNK
     const usize_t CHUNK_BYTES
     const usize_t CHUNK_FULL_COUNT
     const usize_t CHUNK_SHIFT
@@ -78,7 +78,7 @@ cdef class IdsPage:
     cdef void set_empty(self):
         self._dealloc(PAGE_EMPTY)
 
-    cdef void _alloc(self, int fill=0):
+    cdef void _alloc(self, bint fill=0):
         assert(self.data == NULL)
         self.page_state = PAGE_PARTIAL
         self.data = <CHUNK *>PyMem_Malloc(sizeof(CHUNK) * PAGE_CHUNKS)
@@ -257,7 +257,7 @@ cdef class IdsPage:
                 self._dealloc(PAGE_FULL)
                 return
             elif other.page_state == PAGE_PARTIAL:
-                self._alloc(PAGE_EMPTY)
+                self._alloc()
                 memcpy(self.data, other.data, CHUNK_BYTES * PAGE_CHUNKS)
         elif self.page_state == PAGE_FULL:
             if other.page_state == PAGE_EMPTY:
@@ -266,7 +266,7 @@ cdef class IdsPage:
                 self._dealloc(PAGE_EMPTY)
                 return
             elif other.page_state == PAGE_PARTIAL:
-                self._alloc(PAGE_FULL)
+                self._alloc(True)
                 for chunk_index in range(PAGE_CHUNKS):
                     self.data[chunk_index] = ~other.data[chunk_index]
         elif self.page_state == PAGE_PARTIAL:
@@ -308,7 +308,7 @@ cdef class IdsPage:
         raise NotImplementedError()
 
     cdef char *set_bits(self, char *start, char *end):
-        cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start)+1)
+        cdef usize_t bytes_to_read = min(PAGE_BYTES, (end - start) + 1)
         self._alloc()
         memcpy(self.data, start, bytes_to_read)
         self.calc_length()
@@ -339,7 +339,7 @@ cdef class SparseBitfield:
 
     cpdef add(self, object number):
         """Add a positive integer to the bitfield"""
-        cdef usize_t page_no = number / PAGE_FULL_COUNT
+        cdef usize_t page_no = number // PAGE_FULL_COUNT
         cdef usize_t page_index = number % PAGE_FULL_COUNT
         self._ensure_page_exists(page_no)
         cdef IdsPage page = self.pages[page_no]
@@ -348,7 +348,7 @@ cdef class SparseBitfield:
     cpdef remove(SparseBitfield self, object number):
         """Remove a positive integer from the bitfield
         If the integer does not exist in the field, raise a KeyError"""
-        cdef usize_t page_no = number / PAGE_FULL_COUNT
+        cdef usize_t page_no = number // PAGE_FULL_COUNT
         if page_no not in self.pages:
             raise KeyError()
         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -362,7 +362,7 @@ cdef class SparseBitfield:
     cpdef discard(SparseBitfield self, object number):
         """Remove a positive integer from the bitfield if it is a member.
         If the element is not a member, do nothing."""
-        cdef usize_t page_no = number / PAGE_FULL_COUNT
+        cdef usize_t page_no = number // PAGE_FULL_COUNT
         if page_no not in self.pages:
             return
         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -383,7 +383,7 @@ cdef class SparseBitfield:
 
     def __contains__(self, number):
         """Returns true if number is present in the field"""
-        cdef usize_t page_no = number / PAGE_FULL_COUNT
+        cdef usize_t page_no = number // PAGE_FULL_COUNT
         if page_no not in self.pages:
             return False
         cdef usize_t page_index = number % PAGE_FULL_COUNT
@@ -669,9 +669,9 @@ cdef class SparseBitfield:
         assert low < high
         # Adjust high so that it represents the last bit to set
         high -= 1
-        cdef usize_t lower_page_boundary = low / PAGE_FULL_COUNT
+        cdef usize_t lower_page_boundary = low // PAGE_FULL_COUNT
         cdef usize_t lower_page_index = low % PAGE_FULL_COUNT
-        cdef usize_t upper_page_boundary = high / PAGE_FULL_COUNT
+        cdef usize_t upper_page_boundary = high // PAGE_FULL_COUNT
         cdef usize_t upper_page_index = high % PAGE_FULL_COUNT
         cdef usize_t num, page_no
 
@@ -692,7 +692,7 @@ cdef class SparseBitfield:
             lower_page_boundary += 1
 
         # Fill the upper partial page (if any)
-        if upper_page_index != 0:           
+        if upper_page_index != 0:
             self._ensure_page_exists(upper_page_boundary)
             page = self.pages[upper_page_boundary]
             for num in range(0, upper_page_index + 1):
