@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 
-version = '0.1.1'
+version = '0.2.1'
 
 try:
     from setuptools import setup, Extension
