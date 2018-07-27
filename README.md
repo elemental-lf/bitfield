@@ -11,7 +11,7 @@ Installation
 ------------
 
 ```
-$ sudo pip3 install --upgrade git+https://github.com/elemental-lf/sparsebitfield
+$ sudo pip3 install sparsebitfield
 ```
 
 Usage

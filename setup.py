@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 
-version = '0.2.1'
+version = '0.2.2'
 
 try:
     from setuptools import setup, Extension
@@ -21,11 +21,16 @@ if USE_CYTHON:
     from Cython.Build import cythonize
     extentions = cythonize(extentions, language_level=3)
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='sparsebitfield',
     version=version,
     license='BSD',
     description='A Cython fast number set based on bitfields',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author='Steve Stagg, Lars Fenneberg',
     author_email='stestagg@gmail.com, lf@elemental.net',
     url='http://github.com/elemental-lf/sparsebitfield',
